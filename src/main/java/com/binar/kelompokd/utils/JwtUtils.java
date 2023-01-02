@@ -1,5 +1,6 @@
 package com.binar.kelompokd.utils;
 
+import com.binar.kelompokd.services.UserDetailServiceImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,9 @@ public class JwtUtils {
     private int jwtExpirationMs;
 
     public String generateJwt(Authentication auth) {
+        UserDetailServiceImpl userDetailService = (UserDetailServiceImpl) auth.getPrincipal();
         return Jwts.builder()
-                .setSubject(...)
+                .setSubject((userDetailService))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime()+ jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
