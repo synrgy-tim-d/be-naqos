@@ -36,7 +36,7 @@ public class User extends DateModel implements Serializable {
     @NotNull
     private String name;
 
-    private String photo_profile;
+    private String photoProfile;
 
     @NotNull
     @Enumerated(EnumType.STRING)

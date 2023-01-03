@@ -20,5 +20,5 @@ public class Role {
     private ERole name;
 
     @NotNull
-    private Boolean is_active = false;
+    private Boolean isActive = false;
 }
