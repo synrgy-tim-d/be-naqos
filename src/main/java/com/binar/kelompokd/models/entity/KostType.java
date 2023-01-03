@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "t_setup_kost_type")
+@Table(name = "t_setup_kost_types")
 public class KostType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "t_setup_kost_facility")
+@Table(name = "t_setup_kost_facilities")
 public class KostFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
