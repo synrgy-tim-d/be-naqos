@@ -77,12 +77,29 @@ public class KostPropertyServiceImpl implements KostPropertyService {
     }
 
     @Override
-    public void updateKost(int id, KostProperty kostProperty) {
+    public void updateKost(int id, KostPropertyRequest kostPropertyRequest) {
         KostProperty kostProperty1 = kostPropertyRepository.findById(id).get();
-        kostProperty1.setName(kostProperty.getName());
-        kostProperty1.setDescription(kostProperty.getDescription());
-        kostProperty1.setStreet(kostProperty.getStreet());
-        kostProperty1.setIsAvailable(kostProperty.getIsAvailable());
+        kostProperty1.setName(kostPropertyRequest.getName());
+        kostProperty1.setDescription(kostPropertyRequest.getDescription());
+        kostProperty1.setStreet(kostPropertyRequest.getStreet());
+        kostProperty1.setIsAvailable(kostPropertyRequest.getIsAvailable());
+
+        Subcity subcity = subcityRepository.findById(kostPropertyRequest.getLocationId()).get();
+        KostSpecification kostSpecification = kostSpecificationRepository.findById(kostPropertyRequest.getKostSpecificationId()).get();
+        PricesCategory pricesCategory = priceCategoryRepository.findById(kostPropertyRequest.getPriceCategoryId()).get();
+        KostType kostType = kostTypeRepository.findKostTypeById(kostPropertyRequest.getKostTypeId());
+        KostFacility kostFacility = kostFacilityRepository.findById(kostPropertyRequest.getKostFacilityId()).get();
+        Set<KostFacility> kostFacilities = new HashSet<>();
+        kostFacilities.add(kostFacility);
+
+        kostProperty1.setLocation(subcity);
+        kostProperty1.setKostSpecification(kostSpecification);
+        kostProperty1.setPriceCategory(pricesCategory);
+        kostProperty1.setKostType(kostType);
+        kostProperty1.setPhotos(kostPropertyRequest.getPhotos());
+        kostProperty1.setPricePerCategory(kostPropertyRequest.getPricePerCategory());
+        kostProperty1.setKostFacilities(kostFacilities);
+
         kostPropertyRepository.save(kostProperty1);
     }
 

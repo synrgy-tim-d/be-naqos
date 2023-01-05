@@ -12,7 +12,7 @@ public interface KostPropertyService {
 
     KostProperty save(KostPropertyRequest kostPropertyRequest);
 
-    void updateKost(int id, KostProperty kostProperty);
+    void updateKost(int id, KostPropertyRequest kostPropertyRequest);
 
     void deleteKost(int id);
 }

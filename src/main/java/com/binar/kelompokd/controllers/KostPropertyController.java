@@ -39,8 +39,8 @@ public class KostPropertyController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<String> updateKost(@PathVariable("id") int id, @RequestBody KostProperty kostProperty){
-        kostPropertyService.updateKost(id, kostProperty);
+    public ResponseEntity<String> updateKost(@PathVariable("id") int id, @RequestBody KostPropertyRequest kostPropertyRequest){
+        kostPropertyService.updateKost(id, kostPropertyRequest);
         return new ResponseEntity<>("Kost updated successfully", HttpStatus.OK);
     }
 
