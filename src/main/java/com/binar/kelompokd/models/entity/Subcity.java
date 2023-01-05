@@ -1,5 +1,6 @@
 package com.binar.kelompokd.models.entity;
 
+import com.binar.kelompokd.models.DateModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Table(name = "t_setup_subcities")
-public class Subcity {
+public class Subcity extends DateModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

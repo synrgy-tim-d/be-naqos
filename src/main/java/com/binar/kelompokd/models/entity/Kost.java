@@ -1,5 +1,6 @@
 package com.binar.kelompokd.models.entity;
 
+import com.binar.kelompokd.models.DateModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
 @Data
@@ -14,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 @Table(name = "t_kost_property")
-public class Kost {
+public class Kost extends DateModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,9 +50,9 @@ public class Kost {
     @JoinColumn(name = "type_id", referencedColumnName = "id")
     private KostType typeId;
 
-    @ManyToOne
+    @OneToOne
     private Subcity location;
 
-    @ManyToOne
+    @OneToOne
     private PriceCategory priceCategory;
 }
