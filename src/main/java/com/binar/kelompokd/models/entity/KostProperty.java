@@ -37,7 +37,7 @@ public class KostProperty {
     private Boolean isAvailable;
 
     @ElementCollection
-    Map<String, String> photos;
+    Set<String> photos;
 
     @Column(nullable = false)
     private Double pricePerCategory;

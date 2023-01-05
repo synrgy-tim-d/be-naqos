@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -26,7 +28,7 @@ public class KostPropertyRequest {
     @Column(nullable = false)
     private Boolean isAvailable;
 
-    Map<String, String> photos;
+    Set<String> photos;
 
     @Column(nullable = false)
     private Double pricePerCategory;
