@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -14,18 +15,31 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(
+        name = "t_kost_property"
+)
 public class KostProperty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     private String street;
 
+    @Column(nullable = false)
     private Boolean isAvailable;
+
+    @ElementCollection
+    Map<String, String> photos;
+
+    @Column(nullable = false)
+    private Double pricePerCategory;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

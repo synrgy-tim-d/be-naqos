@@ -12,6 +12,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(
+        name = "t_setup_kost_types"
+)
 public class KostType {
 
     @Id
