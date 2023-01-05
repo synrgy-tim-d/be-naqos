@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Data
 @Table(name = "t_roles")
-public class Role {
+public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

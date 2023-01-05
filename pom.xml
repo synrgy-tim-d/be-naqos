@@ -15,6 +15,10 @@
 	<description>Backend Project for Final Project Binar Synrgy Batch 5 Kelompok D</description>
 	<properties>
 		<java.version>8</java.version>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<oauth2.version>2.0.14.RELEASE</oauth2.version>
+		<jwt.version>1.0.9.RELEASE</jwt.version>
+
 	</properties>
 	<dependencies>
 		<!-- JDBC Driver -->
@@ -44,6 +48,20 @@
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-security</artifactId>-->
 <!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>${oauth2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+			<version>${jwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<!-- SCHEDULER -->
 <!--		<dependency>-->

@@ -46,6 +46,6 @@ public class User extends DateModel implements Serializable {
     @JoinTable( name = "t_user_roles",
             joinColumns = @JoinColumn(name ="user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<Roles> roles = new HashSet<>();
 }
 
