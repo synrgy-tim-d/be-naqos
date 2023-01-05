@@ -1,6 +1,7 @@
 package com.binar.kelompokd.services;
 
 import com.binar.kelompokd.models.entity.KostProperty;
+import com.binar.kelompokd.models.entity.request.KostPropertyRequest;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface KostPropertyService {
 
     KostProperty getKostById(int id);
 
-    KostProperty save(KostProperty kostProperty);
+    KostProperty save(KostPropertyRequest kostPropertyRequest);
 
     void updateKost(int id, KostProperty kostProperty);
 

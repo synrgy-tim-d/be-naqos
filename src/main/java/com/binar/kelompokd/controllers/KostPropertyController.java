@@ -1,6 +1,7 @@
 package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.models.entity.KostProperty;
+import com.binar.kelompokd.models.entity.request.KostPropertyRequest;
 import com.binar.kelompokd.services.KostPropertyService;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,8 @@ public class KostPropertyController {
     }
 
     @PostMapping
-    public ResponseEntity<KostProperty> createKost(@RequestBody KostProperty kostProperty){
-        KostProperty kostProperty1 = kostPropertyService.save(kostProperty);
+    public ResponseEntity<KostProperty> createKost(@RequestBody KostPropertyRequest kostPropertyRequest){
+        KostProperty kostProperty1 = kostPropertyService.save(kostPropertyRequest);
         return new ResponseEntity<>(kostProperty1, HttpStatus.CREATED);
     }
 
