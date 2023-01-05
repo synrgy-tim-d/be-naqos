@@ -51,7 +51,7 @@ public class KostProperty {
     private Set<KostFacility> kostFacilities = new HashSet<>();
 
     @OneToOne(
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "specification_id"
@@ -59,7 +59,7 @@ public class KostProperty {
     private KostSpecification kostSpecification;
 
     @OneToOne(
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "type_id"
