@@ -10,9 +10,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface KostTypeRepository extends JpaRepository<KostType, Integer> {
 
-    @Query(
-            nativeQuery = true,
-            value = "select * from t_setup_kost_types where id = id"
-    )
-    KostType findKostTypeById(@Param("id") int id);
 }

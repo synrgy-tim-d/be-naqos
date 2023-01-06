@@ -55,7 +55,7 @@ public class KostPropertyServiceImpl implements KostPropertyService {
         Subcity subcity = subcityRepository.findById(kostPropertyRequest.getLocationId()).get();
         KostSpecification kostSpecification = kostSpecificationRepository.findById(kostPropertyRequest.getKostSpecificationId()).get();
         PricesCategory pricesCategory = priceCategoryRepository.findById(kostPropertyRequest.getPriceCategoryId()).get();
-        KostType kostType = kostTypeRepository.findKostTypeById(kostPropertyRequest.getKostTypeId());
+        KostType kostType = kostTypeRepository.findById(kostPropertyRequest.getKostTypeId()).get();
         KostFacility kostFacility = kostFacilityRepository.findById(kostPropertyRequest.getKostFacilityId()).get();
         Set<KostFacility> kostFacilities = new HashSet<>();
         kostFacilities.add(kostFacility);
@@ -87,7 +87,7 @@ public class KostPropertyServiceImpl implements KostPropertyService {
         Subcity subcity = subcityRepository.findById(kostPropertyRequest.getLocationId()).get();
         KostSpecification kostSpecification = kostSpecificationRepository.findById(kostPropertyRequest.getKostSpecificationId()).get();
         PricesCategory pricesCategory = priceCategoryRepository.findById(kostPropertyRequest.getPriceCategoryId()).get();
-        KostType kostType = kostTypeRepository.findKostTypeById(kostPropertyRequest.getKostTypeId());
+        KostType kostType = kostTypeRepository.findById(kostPropertyRequest.getKostTypeId()).get();
         KostFacility kostFacility = kostFacilityRepository.findById(kostPropertyRequest.getKostFacilityId()).get();
         Set<KostFacility> kostFacilities = new HashSet<>();
         kostFacilities.add(kostFacility);
