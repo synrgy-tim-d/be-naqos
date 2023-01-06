@@ -33,7 +33,7 @@ public class KostProperty {
     @Column(nullable = false)
     private String street;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private Boolean isAvailable;
 
     @ElementCollection

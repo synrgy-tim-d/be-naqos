@@ -33,15 +33,15 @@ public class KostPropertyController {
     }
 
     @PostMapping
-    public ResponseEntity<KostProperty> createKost(@RequestBody KostPropertyRequest kostPropertyRequest){
+    public ResponseEntity<String> createKost(@RequestBody KostPropertyRequest kostPropertyRequest){
         KostProperty kostProperty1 = kostPropertyService.save(kostPropertyRequest);
-        return new ResponseEntity<>(kostProperty1, HttpStatus.CREATED);
+        return new ResponseEntity<>("Data on review", HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<String> updateKost(@PathVariable("id") int id, @RequestBody KostPropertyRequest kostPropertyRequest){
         kostPropertyService.updateKost(id, kostPropertyRequest);
-        return new ResponseEntity<>("Kost updated successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Kost updated successfully. Data on review", HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")

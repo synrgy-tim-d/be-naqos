@@ -1,5 +1,6 @@
 package com.binar.kelompokd.models.entity.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +26,9 @@ public class KostPropertyRequest {
     @Column(nullable = false)
     private String street;
 
-    @Column(nullable = false)
-    private Boolean isAvailable;
+//    @Column(nullable = false)
+    @JsonIgnore
+    private Boolean isAvailable = false;
 
     Set<String> photos;
 
