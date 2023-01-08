@@ -17,16 +17,16 @@ import java.io.Serializable;
 @Builder
 @Table(name = "t_setup_kost_facilities")
 public class KostFacility extends DateModel implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @NotNull
-    private String facilitiesDetails;
+  @NotNull
+  private String facilitiesDetails;
 
-    @NotNull
-    private Boolean isActive;
+  @NotNull
+  private Boolean isActive;
 
-    @OneToOne(mappedBy = "facilityId")
-    private Kost kost;
+  @OneToOne(mappedBy = "facilityId")
+  private Kost kost;
 }

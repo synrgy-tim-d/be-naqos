@@ -17,10 +17,10 @@ import java.io.Serializable;
 @Builder
 @Table(name = "t_setup_prices_category")
 public class PriceCategory extends DateModel implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @NotNull
-    private String name;
+  @NotNull
+  private String name;
 }

@@ -16,12 +16,12 @@ import java.io.Serializable;
 @Builder
 @Table(name = "t_setup_kost_types")
 public class KostType extends DateModel implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String typeName;
+  private String typeName;
 
-    @OneToOne(mappedBy = "typeId")
-    private Kost kost;
+  @OneToOne(mappedBy = "typeId")
+  private Kost kost;
 }

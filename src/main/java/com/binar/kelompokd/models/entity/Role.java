@@ -12,15 +12,15 @@ import java.io.Serializable;
 @Data
 @Table(name = "t_roles")
 public class Role extends DateModel implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    @NotNull
-    private ERole name;
+  @Enumerated(EnumType.STRING)
+  @Column(length = 20)
+  @NotNull
+  private ERole name;
 
-    @NotNull
-    private Boolean isActive = false;
+  @NotNull
+  private Boolean isActive = false;
 }

@@ -19,16 +19,16 @@ import java.util.Set;
 @Builder
 @Table(name = "t_setup_subcities")
 public class Subcity extends DateModel implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @NotNull
-    private String postalCode;
+  @NotNull
+  private String postalCode;
 
-    @NotNull
-    private String name;
+  @NotNull
+  private String name;
 
-    @ManyToOne
-    private City cities;
+  @ManyToOne
+  private City cities;
 }
