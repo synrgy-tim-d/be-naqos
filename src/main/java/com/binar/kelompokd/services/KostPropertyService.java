@@ -1,7 +1,7 @@
 package com.binar.kelompokd.services;
 
 import com.binar.kelompokd.models.entity.KostProperty;
-import com.binar.kelompokd.models.entity.request.KostPropertyRequest;
+import com.binar.kelompokd.models.request.KostPropertyRequest;
 
 import java.util.List;
 

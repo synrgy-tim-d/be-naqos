@@ -36,8 +36,11 @@ public class KostProperty {
 //    @Column(nullable = false)
     private Boolean isAvailable;
 
-    @ElementCollection
-    Set<String> photos;
+//    @ElementCollection
+//    Set<String> photos;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private KostPhoto photo;
 
     @Column(nullable = false)
     private Double pricePerCategory;
@@ -66,8 +69,8 @@ public class KostProperty {
     )
     private KostType kostType;
 
-    @ManyToOne
-    private Subcity location;
+    @OneToOne
+    private KostLocation location;
 
     @ManyToOne
     private PricesCategory priceCategory;

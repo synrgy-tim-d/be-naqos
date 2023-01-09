@@ -1,7 +1,7 @@
 package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.models.entity.KostProperty;
-import com.binar.kelompokd.models.entity.request.KostPropertyRequest;
+import com.binar.kelompokd.models.request.KostPropertyRequest;
 import com.binar.kelompokd.services.KostPropertyService;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

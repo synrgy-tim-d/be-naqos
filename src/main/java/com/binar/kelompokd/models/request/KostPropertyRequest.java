@@ -1,4 +1,4 @@
-package com.binar.kelompokd.models.entity.request;
+package com.binar.kelompokd.models.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class KostPropertyRequest {
     @JsonIgnore
     private Boolean isAvailable = false;
 
-    Set<String> photos;
+    private String[] kostPhotos;
 
     @Column(nullable = false)
     private Double pricePerCategory;
