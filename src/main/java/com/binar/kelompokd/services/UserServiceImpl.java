@@ -14,4 +14,14 @@ public class UserServiceImpl implements IUserService {
   public List<User> getAllUsers() {
     return null;
   }
+
+  @Override
+  public User findUsersById(Integer id) {
+    return null;
+  }
+
+  @Override
+  public User findByEmail(String email) {
+    return null;
+  }
 }
