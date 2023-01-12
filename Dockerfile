@@ -27,26 +27,6 @@ COPY src /home/app/src
 COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package
 
-FROM ubuntu:latest
-RUN apt-get update && apt-get install -y openjdk-8-jdk wget
-RUN wget http://mirrors.gigenet.com/apache/kafka/2.5.0/kafka_2.12-2.5.0.tgz
-RUN tar xzf kafka_2.12-2.5.0.tgz && rm kafka_2.12-2.5.0.tgz
-
-# Install Zookeeper
-RUN wget https://downloads.apache.org/zookeeper/zookeeper-3.6.2/apache-zookeeper-3.6.2-bin.tar.gz
-RUN tar xzf apache-zookeeper-3.6.2-bin.tar.gz && rm apache-zookeeper-3.6.2-bin.tar.gz
-
-# Add scripts to start Kafka and Zookeeper
-COPY start-kafka.sh /usr/local/bin/
-COPY start-zookeeper.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/start-kafka.sh
-RUN chmod +x /usr/local/bin/start-zookeeper.sh
-
-# Expose ports
-EXPOSE 2181
-EXPOSE 9092
-CMD [ "/usr/local/bin/start-zookeeper.sh", "/usr/local/bin/start-kafka.sh" ]
-
 #
 # Package stage
 #
