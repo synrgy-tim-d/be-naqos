@@ -26,6 +26,8 @@ public class KostRoom {
     private RoomType roomType;
 
     // rules text
+    @Column(columnDefinition="TEXT", nullable = false)
+    private String rules;
 
     private Double pricePerDaily;
     private Double pricePerWeekly;
@@ -37,6 +39,9 @@ public class KostRoom {
     private Boolean isAvailable;
 
     // facility_id array[]
+    private Integer[] facilityId;
+
 
     // image_id array[]
+    private Integer[] imageId;
 }

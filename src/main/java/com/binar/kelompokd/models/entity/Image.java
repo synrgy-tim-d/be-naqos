@@ -20,4 +20,7 @@ public class Image {
     private Integer id;
 
     // file_location text
+
+    @Column(columnDefinition="TEXT", nullable = false)
+    private String fileLocation;
 }
