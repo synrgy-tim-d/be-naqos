@@ -126,8 +126,6 @@ RUN set -eux ; \
 
 COPY overrides /opt/overrides
 
-VOLUME ["/kafka"]
-
 # Use "exec" form so that it runs as PID 1 (useful for graceful shutdown)
 CMD ["start-kafka.sh"]
 
