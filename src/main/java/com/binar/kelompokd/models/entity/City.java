@@ -15,12 +15,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "t_setup_cities")
-public class City extends DateModel implements Serializable {
+@Table(name = "t_setup_city")
+public class City {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
-  @NotNull
-  private String name;
+  @Column(length = 50, nullable = false)
+  private String city;
 }
