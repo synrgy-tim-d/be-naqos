@@ -68,7 +68,6 @@ public class KostServiceImpl implements KostService{
         Kost kost = Kost.builder()
                 .name(kostRequest.getName())
                 .kostType(kostRequest.getKostType())
-                .roomId(kostRequest.getRoomId())
                 .description(kostRequest.getDescription())
                 .location(address)
                 .isAvailable(false)
@@ -97,7 +96,7 @@ public class KostServiceImpl implements KostService{
         kostUpdated.setKostType(kostRequest.getKostType());
         kostUpdated.setName(kostRequest.getName());
         kostUpdated.setDescription(kostRequest.getDescription());
-        kostUpdated.setRoomId(kostRequest.getRoomId());
+
 
         Integer addressId = kostUpdated.getLocation().getId();
         Address location = addressRepository.findById(addressId).get();

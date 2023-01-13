@@ -37,6 +37,12 @@ public class KostController {
         return new ResponseEntity<>(kost, HttpStatus.CREATED);
     }
 
+//    @PostMapping("/add-room")
+//    public ResponseEntity<?> createRoom(@RequestBody KostRo roomRequest){
+//        Kost kost = roomService.createKost(kostRequest);
+//        return new ResponseEntity<>(kost, HttpStatus.CREATED);
+//    }
+
     @PutMapping("/edit-kost/{id}")
     public ResponseEntity<?> updateKost(@PathVariable("id") UUID id, @RequestBody KostRequest kostRequest){
         return new ResponseEntity<>(kostService.updateKost(id, kostRequest), HttpStatus.ACCEPTED);
