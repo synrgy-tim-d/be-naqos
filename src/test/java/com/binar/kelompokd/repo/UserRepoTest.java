@@ -17,8 +17,8 @@ public class UserRepoTest {
     @Test
     void addUser_success(){
         User user = User.builder().name("Eja").email("eja@yahoo.com").password("123").gender(EGender.MALE).build();
-        user.setCreatedOn(new Date());
-        user.setUpdatedOn(new Date());
+        user.setCreatedAt(new Date());
+        user.setUpdatedAt(new Date());
         userRepo.save(user);
     }
 }

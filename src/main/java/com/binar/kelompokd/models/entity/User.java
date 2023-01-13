@@ -16,36 +16,36 @@ import java.util.Set;
 @Builder
 @Entity(name = "t_users")
 @Table(
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "email"),
-                @UniqueConstraint(columnNames = "name")
-        }
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email"),
+        @UniqueConstraint(columnNames = "name")
+    }
 )
 public class User extends DateModel implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Integer id;
 
-    @NotNull
-    private String email;
+  @NotNull
+  private String email;
 
-    @NotNull
-    private String password;
+  @NotNull
+  private String password;
 
-    @NotNull
-    private String name;
+  @NotNull
+  private String name;
 
-    private String photoProfile;
+  private String photoProfile;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private EGender gender;
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private EGender gender;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable( name = "t_user_roles",
-            joinColumns = @JoinColumn(name ="user_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private Set<Roles> roles = new HashSet<>();
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable( name = "t_user_roles",
+      joinColumns = @JoinColumn(name ="user_id"),
+      inverseJoinColumns = @JoinColumn(name = "roles_id"))
+  private Set<Role> roles = new HashSet<>();
 }
 

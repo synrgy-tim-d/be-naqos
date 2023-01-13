@@ -1,5 +1,6 @@
 package com.binar.kelompokd.models.entity;
 
+import com.binar.kelompokd.models.DateModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
 @Data
@@ -14,11 +16,11 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 @Table(name = "t_setup_cities")
-public class City {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class City extends DateModel implements Serializable {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @NotNull
-    private String name;
+  @NotNull
+  private String name;
 }
