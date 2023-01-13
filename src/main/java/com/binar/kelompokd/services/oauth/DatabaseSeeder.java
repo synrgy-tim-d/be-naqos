@@ -1,7 +1,7 @@
 package com.binar.kelompokd.services.oauth;
 
 import com.binar.kelompokd.models.oauath.Client;
-import com.binar.kelompokd.models.oauath.Role;
+import com.binar.kelompokd.models.oauath.Roles;
 import com.binar.kelompokd.models.oauath.RolePath;
 import com.binar.kelompokd.models.oauath.Users;
 import com.binar.kelompokd.repos.oauth.ClientRepository;
@@ -83,9 +83,9 @@ public class DatabaseSeeder implements ApplicationRunner {
             String type = str[1];
             String pattern = str[2];
             String[] methods = str[3].split("\\|");
-            Role oldRole = roleRepository.findOneByName(name);
+            Roles oldRole = roleRepository.findOneByName(name);
             if (null == oldRole) {
-                oldRole = new Role();
+                oldRole = new Roles();
                 oldRole.setName(name);
                 oldRole.setType(type);
                 oldRole.setRolePaths(new ArrayList<>());
@@ -125,7 +125,7 @@ public class DatabaseSeeder implements ApplicationRunner {
                 oldClient.setApproved(true);
                 oldClient.setRedirectUris("");
                 oldClient.setScopes("read write");
-                List<Role> rls = roleRepository.findByNameIn(clientRoles);
+                List<Roles> rls = roleRepository.findByNameIn(clientRoles);
 
                 if (rls.size() > 0) {
                     oldClient.getAuthorities().addAll(rls);
@@ -147,7 +147,7 @@ public class DatabaseSeeder implements ApplicationRunner {
                 oldUser = new Users();
                 oldUser.setUsername(username);
                 oldUser.setPassword(password);
-                List<Role> r = roleRepository.findByNameIn(roleNames);
+                List<Roles> r = roleRepository.findByNameIn(roleNames);
                 oldUser.setRoles(r);
             }
 

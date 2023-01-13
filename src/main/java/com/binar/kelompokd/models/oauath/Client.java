@@ -34,7 +34,7 @@ public class Client implements ClientDetails, Serializable {
     @Column(name = "refresh_token_expired")
     private Integer refreshTokenValiditySeconds;
 
-    @ManyToMany(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Roles.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "oauth_client_role",
             joinColumns = {

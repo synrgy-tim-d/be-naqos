@@ -4,7 +4,7 @@ package com.binar.kelompokd.services;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.models.dto.LoginDTO;
 import com.binar.kelompokd.models.dto.RegisterDTO;
-import com.binar.kelompokd.models.oauath.Role;
+import com.binar.kelompokd.models.oauath.Roles;
 import com.binar.kelompokd.models.oauath.Users;
 import com.binar.kelompokd.repos.oauth.RoleRepository;
 import com.binar.kelompokd.repos.oauth.UserRepository;
@@ -22,10 +22,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +56,7 @@ public class UserServiceImpl implements IUserAuthService {
         try {
             Map<String, Object> map = new HashMap<>();
 
-            Users checkUser = userRepository.findOneByUsername(loginModel.getUsername());
+            Users checkUser = userRepository.findOneByUsername(loginModel.getEmail());
 
             if ((checkUser != null) && (encoder.matches(loginModel.getPassword(), checkUser.getPassword()))) {
                 if (!checkUser.isEnabled()) {
@@ -72,7 +70,7 @@ public class UserServiceImpl implements IUserAuthService {
             if (!(encoder.matches(loginModel.getPassword(), checkUser.getPassword()))) {
                 return templateResponse.templateEror("wrong password");
             }
-            String url = baseUrl + "/oauth/token?username=" + loginModel.getUsername() +
+            String url = baseUrl + "/oauth/token?username=" + loginModel.getEmail() +
                     "&password=" + loginModel.getPassword() +
                     "&grant_type=password" +
                     "&client_id=my-client-web" +
@@ -82,10 +80,10 @@ public class UserServiceImpl implements IUserAuthService {
                     });
 
             if (response.getStatusCode() == HttpStatus.OK) {
-                Users user = userRepository.findOneByUsername(loginModel.getUsername());
+                Users user = userRepository.findOneByUsername(loginModel.getEmail());
                 List<String> roles = new ArrayList<>();
 
-                for (Role role : user.getRoles()) {
+                for (Roles role : user.getRoles()) {
                     roles.add(role.getName());
                 }
                 //save token
@@ -130,7 +128,7 @@ public class UserServiceImpl implements IUserAuthService {
             user.setEnabled(false); // matikan user
 
             String password = encoder.encode(registerModel.getPassword().replaceAll("\\s+", ""));
-            List<Role> r = repoRole.findByNameIn(roleNames);
+            List<Roles> r = repoRole.findByNameIn(roleNames);
 
             user.setRoles(r);
             user.setPassword(password);
@@ -140,7 +138,8 @@ public class UserServiceImpl implements IUserAuthService {
 
         } catch (Exception e) {
             logger.error("Eror registerManual=", e);
-            return templateResponse.templateEror("eror:"+e);
+            return templateResponse.templateEror("eror:" + e);
         }
 
     }
+}

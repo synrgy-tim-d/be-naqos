@@ -16,7 +16,7 @@ import java.util.List;
                 )
         }
 )
-public class Role implements GrantedAuthority {
+public class Roles implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,7 +26,7 @@ public class Role implements GrantedAuthority {
 
     private String type;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<RolePath> rolePaths;
 
     @JsonIgnore

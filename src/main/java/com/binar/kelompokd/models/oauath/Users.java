@@ -56,7 +56,7 @@ public class Users implements UserDetails, Serializable {
     @Column(name = "credential_not_expired")
     private boolean credentialsNonExpired = true;
 
-    @ManyToMany(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Roles.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "oauth_user_role",
             joinColumns = {
@@ -66,7 +66,7 @@ public class Users implements UserDetails, Serializable {
                     @JoinColumn(name = "role_id")
             }
     )
-    private List<Role> roles = new ArrayList<>();
+    private List<Roles> roles = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -76,11 +76,11 @@ public class Users implements UserDetails, Serializable {
         this.id = id;
     }
 
-    public List<Role> getRoles() {
+    public List<Roles> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(List<Roles> roles) {
         this.roles = roles;
     }
 

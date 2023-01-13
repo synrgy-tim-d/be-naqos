@@ -20,9 +20,9 @@ public class RolePath implements Serializable {
 
     private String method;
 
-    @ManyToOne(targetEntity = Role.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Roles.class, cascade = CascadeType.ALL)
     @JsonIgnore
-    private Role role;
+    private Roles roles;
 
     public Long getId() {
         return id;
@@ -56,11 +56,11 @@ public class RolePath implements Serializable {
         this.method = method;
     }
 
-    public Role getRole() {
-        return role;
+    public Roles getRole() {
+        return roles;
     }
 
-    public void setRole(Role roles) {
-        this.role = roles;
+    public void setRole(Roles roles) {
+        this.roles = roles;
     }
 }
