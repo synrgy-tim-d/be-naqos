@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class KostRoomServiceImpl implements KostRoomService{
@@ -50,5 +51,10 @@ public class KostRoomServiceImpl implements KostRoomService{
     public String deleteRoom(Integer id) {
         kostRoomRepository.deleteById(id);
         return "Kost room deleted successfully";
+    }
+
+    @Override
+    public List<KostRoom> getAllRooms() {
+        return kostRoomRepository.findAll();
     }
 }

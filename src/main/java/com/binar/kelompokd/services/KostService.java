@@ -2,6 +2,7 @@ package com.binar.kelompokd.services;
 
 import com.binar.kelompokd.models.entity.Kost;
 import com.binar.kelompokd.models.request.KostRequest;
+import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,5 @@ public interface KostService {
     List<Kost> getAllKost();
     String updateKost(UUID id, KostRequest kostRequest);
     String deleteKost(UUID id);
+    Kost addArrays(UUID kostId, Integer roomId, KostRoomFacilityImageRequest request);
 }

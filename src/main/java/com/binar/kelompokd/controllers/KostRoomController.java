@@ -28,4 +28,9 @@ public class KostRoomController {
     public ResponseEntity<?> deleteRoom(@PathVariable("id") Integer id){
         return new ResponseEntity<>(kostRoomService.deleteRoom(id), HttpStatus.ACCEPTED);
     }
+
+    @GetMapping()
+    public ResponseEntity<?> getAllRooms(){
+        return new ResponseEntity<>(kostRoomService.getAllRooms(), HttpStatus.OK);
+    }
 }

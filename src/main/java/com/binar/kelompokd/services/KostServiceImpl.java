@@ -2,6 +2,7 @@ package com.binar.kelompokd.services;
 
 import com.binar.kelompokd.models.entity.*;
 import com.binar.kelompokd.models.request.KostRequest;
+import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
 import com.binar.kelompokd.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,5 +126,24 @@ public class KostServiceImpl implements KostService{
     public String deleteKost(UUID id) {
         kostRepository.deleteById(kostRepository.findById(id).get().getId());
         return "Kost deleted successfully";
+    }
+
+    @Override
+    @Transactional
+    public Kost addArrays(UUID kostId, Integer roomId, KostRoomFacilityImageRequest request) {
+        Kost kost = kostRepository.findById(kostId).get();
+
+        kost.setRoomId(request.getRoomId());
+
+        kostRepository.save(kost);
+
+        KostRoom kostRoom = kostRoomRepository.findById(roomId).get();
+
+        kostRoom.setFacilityId(request.getFacilityId());
+        kostRoom.setImageId(request.getImageId());
+
+        kostRoomRepository.save(kostRoom);
+
+        return kost;
     }
 }
