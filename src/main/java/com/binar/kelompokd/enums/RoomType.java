@@ -1,5 +1,5 @@
 package com.binar.kelompokd.enums;
 
 public enum RoomType {
-    SMALL, MEDIUM, BIG
+    KAMAR_MANDI_DALAM, KAMAR_MANDI_LUAR, FULL_FURNISHED, KOSONGAN
 }

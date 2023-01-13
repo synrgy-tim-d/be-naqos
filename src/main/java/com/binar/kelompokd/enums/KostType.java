@@ -1,5 +1,5 @@
 package com.binar.kelompokd.enums;
 
 public enum KostType {
-    SMALL, MEDIUM, BIG
+    KOS_PUTRI, KOS_PUTRA, KOS_CAMPURAN
 }
