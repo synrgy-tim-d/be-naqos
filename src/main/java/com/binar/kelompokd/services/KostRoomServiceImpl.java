@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class KostRoomServiceImpl implements KostRoomService{
@@ -33,7 +34,7 @@ public class KostRoomServiceImpl implements KostRoomService{
 
     @Override
     @Transactional
-    public KostRoom updateRoom(Integer id, KostRoomRequest kostRoomRequest) {
+    public KostRoom updateRoom(UUID id, KostRoomRequest kostRoomRequest) {
 
         KostRoom kostRoom = kostRoomRepository.findById(id).get();
 
@@ -51,7 +52,7 @@ public class KostRoomServiceImpl implements KostRoomService{
 
     @Override
     @Transactional
-    public String deleteRoom(Integer id) {
+    public String deleteRoom(UUID id) {
         kostRoomRepository.deleteById(id);
         return "Kost room deleted successfully";
     }
@@ -62,7 +63,7 @@ public class KostRoomServiceImpl implements KostRoomService{
     }
 
     @Override
-    public KostRoom getRoomById(Integer id) {
+    public KostRoom getRoomById(UUID id) {
         return kostRoomRepository.findById(id).get();
     }
 }

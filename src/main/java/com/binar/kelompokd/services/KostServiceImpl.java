@@ -130,7 +130,7 @@ public class KostServiceImpl implements KostService{
 
     @Override
     @Transactional
-    public Kost addArrays(UUID kostId, Integer roomId, KostRoomFacilityImageRequest request) {
+    public Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request) {
         Kost kost = kostRepository.findById(kostId).get();
 
         kost.setRoomId(request.getRoomId());

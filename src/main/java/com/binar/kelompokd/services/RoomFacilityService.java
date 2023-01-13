@@ -5,6 +5,6 @@ import com.binar.kelompokd.models.request.RoomFacilityRequest;
 
 public interface RoomFacilityService {
     RoomFacility addFacility(RoomFacilityRequest roomFacilityRequest);
-    String editFacility(Integer id, RoomFacilityRequest roomFacilityRequest);
-    String deleteFacility(Integer id);
+    RoomFacility editFacility(Integer id, RoomFacilityRequest roomFacilityRequest);
+    void deleteFacility(Integer id);
 }

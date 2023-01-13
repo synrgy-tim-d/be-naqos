@@ -6,9 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -19,8 +21,19 @@ import java.util.List;
 public class KostRoom {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(
+                            name = "uuid_gen_strategy_class",
+                            value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
+                    )
+            }
+    )
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private UUID id;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -40,9 +53,9 @@ public class KostRoom {
     private Boolean isAvailable;
 
     // facility_id array[]
-    private Integer[] facilityId;
+    private UUID[] facilityId;
 
 
     // image_id array[]
-    private Integer[] imageId;
+    private UUID[] imageId;
 }

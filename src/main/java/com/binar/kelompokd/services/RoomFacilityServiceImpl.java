@@ -29,23 +29,19 @@ public class RoomFacilityServiceImpl implements RoomFacilityService{
 
     @Override
     @Transactional
-    public String editFacility(Integer id, RoomFacilityRequest roomFacilityRequest) {
+    public RoomFacility editFacility(Integer id, RoomFacilityRequest roomFacilityRequest) {
 
         RoomFacility roomFacility = roomFacilityRepository.findById(id).get();
 
         roomFacility.setName(roomFacilityRequest.getName());
         roomFacility.setCondition(roomFacilityRequest.getCondition());
 
-        roomFacilityRepository.save(roomFacility);
-
-        return "Room facility updated successfully";
+        return roomFacilityRepository.save(roomFacility);
     }
 
     @Override
     @Transactional
-    public String deleteFacility(Integer id) {
+    public void deleteFacility(Integer id) {
         roomFacilityRepository.deleteById(id);
-
-        return "Room facility deleted successfully";
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/room")
@@ -24,13 +25,14 @@ public class KostRoomController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<?> editRoom(@PathVariable("id") Integer id, @RequestBody KostRoomRequest kostRoomRequest){
+    public ResponseEntity<?> editRoom(@PathVariable("id") UUID id, @RequestBody KostRoomRequest kostRoomRequest){
         return new ResponseEntity<>(kostRoomService.updateRoom(id, kostRoomRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteRoom(@PathVariable("id") Integer id){
-        return new ResponseEntity<>(kostRoomService.deleteRoom(id), HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> deleteRoom(@PathVariable("id") UUID id){
+        kostRoomService.deleteRoom(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping()
@@ -41,7 +43,7 @@ public class KostRoomController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getRoomById(@PathVariable("id") Integer id){
+    public ResponseEntity<?> getRoomById(@PathVariable("id") UUID id){
         return new ResponseEntity<>(kostRoomService.getRoomById(id), HttpStatus.OK);
     }
 }

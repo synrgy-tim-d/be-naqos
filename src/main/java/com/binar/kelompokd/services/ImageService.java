@@ -5,6 +5,6 @@ import com.binar.kelompokd.models.request.ImageRequest;
 
 public interface ImageService {
     Image addImage(ImageRequest imageRequest);
-    String editImage(Integer id, ImageRequest imageRequest);
+    Image editImage(Integer id, ImageRequest imageRequest);
     String deleteImage(Integer id);
 }

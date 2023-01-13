@@ -27,15 +27,13 @@ public class ImageServiceImpl implements ImageService{
 
     @Override
     @Transactional
-    public String editImage(Integer id, ImageRequest imageRequest) {
+    public Image editImage(Integer id, ImageRequest imageRequest) {
 
         Image image = imageRepository.findById(id).get();
 
         image.setFileLocation(imageRequest.getFileLocation());
 
-        imageRepository.save(image);
-
-        return "Image updated successfully";
+        return imageRepository.save(image);
     }
 
     @Override

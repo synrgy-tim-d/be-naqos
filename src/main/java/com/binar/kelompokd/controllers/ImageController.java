@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/images")
+@RequestMapping("/image")
 public class ImageController {
 
     @Autowired
@@ -17,16 +17,17 @@ public class ImageController {
 
     @PostMapping()
     public ResponseEntity<?> addPhoto(@RequestBody ImageRequest imageRequest){
-        return new ResponseEntity<>(imageService.addImage(imageRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(imageService.addImage(imageRequest), HttpStatus.OK);
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     public ResponseEntity<?> editImage(@PathVariable("id") Integer id, @RequestBody ImageRequest imageRequest){
-        return new ResponseEntity<>(imageService.editImage(id, imageRequest), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(imageService.editImage(id, imageRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteImage(@PathVariable("id") Integer id){
-        return new ResponseEntity<>(imageService.deleteImage(id), HttpStatus.ACCEPTED);
+        imageService.deleteImage(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

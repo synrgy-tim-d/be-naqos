@@ -44,7 +44,7 @@ public class Kost extends DateModel implements Serializable {
   private Address location;
 
   // room id array[]
-  private Integer[] roomId;
+  private UUID[] roomId;
 
   @Column(length = 100, nullable = false)
   private String name;

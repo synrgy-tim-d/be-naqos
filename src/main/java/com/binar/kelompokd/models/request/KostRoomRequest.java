@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -36,8 +37,8 @@ public class KostRoomRequest {
     private Boolean is_available;
 
     // facility_id array[]
-    private Integer[] facility_id;
+    private UUID[] facility_id;
 
     // image_id array[]
-    private Integer[] image_id;
+    private UUID[] image_id;
 }

@@ -56,7 +56,7 @@ public class KostController {
     }
 
     @PostMapping("/add-arrays")
-    public ResponseEntity<?> addArrays(@RequestParam("kostId") UUID kostId, @RequestParam("roomId") Integer roomId,@RequestBody KostRoomFacilityImageRequest request){
+    public ResponseEntity<?> addArrays(@RequestParam("kostId") UUID kostId, @RequestParam("roomId") UUID roomId,@RequestBody KostRoomFacilityImageRequest request){
         return new ResponseEntity<>(kostService.addArrays(kostId, roomId, request), HttpStatus.CREATED);
     }
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 // this class is for assigning Kost class arrays;
 
@@ -15,11 +16,11 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class KostRoomFacilityImageRequest {
     @NotNull
-    private Integer[] roomId;
+    private UUID[] roomId;
 
     @NotNull
-    private Integer[] facilityId;
+    private UUID[] facilityId;
 
     @NotNull
-    private Integer[] imageId;
+    private UUID[] imageId;
 }

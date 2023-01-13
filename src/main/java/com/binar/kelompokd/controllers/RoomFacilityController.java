@@ -9,24 +9,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/facilities")
+@RequestMapping("/facility")
 public class RoomFacilityController {
 
     @Autowired
     RoomFacilityService roomFacilityService;
 
-    @PostMapping("/add-facility")
+    @PostMapping()
     public ResponseEntity<?> addFacility(@RequestBody RoomFacilityRequest roomFacilityRequest){
-        return new ResponseEntity<>(roomFacilityService.addFacility(roomFacilityRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(roomFacilityService.addFacility(roomFacilityRequest), HttpStatus.OK);
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     public ResponseEntity<?> editFacility(@PathVariable("id") Integer id, @RequestBody RoomFacilityRequest roomFacilityRequest){
-        return new ResponseEntity<>(roomFacilityService.editFacility(id, roomFacilityRequest), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(roomFacilityService.editFacility(id, roomFacilityRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteFacility(@PathVariable("id") Integer id){
-        return new ResponseEntity<>(roomFacilityService.deleteFacility(id), HttpStatus.ACCEPTED);
+        roomFacilityService.deleteFacility(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
