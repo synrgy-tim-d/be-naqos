@@ -28,33 +28,33 @@ public class BackendApplication {
 	@Transactional
 	CommandLineRunner commandLineRunner(AddressRepository addressRepository, KostRepository kostRepository, CityRepository cityRepository, ImageRepository imageRepository, KostRoomRepository kostRoomRepository, ProvinceRepository provinceRepository, RoomFacilityRepository roomFacilityRepository) {
 		return args -> {
-			City city = City.builder()
-					.id(1)
-					.city("Jakarta")
-					.build();
+//			City city = City.builder()
+//					.id(1)
+//					.city("Jakarta")
+//					.build();
+//
+//			cityRepository.save(city);
 
-			cityRepository.save(city);
+//			Province province = Province.builder()
+//					.id(1)
+//					.province("DKI Jakarta")
+//					.build();
+//
+//			provinceRepository.save(province);
 
-			Province province = Province.builder()
-					.id(1)
-					.province("DKI Jakarta")
-					.build();
-
-			provinceRepository.save(province);
-
-			Address address = Address.builder()
-					.id(1)
-					.address("Kebagusan 1 Street")
-					.city(city)
-					.province(province)
-					.district("South Jakarta")
-					.latitude(-6.2)
-					.longitude(106.81666)
-					.postalCode("10110")
-					.subdistrict("Jagakarsa")
-					.build();
-
-			addressRepository.save(address);
+//			Address address = Address.builder()
+//					.id(1)
+//					.address("Kebagusan 1 Street")
+//					.city(city)
+//					.province(province)
+//					.district("South Jakarta")
+//					.latitude(-6.2)
+//					.longitude(106.81666)
+//					.postalCode("10110")
+//					.subdistrict("Jagakarsa")
+//					.build();
+//
+//			addressRepository.save(address);
 
 			Image image1 = Image.builder()
 					.id(1)

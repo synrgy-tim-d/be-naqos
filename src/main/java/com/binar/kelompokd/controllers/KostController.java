@@ -1,6 +1,7 @@
 package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.models.entity.Kost;
+import com.binar.kelompokd.models.request.KostRequest;
 import com.binar.kelompokd.services.KostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -30,9 +31,9 @@ public class KostController {
         return new ResponseEntity<>(kost, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createKost(@RequestBody Kost kost){
-        kostService.createKost(kost);
+    @PostMapping("/add-kost")
+    public ResponseEntity<?> createKost(@RequestBody KostRequest kostRequest){
+        Kost kost = kostService.createKost(kostRequest);
         return new ResponseEntity<>(kost, HttpStatus.CREATED);
     }
 

@@ -29,5 +29,5 @@ public class RoomFacility {
     private Condition condition;
 
     @Column(nullable = false)
-    private Boolean isActive;
+    private Boolean isActive = false;
 }
