@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
+import java.util.Date;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -20,6 +21,9 @@ public class BackendApplication {
 		SpringApplication.run(BackendApplication.class, args);
 	}
 
+	/**
+	 * comment this if data already persisted
+	 */
 	@Bean
 	@Transactional
 	CommandLineRunner commandLineRunner(AddressRepository addressRepository, KostRepository kostRepository, CityRepository cityRepository, ImageRepository imageRepository, KostRoomRepository kostRoomRepository, ProvinceRepository provinceRepository, RoomFacilityRepository roomFacilityRepository) {
@@ -75,16 +79,18 @@ public class BackendApplication {
 
 			Integer[] roomIds = {1,2,3};
 
-			Kost kost = Kost.builder()
-					.name("Kost Alamanda")
-					.description("Kost for IT Talents")
-					.kostType(KostType.KOS_CAMPURAN)
-					.location(address)
-					.isAvailable(true)
-					.roomId(roomIds)
-					.build();
-
-			kostRepository.save(kost);
+//			Kost kost = Kost.builder()
+//					.name("Kost Alamanda")
+//					.description("Kost for IT Talents")
+//					.kostType(KostType.KOS_CAMPURAN)
+//					.location(address)
+//					.isAvailable(true)
+//					.roomId(roomIds)
+//					.build();
+//
+//			kost.setCreatedAt(new Date());
+//
+//			kostRepository.save(kost);
 
 			RoomFacility roomFacility1 = RoomFacility.builder()
 					.condition(Condition.BARU)

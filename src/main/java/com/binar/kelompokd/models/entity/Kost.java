@@ -12,10 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -43,6 +40,7 @@ public class Kost extends DateModel implements Serializable {
   // owner id int
 
   @OneToOne
+  @Cascade(CascadeType.ALL)
   private Address location;
 
   // room id array[]

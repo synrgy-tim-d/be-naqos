@@ -1,6 +1,7 @@
 package com.binar.kelompokd.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class DateModel {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_at", nullable = true, updatable = false)
   @CreatedDate
-  private Date createdAt;
+  private Date createdAt = new Date();
 
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "updated_at", nullable = true)
