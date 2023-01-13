@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,9 @@ public class KostRoomServiceImpl implements KostRoomService{
                 .imageId(kostRoomRequest.getImage_id())
                 .facilityId(kostRoomRequest.getFacility_id())
                 .build();
+
+        kostRoom.setCreatedAt(new Date());
+
         return kostRoomRepository.save(kostRoom);
     }
 
@@ -46,6 +50,7 @@ public class KostRoomServiceImpl implements KostRoomService{
         kostRoom.setImageId(kostRoomRequest.getImage_id());
         kostRoom.setFacilityId(kostRoomRequest.getFacility_id());
         kostRoom.setIsAvailable(kostRoomRequest.getIs_available());
+        kostRoom.setUpdatedAt(new Date());
 
         return kostRoomRepository.save(kostRoom);
     }

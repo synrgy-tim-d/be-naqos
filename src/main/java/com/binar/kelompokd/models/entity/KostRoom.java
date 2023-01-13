@@ -1,6 +1,7 @@
 package com.binar.kelompokd.models.entity;
 
 import com.binar.kelompokd.enums.RoomType;
+import com.binar.kelompokd.models.DateModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Table(name = "t_kost_rooms")
-public class KostRoom {
+public class KostRoom extends DateModel implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")

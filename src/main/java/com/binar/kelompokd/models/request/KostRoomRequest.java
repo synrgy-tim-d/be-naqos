@@ -27,18 +27,23 @@ public class KostRoomRequest {
     @NotNull
     private String rules;
 
+    @NotNull
     private Double price_per_daily;
+
+    @NotNull
     private Double price_per_weekly;
 
-    @Column(nullable = false)
+    @NotNull
     private Double price_per_monthly;
 
     @NotNull
     private Boolean is_available;
 
     // facility_id array[]
+    @NotNull
     private UUID[] facility_id;
 
     // image_id array[]
+    @NotNull
     private UUID[] image_id;
 }
