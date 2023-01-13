@@ -37,9 +37,9 @@ public class KostController {
         return new ResponseEntity<>(kost, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateKost(@PathVariable("id") UUID id, @RequestBody Kost kost){
-        return new ResponseEntity<>(kostService.updateKost(id, kost), HttpStatus.ACCEPTED);
+    @PutMapping("/edit-kost/{id}")
+    public ResponseEntity<?> updateKost(@PathVariable("id") UUID id, @RequestBody KostRequest kostRequest){
+        return new ResponseEntity<>(kostService.updateKost(id, kostRequest), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

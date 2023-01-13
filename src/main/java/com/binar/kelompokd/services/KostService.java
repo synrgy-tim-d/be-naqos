@@ -11,6 +11,6 @@ public interface KostService {
     Kost createKost(KostRequest kostRequest);
     Optional<Kost> getKostById(UUID id);
     List<Kost> getAllKost();
-    String updateKost(UUID id, Kost kost);
+    String updateKost(UUID id, KostRequest kostRequest);
     String deleteKost(UUID id);
 }

@@ -89,19 +89,34 @@ public class KostServiceImpl implements KostService{
 
     @Override
     @Transactional
-    public String updateKost(UUID id, Kost kost) {
+    public String updateKost(UUID id, KostRequest kostRequest) {
 
         Kost kostUpdated = kostRepository.findById(id).get();
 
-        kostUpdated.setName(kost.getName());
-        kostUpdated.setDescription(kost.getDescription());
-        kostUpdated.setKostType(kost.getKostType());
-        kostUpdated.setLocation(kost.getLocation());
-        kostUpdated.setRoomId(kost.getRoomId());
         kostUpdated.setUpdatedAt(new Date());
-        kostUpdated.setIsAvailable(kost.getIsAvailable());
+        kostUpdated.setKostType(kostRequest.getKostType());
+        kostUpdated.setName(kostRequest.getName());
+        kostUpdated.setDescription(kostRequest.getDescription());
+        kostUpdated.setRoomId(kostRequest.getRoomId());
 
-        kostRepository.save(kostUpdated);
+        Integer addressId = kostUpdated.getLocation().getId();
+        Address location = addressRepository.findById(addressId).get();
+
+        location.setAddress(kostRequest.getAddress());
+
+        City cityUpdated = location.getCity();
+       cityUpdated.setCity(kostRequest.getCity());
+        location.setCity(cityUpdated);
+        location.setDistrict(kostRequest.getDistrict());
+        location.setSubdistrict(kostRequest.getSubdistrict());
+        location.setLongitude(kostRequest.getLongitude());
+        location.setLatitude(kostRequest.getLatitude());
+
+        Province province = location.getProvince();
+        province.setProvince(kostRequest.getProvince());
+        location.setProvince(province);
+        location.setPostalCode(kostRequest.getPostalCode());
+        kostUpdated.setLocation(location);
 
         return "Kost updated successfully";
     }
