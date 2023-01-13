@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 @Service
 public class RoomFacilityServiceImpl implements RoomFacilityService{
@@ -29,7 +30,7 @@ public class RoomFacilityServiceImpl implements RoomFacilityService{
 
     @Override
     @Transactional
-    public RoomFacility editFacility(Integer id, RoomFacilityRequest roomFacilityRequest) {
+    public RoomFacility editFacility(UUID id, RoomFacilityRequest roomFacilityRequest) {
 
         RoomFacility roomFacility = roomFacilityRepository.findById(id).get();
 
@@ -41,7 +42,7 @@ public class RoomFacilityServiceImpl implements RoomFacilityService{
 
     @Override
     @Transactional
-    public void deleteFacility(Integer id) {
+    public void deleteFacility(UUID id) {
         roomFacilityRepository.deleteById(id);
     }
 }

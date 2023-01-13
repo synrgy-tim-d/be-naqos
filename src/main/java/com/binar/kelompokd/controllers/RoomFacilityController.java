@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/facility")
 public class RoomFacilityController {
@@ -21,12 +23,12 @@ public class RoomFacilityController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<?> editFacility(@PathVariable("id") Integer id, @RequestBody RoomFacilityRequest roomFacilityRequest){
+    public ResponseEntity<?> editFacility(@PathVariable("id") UUID id, @RequestBody RoomFacilityRequest roomFacilityRequest){
         return new ResponseEntity<>(roomFacilityService.editFacility(id, roomFacilityRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteFacility(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteFacility(@PathVariable("id") UUID id){
         roomFacilityService.deleteFacility(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
