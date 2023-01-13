@@ -29,6 +29,9 @@ public class KostRequest {
     @NotNull
     private KostType kostType;
 
+    @NotNull
+    private Boolean is_available;
+
     private Double latitude;
 
     private Double longitude;
@@ -56,4 +59,8 @@ public class KostRequest {
     @NotNull
     @Column(length = 50)
     private String city;
+
+    private Integer[] roomId;
+
+    // 	  location_id: int  ??
 }

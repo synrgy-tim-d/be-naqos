@@ -3,6 +3,7 @@ package com.binar.kelompokd.controllers;
 import com.binar.kelompokd.models.entity.Kost;
 import com.binar.kelompokd.models.request.KostRequest;
 import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
+import com.binar.kelompokd.models.response.KostResponse;
 import com.binar.kelompokd.services.KostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/kosts")
+@RequestMapping("/kos")
 public class KostController {
 
     @Autowired
@@ -21,8 +22,9 @@ public class KostController {
 
     @GetMapping()
     public ResponseEntity<?> getAllKosts(){
-        List<Kost> kosts =  kostService.getAllKost();
-        return new ResponseEntity<>(kosts, HttpStatus.OK);
+        List<Kost> kostList =  kostService.getAllKost();
+        KostResponse kostResponse = KostResponse.builder().kos(kostList).build();
+        return new ResponseEntity<>(kostResponse, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -31,10 +33,10 @@ public class KostController {
         return new ResponseEntity<>(kost, HttpStatus.OK);
     }
 
-    @PostMapping("/add-kost")
+    @PostMapping()
     public ResponseEntity<?> createKost(@RequestBody KostRequest kostRequest){
         Kost kost = kostService.createKost(kostRequest);
-        return new ResponseEntity<>(kost, HttpStatus.CREATED);
+        return new ResponseEntity<>(kost, HttpStatus.OK);
     }
 
 //    @PostMapping("/add-room")
@@ -43,14 +45,14 @@ public class KostController {
 //        return new ResponseEntity<>(kost, HttpStatus.CREATED);
 //    }
 
-    @PutMapping("/edit-kost/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateKost(@PathVariable("id") UUID id, @RequestBody KostRequest kostRequest){
-        return new ResponseEntity<>(kostService.updateKost(id, kostRequest), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(kostService.updateKost(id, kostRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteKost(@PathVariable("id") UUID id){
-        return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/add-arrays")

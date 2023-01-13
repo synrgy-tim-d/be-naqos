@@ -19,31 +19,34 @@ public class KostRoomServiceImpl implements KostRoomService{
     @Override
     public KostRoom addRoom(KostRoomRequest kostRoomRequest) {
         KostRoom kostRoom = KostRoom.builder()
-                .roomType(kostRoomRequest.getRoomType())
+                .roomType(kostRoomRequest.getRoom_type())
                 .rules(kostRoomRequest.getRules())
-                .pricePerMonthly(kostRoomRequest.getPricePerMonthly())
-                .pricePerWeekly(kostRoomRequest.getPricePerWeekly())
-                .pricePerDaily(kostRoomRequest.getPricePerDaily())
-                .isAvailable(false)
+                .pricePerMonthly(kostRoomRequest.getPrice_per_monthly())
+                .pricePerWeekly(kostRoomRequest.getPrice_per_weekly())
+                .pricePerDaily(kostRoomRequest.getPrice_per_daily())
+                .isAvailable(kostRoomRequest.getIs_available())
+                .imageId(kostRoomRequest.getImage_id())
+                .facilityId(kostRoomRequest.getFacility_id())
                 .build();
         return kostRoomRepository.save(kostRoom);
     }
 
     @Override
     @Transactional
-    public String updateRoom(Integer id, KostRoomRequest kostRoomRequest) {
+    public KostRoom updateRoom(Integer id, KostRoomRequest kostRoomRequest) {
 
         KostRoom kostRoom = kostRoomRepository.findById(id).get();
 
-        kostRoom.setRoomType(kostRoomRequest.getRoomType());
+        kostRoom.setRoomType(kostRoomRequest.getRoom_type());
         kostRoom.setRules(kostRoomRequest.getRules());
-        kostRoom.setPricePerDaily(kostRoomRequest.getPricePerDaily());
-        kostRoom.setPricePerWeekly(kostRoomRequest.getPricePerWeekly());
-        kostRoom.setPricePerMonthly(kostRoomRequest.getPricePerMonthly());
+        kostRoom.setPricePerDaily(kostRoomRequest.getPrice_per_daily());
+        kostRoom.setPricePerWeekly(kostRoomRequest.getPrice_per_weekly());
+        kostRoom.setPricePerMonthly(kostRoomRequest.getPrice_per_monthly());
+        kostRoom.setImageId(kostRoomRequest.getImage_id());
+        kostRoom.setFacilityId(kostRoomRequest.getFacility_id());
+        kostRoom.setIsAvailable(kostRoomRequest.getIs_available());
 
-        kostRoomRepository.save(kostRoom);
-
-        return "Kost room updated successfully";
+        return kostRoomRepository.save(kostRoom);
     }
 
     @Override
@@ -56,5 +59,10 @@ public class KostRoomServiceImpl implements KostRoomService{
     @Override
     public List<KostRoom> getAllRooms() {
         return kostRoomRepository.findAll();
+    }
+
+    @Override
+    public KostRoom getRoomById(Integer id) {
+        return kostRoomRepository.findById(id).get();
     }
 }

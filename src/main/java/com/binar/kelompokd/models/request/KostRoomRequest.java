@@ -19,17 +19,25 @@ import javax.validation.constraints.NotNull;
 public class KostRoomRequest {
     @NotNull
     @Enumerated(EnumType.STRING)
-    private RoomType roomType;
+    private RoomType room_type;
 
     // rules text
     @Column(columnDefinition="TEXT")
     @NotNull
     private String rules;
 
-    private Double pricePerDaily;
-    private Double pricePerWeekly;
+    private Double price_per_daily;
+    private Double price_per_weekly;
 
     @Column(nullable = false)
-    private Double pricePerMonthly;
+    private Double price_per_monthly;
 
+    @NotNull
+    private Boolean is_available;
+
+    // facility_id array[]
+    private Integer[] facility_id;
+
+    // image_id array[]
+    private Integer[] image_id;
 }

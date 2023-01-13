@@ -7,8 +7,10 @@ import java.util.List;
 
 public interface KostRoomService {
     KostRoom addRoom(KostRoomRequest kostRoomRequest);
-    String updateRoom(Integer id, KostRoomRequest kostRoomRequest);
+    KostRoom updateRoom(Integer id, KostRoomRequest kostRoomRequest);
     String deleteRoom(Integer id);
 
     List<KostRoom> getAllRooms();
+
+    KostRoom getRoomById(Integer id);
 }
