@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -27,40 +28,40 @@ public class KostRequest {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private KostType kostType;
+    private KostType kost_type;
 
     @NotNull
     private Boolean is_available;
+
+    @NotNull
+    private Integer owner_id;
+
+    @NotNull
+    private Integer location_id;
+
+    @NotNull
+    private UUID[] room_id;
 
     private Double latitude;
 
     private Double longitude;
 
-    @NotNull
     @Column(length = 50)
     private String district;
 
-    @NotNull
     @Column(length = 50)
     private String subdistrict;
 
-    @NotNull
     @Column(length = 100)
     private String address;
 
-    @NotNull
     @Column(length = 10)
     private String postalCode;
 
-    @NotNull
     @Column(length = 50)
     private String province;
 
-    @NotNull
     @Column(length = 50)
     private String city;
-
-    private Integer[] roomId;
-
     // 	  location_id: int  ??
 }

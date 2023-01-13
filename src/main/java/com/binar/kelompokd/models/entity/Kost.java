@@ -39,9 +39,11 @@ public class Kost extends DateModel implements Serializable {
 
   // owner id int
 
-  @OneToOne
-  @Cascade(CascadeType.ALL)
-  private Address location;
+//  @OneToOne
+//  @Cascade(CascadeType.ALL)
+//  private Address location;
+
+  private Integer locationId;
 
   // room id array[]
   private UUID[] roomId;

@@ -12,7 +12,7 @@ public interface KostService {
     Kost createKost(KostRequest kostRequest);
     Optional<Kost> getKostById(UUID id);
     List<Kost> getAllKost();
-    String updateKost(UUID id, KostRequest kostRequest);
+    Kost updateKost(UUID id, KostRequest kostRequest);
     String deleteKost(UUID id);
     Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request);
 }

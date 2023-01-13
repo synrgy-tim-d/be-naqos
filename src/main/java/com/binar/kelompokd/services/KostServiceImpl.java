@@ -41,37 +41,39 @@ public class KostServiceImpl implements KostService{
     @Transactional
     public Kost createKost(KostRequest kostRequest) {
 
-        City city = City.builder()
-                .city(kostRequest.getCity())
-                .build();
+//        City city = City.builder()
+//                .city(kostRequest.getCity())
+//                .build();
+//
+//        cityRepository.save(city);
+//
+//        Province province = Province.builder()
+//                .province(kostRequest.getProvince())
+//                .build();
+//
+//        provinceRepository.save(province);
 
-        cityRepository.save(city);
-
-        Province province = Province.builder()
-                .province(kostRequest.getProvince())
-                .build();
-
-        provinceRepository.save(province);
-
-        Address address = Address.builder()
-                .city(city)
-                .address(kostRequest.getAddress())
-                .district(kostRequest.getDistrict())
-                .subdistrict(kostRequest.getSubdistrict())
-                .postalCode(kostRequest.getPostalCode())
-                .longitude(kostRequest.getLongitude())
-                .latitude(kostRequest.getLatitude())
-                .province(province)
-                .build();
-
-        addressRepository.save(address);
+//        Address address = Address.builder()
+//                .city(city)
+//                .address(kostRequest.getAddress())
+//                .district(kostRequest.getDistrict())
+//                .subdistrict(kostRequest.getSubdistrict())
+//                .postalCode(kostRequest.getPostalCode())
+//                .longitude(kostRequest.getLongitude())
+//                .latitude(kostRequest.getLatitude())
+//                .province(province)
+//                .build();
+//
+//        addressRepository.save(address);
 
         Kost kost = Kost.builder()
                 .name(kostRequest.getName())
-                .kostType(kostRequest.getKostType())
+                .kostType(kostRequest.getKost_type())
                 .description(kostRequest.getDescription())
-                .location(address)
-                .isAvailable(false)
+                .locationId(kostRequest.getLocation_id())
+                .roomId(kostRequest.getRoom_id())
+//                .location(address)
+                .isAvailable(kostRequest.getIs_available())
                 .build();
 
         return kostRepository.save(kost);
@@ -89,36 +91,38 @@ public class KostServiceImpl implements KostService{
 
     @Override
     @Transactional
-    public String updateKost(UUID id, KostRequest kostRequest) {
+    public Kost updateKost(UUID id, KostRequest kostRequest) {
 
         Kost kostUpdated = kostRepository.findById(id).get();
 
         kostUpdated.setUpdatedAt(new Date());
-        kostUpdated.setKostType(kostRequest.getKostType());
+        kostUpdated.setKostType(kostRequest.getKost_type());
         kostUpdated.setName(kostRequest.getName());
         kostUpdated.setDescription(kostRequest.getDescription());
+        kostUpdated.setIsAvailable(kostRequest.getIs_available());
+        kostUpdated.setRoomId(kostRequest.getRoom_id());
+        kostUpdated.setLocationId(kostRequest.getLocation_id());
 
+//        Integer addressId = kostUpdated.getLocation().getId();
+//        Address location = addressRepository.findById(addressId).get();
+//
+//        location.setAddress(kostRequest.getAddress());
+//
+//        City cityUpdated = location.getCity();
+//       cityUpdated.setCity(kostRequest.getCity());
+//        location.setCity(cityUpdated);
+//        location.setDistrict(kostRequest.getDistrict());
+//        location.setSubdistrict(kostRequest.getSubdistrict());
+//        location.setLongitude(kostRequest.getLongitude());
+//        location.setLatitude(kostRequest.getLatitude());
+//
+//        Province province = location.getProvince();
+//        province.setProvince(kostRequest.getProvince());
+//        location.setProvince(province);
+//        location.setPostalCode(kostRequest.getPostalCode());
+//        kostUpdated.setLocation(location);
 
-        Integer addressId = kostUpdated.getLocation().getId();
-        Address location = addressRepository.findById(addressId).get();
-
-        location.setAddress(kostRequest.getAddress());
-
-        City cityUpdated = location.getCity();
-       cityUpdated.setCity(kostRequest.getCity());
-        location.setCity(cityUpdated);
-        location.setDistrict(kostRequest.getDistrict());
-        location.setSubdistrict(kostRequest.getSubdistrict());
-        location.setLongitude(kostRequest.getLongitude());
-        location.setLatitude(kostRequest.getLatitude());
-
-        Province province = location.getProvince();
-        province.setProvince(kostRequest.getProvince());
-        location.setProvince(province);
-        location.setPostalCode(kostRequest.getPostalCode());
-        kostUpdated.setLocation(location);
-
-        return "Kost updated successfully";
+        return kostRepository.save(kostUpdated);
     }
 
     @Override
