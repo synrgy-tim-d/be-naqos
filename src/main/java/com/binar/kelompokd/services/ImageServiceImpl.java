@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService{
@@ -23,6 +24,16 @@ public class ImageServiceImpl implements ImageService{
                 .build();
 
         return imageRepository.save(image);
+    }
+
+    @Override
+    public Image getImageById(Integer id) {
+        return imageRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Image> getAllImages() {
+        return imageRepository.findAll();
     }
 
     @Override

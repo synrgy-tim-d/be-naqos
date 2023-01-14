@@ -30,4 +30,14 @@ public class ImageController {
         imageService.deleteImage(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping()
+    public ResponseEntity<?> getAllImages(){
+        return new ResponseEntity<>(imageService.getAllImages(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getImageById(@PathVariable("id") Integer id){
+        return new ResponseEntity<>(imageService.getImageById(id), HttpStatus.OK);
+    }
 }
