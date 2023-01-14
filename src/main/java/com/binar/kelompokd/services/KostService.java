@@ -3,6 +3,8 @@ package com.binar.kelompokd.services;
 import com.binar.kelompokd.models.entity.Kost;
 import com.binar.kelompokd.models.request.KostRequest;
 import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +17,5 @@ public interface KostService {
     Kost updateKost(UUID id, KostRequest kostRequest);
     String deleteKost(UUID id);
     Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request);
-
-    List<Kost> getAllKostsWithPaginationAndFilter(int page, int size, String orderBy, String orderType);
+    Page<Kost> getListData(Pageable pageable);
 }

@@ -7,6 +7,8 @@ import com.binar.kelompokd.models.response.KostResponse;
 import com.binar.kelompokd.services.KostService;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +33,11 @@ public class KostController {
         return new ResponseEntity<>(kostResponse, HttpStatus.OK);
     }
 
-    @GetMapping("{page}/{size}/{orderBy}/{orderType}")
-    public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("orderBy") String orderBy, @PathVariable("orderType") String orderType){
-        List<Kost> kosts = kostService.getAllKostsWithPaginationAndFilter(page, size, orderBy, orderType);
-        KostResponse kostResponse = KostResponse.builder().kos(kosts).build();
-        return new ResponseEntity<>(kostResponse, HttpStatus.OK);
+    @GetMapping("/page")
+    public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() int page, @RequestParam() int size, @RequestParam(required = false, defaultValue = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") String orderType){
+        Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
+        Page<Kost> kosts = kostService.getListData(pageable);
+        return new ResponseEntity<>(kosts.getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

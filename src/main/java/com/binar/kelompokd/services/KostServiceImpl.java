@@ -6,6 +6,7 @@ import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
 import com.binar.kelompokd.repos.*;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -157,8 +158,8 @@ public class KostServiceImpl implements KostService{
     }
 
     @Override
-    public List<Kost> getAllKostsWithPaginationAndFilter(int page, int size, String orderBy, String orderType) {
-        Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page, size);
-        return kostRepository.findAll(pageable).getContent();
+    public Page<Kost> getListData(Pageable pageable) {
+        return kostRepository.findAll(pageable);
     }
+
 }
