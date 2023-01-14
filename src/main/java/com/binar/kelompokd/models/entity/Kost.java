@@ -6,13 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -37,17 +39,6 @@ public class Kost extends DateModel implements Serializable {
   @Cascade(CascadeType.ALL)
   private UUID id;
 
-  // owner id int
-
-//  @OneToOne
-//  @Cascade(CascadeType.ALL)
-//  private Address location;
-
-  private Integer locationId;
-
-  // room id array[]
-  private UUID[] roomId;
-
   @Column(length = 100, nullable = false)
   private String name;
 
@@ -60,4 +51,15 @@ public class Kost extends DateModel implements Serializable {
 
   @Column(nullable = false)
   private Boolean isAvailable;
+
+  // owner id int
+
+//  @OneToOne
+//  @Cascade(CascadeType.ALL)
+//  private Address location;
+
+  private Integer locationId;
+
+  // room id array[]
+  private UUID[] roomId;
 }

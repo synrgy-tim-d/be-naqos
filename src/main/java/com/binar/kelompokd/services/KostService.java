@@ -15,4 +15,6 @@ public interface KostService {
     Kost updateKost(UUID id, KostRequest kostRequest);
     String deleteKost(UUID id);
     Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request);
+
+    List<Kost> getAllKostsWithPaginationAndFilter(int page, int size, String orderBy, String orderType);
 }

@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,11 +46,11 @@ public class KostRoom extends DateModel implements Serializable {
     @Column(columnDefinition="TEXT", nullable = false)
     private String rules;
 
-    private Double pricePerDaily;
-    private Double pricePerWeekly;
+    private BigDecimal pricePerDaily;
+    private BigDecimal pricePerWeekly;
 
     @Column(nullable = false)
-    private Double pricePerMonthly;
+    private BigDecimal pricePerMonthly;
 
     @Column(nullable = false)
     private Boolean isAvailable;

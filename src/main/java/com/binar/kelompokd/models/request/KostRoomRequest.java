@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -28,13 +29,13 @@ public class KostRoomRequest {
     private String rules;
 
     @NotNull
-    private Double price_per_daily;
+    private BigDecimal price_per_daily;
 
     @NotNull
-    private Double price_per_weekly;
+    private BigDecimal price_per_weekly;
 
     @NotNull
-    private Double price_per_monthly;
+    private BigDecimal price_per_monthly;
 
     @NotNull
     private Boolean is_available;

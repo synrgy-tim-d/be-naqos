@@ -4,7 +4,9 @@ import com.binar.kelompokd.models.entity.*;
 import com.binar.kelompokd.models.request.KostRequest;
 import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
 import com.binar.kelompokd.repos.*;
+import com.binar.kelompokd.utils.SimpleStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -36,6 +38,9 @@ public class KostServiceImpl implements KostService{
 
     @Autowired
     RoomFacilityRepository roomFacilityRepository;
+
+    @Autowired
+    SimpleStringUtils simpleStringUtils;
 
     @Override
     @Transactional
@@ -149,5 +154,11 @@ public class KostServiceImpl implements KostService{
         kostRoomRepository.save(kostRoom);
 
         return kost;
+    }
+
+    @Override
+    public List<Kost> getAllKostsWithPaginationAndFilter(int page, int size, String orderBy, String orderType) {
+        Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page, size);
+        return kostRepository.findAll(pageable).getContent();
     }
 }

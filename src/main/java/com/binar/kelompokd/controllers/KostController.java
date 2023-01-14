@@ -5,6 +5,7 @@ import com.binar.kelompokd.models.request.KostRequest;
 import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
 import com.binar.kelompokd.models.response.KostResponse;
 import com.binar.kelompokd.services.KostService;
+import com.binar.kelompokd.utils.SimpleStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,20 @@ public class KostController {
     @Autowired
     KostService kostService;
 
+    @Autowired
+    SimpleStringUtils simpleStringUtils;
+
     @GetMapping()
     public ResponseEntity<?> getAllKosts(){
         List<Kost> kostList =  kostService.getAllKost();
         KostResponse kostResponse = KostResponse.builder().kos(kostList).build();
+        return new ResponseEntity<>(kostResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("{page}/{size}/{orderBy}/{orderType}")
+    public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("orderBy") String orderBy, @PathVariable("orderType") String orderType){
+        List<Kost> kosts = kostService.getAllKostsWithPaginationAndFilter(page, size, orderBy, orderType);
+        KostResponse kostResponse = KostResponse.builder().kos(kosts).build();
         return new ResponseEntity<>(kostResponse, HttpStatus.OK);
     }
 
