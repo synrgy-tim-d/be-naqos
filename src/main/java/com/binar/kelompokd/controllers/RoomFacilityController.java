@@ -22,6 +22,16 @@ public class RoomFacilityController {
         return new ResponseEntity<>(roomFacilityService.addFacility(roomFacilityRequest), HttpStatus.OK);
     }
 
+    @GetMapping()
+    public ResponseEntity<?> getAllFacilities(){
+        return new ResponseEntity<>(roomFacilityService.getAllFacilities(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getFacilityById(@PathVariable("id") UUID id){
+        return new ResponseEntity<>(roomFacilityService.getFacilityById(id), HttpStatus.OK);
+    }
+
     @PatchMapping("{id}")
     public ResponseEntity<?> editFacility(@PathVariable("id") UUID id, @RequestBody RoomFacilityRequest roomFacilityRequest){
         return new ResponseEntity<>(roomFacilityService.editFacility(id, roomFacilityRequest), HttpStatus.OK);

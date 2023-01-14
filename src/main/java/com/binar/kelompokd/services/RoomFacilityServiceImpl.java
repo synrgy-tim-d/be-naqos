@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,10 +23,20 @@ public class RoomFacilityServiceImpl implements RoomFacilityService{
         RoomFacility roomFacility = RoomFacility.builder()
                 .name(roomFacilityRequest.getName())
                 .condition(roomFacilityRequest.getCondition())
-                .isActive(false)
+                .isActive(roomFacilityRequest.getIsActive())
                 .build();
 
         return roomFacilityRepository.save(roomFacility);
+    }
+
+    @Override
+    public RoomFacility getFacilityById(UUID id) {
+        return roomFacilityRepository.findById(id).get();
+    }
+
+    @Override
+    public List<RoomFacility> getAllFacilities() {
+        return roomFacilityRepository.findAll();
     }
 
     @Override
@@ -36,6 +47,7 @@ public class RoomFacilityServiceImpl implements RoomFacilityService{
 
         roomFacility.setName(roomFacilityRequest.getName());
         roomFacility.setCondition(roomFacilityRequest.getCondition());
+        roomFacility.setIsActive(roomFacilityRequest.getIsActive());
 
         return roomFacilityRepository.save(roomFacility);
     }

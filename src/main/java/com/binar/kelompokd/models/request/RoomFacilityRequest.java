@@ -22,4 +22,7 @@ public class RoomFacilityRequest {
 
     @Enumerated(EnumType.STRING)
     private Condition condition;
+
+    @NotNull
+    private Boolean isActive;
 }
