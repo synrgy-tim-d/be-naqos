@@ -22,5 +22,5 @@ public class KostRoomFacilityImageRequest {
     private UUID[] facilityId;
 
     @NotNull
-    private UUID[] imageId;
+    private Integer[] imageId;
 }

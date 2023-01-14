@@ -46,5 +46,5 @@ public class KostRoomRequest {
 
     // image_id array[]
     @NotNull
-    private UUID[] image_id;
+    private Integer[] image_id;
 }

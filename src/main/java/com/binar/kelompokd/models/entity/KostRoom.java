@@ -60,5 +60,5 @@ public class KostRoom extends DateModel implements Serializable {
 
 
     // image_id array[]
-    private UUID[] imageId;
+    private Integer[] imageId;
 }
