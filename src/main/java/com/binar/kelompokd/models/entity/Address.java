@@ -35,11 +35,15 @@ public class Address {
     @Column(nullable = false, length = 10)
     private String postalCode;
 
-    @OneToOne
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    private Province province;
+//    @OneToOne
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    private Province province;
 
-    @OneToOne
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    private City city;
+    private Integer provinceId;
+
+//    @OneToOne
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    private City city;
+
+    private Integer cityId;
 }
