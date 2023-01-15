@@ -42,14 +42,14 @@ public class NotificationController {
 
   @PutMapping("/all-read")
   public ResponseEntity<MessageResponse> markAllAsRead(Authentication authentication) {
-    Users user = iUserService.findByEmail(authentication.getName());
+    Users user = iUserService.findByUsername(authentication.getName());
     iNotificationService.markAllAsRead(user.getId());
     return ResponseEntity.ok(new MessageResponse("All Notifications Read."));
   }
 
   @GetMapping("/unread")
   public ResponseEntity<NotificationUnreadCountDTO> countNotifications(Authentication authentication) {
-    Users user = iUserService.findByEmail(authentication.getName());
+    Users user = iUserService.findByUsername(authentication.getName());
     Integer unread = iNotificationService.unreadNotifications(user.getId());
 
     NotificationUnreadCountDTO response = new NotificationUnreadCountDTO(user, unread);
@@ -61,7 +61,7 @@ public class NotificationController {
                                                                       @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
                                                                       @RequestParam(value = "size", defaultValue = "10", required = false) Integer size) {
 
-    Users user = iUserService.findByEmail(authentication.getName());
+    Users user = iUserService.findByUsername(authentication.getName());
     List<Notification> notification = iNotificationService.getNotification(user.getId());
     List<NotificationResponse> notificationResponses =
         notification.stream()

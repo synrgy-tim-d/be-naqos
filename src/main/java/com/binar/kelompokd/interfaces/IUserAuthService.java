@@ -12,5 +12,5 @@ public interface IUserAuthService {
 
   Users findUsersById(Long id);
 
-  Users findByEmail(String email);
+  Users findByUsername(String email);
 }

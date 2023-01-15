@@ -116,8 +116,8 @@ public class UserServiceImpl implements IUserAuthService {
   }
 
   @Override
-  public Users findByEmail(String email) {
-    return userRepository.findByEmail(email);
+  public Users findByUsername(String email) {
+    return userRepository.findByUsername(email);
   }
 
   @Override
