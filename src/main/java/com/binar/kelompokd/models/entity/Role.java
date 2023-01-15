@@ -16,10 +16,10 @@ public class Role extends DateModel implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
-  @Enumerated(EnumType.STRING)
-  @Column(length = 20)
-  @NotNull
-  private ERole name;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    @NotNull
+    private ERole name;
 
   @NotNull
   private Boolean isActive = false;
