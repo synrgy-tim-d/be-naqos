@@ -31,6 +31,6 @@ RUN mvn -f /home/app/pom.xml clean package
 # Package stage
 #
 FROM openjdk:8-jre-slim
-COPY --from=build /home/app/target/apps-0.0.1-SNAPSHOT.jar /usr/local/lib/backend.jar
+COPY --from=build /home/app/target/backend-0.0.1-SNAPSHOT.jar /usr/local/lib/backend.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/local/lib/backend.jar"]
