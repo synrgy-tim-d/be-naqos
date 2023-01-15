@@ -1,6 +1,7 @@
 package com.binar.kelompokd.models.entity;
 
 import com.binar.kelompokd.models.DateModel;
+import com.binar.kelompokd.models.entity.oauath.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class Kost extends DateModel implements Serializable {
   private Long id;
 
   @ManyToOne
-  private User user;
+  private Users user;
 
   @NotNull
   private String name;

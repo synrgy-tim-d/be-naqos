@@ -1,6 +1,6 @@
 package com.binar.kelompokd.repos.oauth;
 
-import com.binar.kelompokd.models.oauath.RolePath;
+import com.binar.kelompokd.models.entity.oauath.RolePath;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.security.core.userdetails.UserDetails;

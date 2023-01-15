@@ -1,6 +1,6 @@
 package com.binar.kelompokd.services.oauth;
 
-import com.binar.kelompokd.models.oauath.Users;
+import com.binar.kelompokd.models.entity.oauath.Users;
 import com.binar.kelompokd.repos.oauth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;

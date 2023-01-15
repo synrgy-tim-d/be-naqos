@@ -1,4 +1,4 @@
-package com.binar.kelompokd.models.oauath;
+package com.binar.kelompokd.models.entity.oauath;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;

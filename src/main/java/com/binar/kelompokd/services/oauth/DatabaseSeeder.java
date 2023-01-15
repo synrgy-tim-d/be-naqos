@@ -1,9 +1,9 @@
 package com.binar.kelompokd.services.oauth;
 
-import com.binar.kelompokd.models.oauath.Client;
-import com.binar.kelompokd.models.oauath.Roles;
-import com.binar.kelompokd.models.oauath.RolePath;
-import com.binar.kelompokd.models.oauath.Users;
+import com.binar.kelompokd.models.entity.oauath.Client;
+import com.binar.kelompokd.models.entity.oauath.Roles;
+import com.binar.kelompokd.models.entity.oauath.RolePath;
+import com.binar.kelompokd.models.entity.oauath.Users;
 import com.binar.kelompokd.repos.oauth.ClientRepository;
 import com.binar.kelompokd.repos.oauth.RolePathRepository;
 import com.binar.kelompokd.repos.oauth.RoleRepository;

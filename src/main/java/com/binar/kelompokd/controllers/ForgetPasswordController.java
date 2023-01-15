@@ -3,7 +3,7 @@ package com.binar.kelompokd.controllers;
 import com.binar.kelompokd.config.Config;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.models.dto.ResetPasswordDTO;
-import com.binar.kelompokd.models.oauath.Users;
+import com.binar.kelompokd.models.entity.oauath.Users;
 import com.binar.kelompokd.repos.oauth.UserRepository;
 import com.binar.kelompokd.services.EmailSender;
 import com.binar.kelompokd.utils.EmailTemplate;

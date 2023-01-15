@@ -4,8 +4,8 @@ package com.binar.kelompokd.services;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.models.dto.LoginDTO;
 import com.binar.kelompokd.models.dto.RegisterDTO;
-import com.binar.kelompokd.models.oauath.Roles;
-import com.binar.kelompokd.models.oauath.Users;
+import com.binar.kelompokd.models.entity.oauath.Roles;
+import com.binar.kelompokd.models.entity.oauath.Users;
 import com.binar.kelompokd.repos.oauth.RoleRepository;
 import com.binar.kelompokd.repos.oauth.UserRepository;
 import com.binar.kelompokd.utils.Response;
@@ -70,7 +70,7 @@ public class UserServiceImpl implements IUserAuthService {
             if (!(encoder.matches(loginModel.getPassword(), checkUser.getPassword()))) {
                 return templateResponse.templateEror("wrong password");
             }
-            String url = baseUrl + "/oauth/token?username=" + loginModel.getEmail() +
+            String url = baseUrl +"/api"+ "/oauth/token?username=" + loginModel.getEmail() +
                     "&password=" + loginModel.getPassword() +
                     "&grant_type=password" +
                     "&client_id=my-client-web" +

@@ -1,17 +1,5 @@
 package com.binar.kelompokd.services;
 
-import com.binar.kelompokd.interfaces.INotificationService;
-import com.binar.kelompokd.interfaces.IUserService;
-import com.binar.kelompokd.models.entity.Notification;
-import com.binar.kelompokd.models.entity.User;
-import com.binar.kelompokd.repos.NotificationRepo;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-
 //@Service
 //@AllArgsConstructor
 //public class NotificationServiceImpl implements INotificationService {

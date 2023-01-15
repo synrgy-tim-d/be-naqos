@@ -29,10 +29,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${security.bcrypt.cost:13}")
     private int cost;
 
-    @Value("${security.jwt.enabled:false}")
+    @Value("${security.jwt.enabled}")
     private boolean jwtEnabled;
 
-    @Value("${security.jwt.secret_key:s3cr3t}")
+    @Value("${jwtSecret}")
     private String jwtSecretKey;
 
     @Autowired
