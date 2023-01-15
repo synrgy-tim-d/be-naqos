@@ -1,12 +1,20 @@
 package com.binar.kelompokd.config;
 
-import lombok.Data;
+import lombok.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Data
+@Setter
+
+@Getter
+
+@AllArgsConstructor
+
+@NoArgsConstructor
+
+@ToString
 public class Config {
     String code = "status", message = "message";
     public String code_notFound ="404";

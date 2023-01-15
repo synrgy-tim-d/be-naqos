@@ -36,5 +36,4 @@ public class LoginController {
         Map map = serviceReq.login(objModel);
         return new ResponseEntity<Map>(map, HttpStatus.OK);
     }
-
 }

@@ -138,8 +138,13 @@ public class UserServiceImpl implements IUserAuthService {
 
         } catch (Exception e) {
             logger.error("Eror registerManual=", e);
-            return templateResponse.templateEror("eror:" + e);
+            return templateResponse.templateEror("eror:"+e);
         }
 
     }
+
+
+
+
+
 }
