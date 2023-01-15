@@ -26,57 +26,54 @@ import javax.annotation.Priority;
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Value("${security.bcrypt.cost:13}")
-    private int cost;
+  @Value("${security.bcrypt.cost:13}")
+  private int cost;
 
-    @Value("${security.jwt.enabled}")
-    private boolean jwtEnabled;
+  @Value("${security.jwt.enabled}")
+  private boolean jwtEnabled;
 
-    @Value("${jwtSecret}")
-    private String jwtSecretKey;
+  @Value("${jwtSecret}")
+  private String jwtSecretKey;
 
-    @Autowired
-    private Oauth2AccessTokenConverter accessTokenConverter;
+  @Autowired
+  private Oauth2AccessTokenConverter accessTokenConverter;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(cost);
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder(cost);
+  }
+
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
+
+  @Bean
+  public TokenStore tokenStore() {
+    if (jwtEnabled) {
+      return new JwtTokenStore((JwtAccessTokenConverter) accessTokenConverter());
     }
+    return new InMemoryTokenStore();
+  }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+  @Bean
+  public AccessTokenConverter accessTokenConverter() {
+    if (jwtEnabled) {
+      JwtAccessTokenConverter jwtConverter = new JwtAccessTokenConverter();
+      jwtConverter.setAccessTokenConverter(accessTokenConverter);
+      jwtConverter.setSigningKey(jwtSecretKey);
+      return jwtConverter;
     }
+    return new DefaultAccessTokenConverter();
+  }
 
-    @Bean
-    public TokenStore tokenStore() {
-        if (jwtEnabled) {
-            return new JwtTokenStore((JwtAccessTokenConverter) accessTokenConverter());
-        }
-        return new InMemoryTokenStore();
-    }
-
-    @Bean
-    public AccessTokenConverter accessTokenConverter() {
-        if (jwtEnabled) {
-            JwtAccessTokenConverter jwtConverter = new JwtAccessTokenConverter();
-            jwtConverter.setAccessTokenConverter(accessTokenConverter);
-            jwtConverter.setSigningKey(jwtSecretKey);
-
-            return jwtConverter;
-        }
-
-        return new DefaultAccessTokenConverter();
-    }
-
-    @Bean
-    @Primary
-    public DefaultTokenServices tokenServices() {
-        DefaultTokenServices services = new DefaultTokenServices();
-        services.setTokenStore(tokenStore());
-        services.setSupportRefreshToken(true);
-
-        return services;
-    }
+  @Bean
+  @Primary
+  public DefaultTokenServices tokenServices() {
+    DefaultTokenServices services = new DefaultTokenServices();
+    services.setTokenStore(tokenStore());
+    services.setSupportRefreshToken(true);
+    return services;
+  }
 }

@@ -1,9 +1,9 @@
 package com.binar.kelompokd.services.oauth;
 
-import com.binar.kelompokd.models.entity.oauath.Client;
-import com.binar.kelompokd.models.entity.oauath.Roles;
-import com.binar.kelompokd.models.entity.oauath.RolePath;
-import com.binar.kelompokd.models.entity.oauath.Users;
+import com.binar.kelompokd.models.entity.oauth.Client;
+import com.binar.kelompokd.models.entity.oauth.Roles;
+import com.binar.kelompokd.models.entity.oauth.RolePath;
+import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.ClientRepository;
 import com.binar.kelompokd.repos.oauth.RolePathRepository;
 import com.binar.kelompokd.repos.oauth.RoleRepository;
@@ -25,133 +25,132 @@ import java.util.List;
 @Service
 public class DatabaseSeeder implements ApplicationRunner {
 
-    private static final String TAG = "DatabaseSeeder {}";
+  private static final String TAG = "DatabaseSeeder {}";
 
-    private Logger logger = LoggerFactory.getLogger(DatabaseSeeder.class);
+  private final Logger logger = LoggerFactory.getLogger(DatabaseSeeder.class);
 
-    @Autowired
-    private PasswordEncoder encoder;
+  @Autowired
+  private PasswordEncoder encoder;
 
-    @Autowired
-    private RoleRepository roleRepository;
+  @Autowired
+  private RoleRepository roleRepository;
 
-    @Autowired
-    private ClientRepository clientRepository;
+  @Autowired
+  private ClientRepository clientRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Autowired
-    private RolePathRepository rolePathRepository;
+  @Autowired
+  private RolePathRepository rolePathRepository;
 
-    private String defaultPassword = "password";
+  private final String defaultPassword = "password";
 
-    private String[] users = new String[]{
-            "admin@mail.com:ROLE_SUPERUSER ROLE_USER ROLE_ADMIN",
-            "user@mail.com:ROLE_USER"
-    };
+  private final String[] users = new String[]{
+      "admin@mail.com:ROLE_SUPERUSER ROLE_USER ROLE_ADMIN",
+      "user@mail.com:ROLE_USER"
+  };
 
-    private String[] clients = new String[]{
-            "my-client-apps:ROLE_READ ROLE_WRITE", // mobile
-            "my-client-web:ROLE_READ ROLE_WRITE" // web
-    };
+  private final String[] clients = new String[]{
+      "my-client-apps:ROLE_READ ROLE_WRITE", // mobile
+      "my-client-web:ROLE_READ ROLE_WRITE" // web
+  };
 
-    private String[] roles = new String[] {
-            "ROLE_SUPERUSER:user_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
-            "ROLE_ADMIN:user_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
-            "ROLE_USER:user_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
-            "ROLE_READ:oauth_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
-            "ROLE_WRITE:oauth_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS"
-    };
+  private final String[] roles = new String[] {
+      "ROLE_SUPERUSER:user_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
+      "ROLE_ADMIN:user_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
+      "ROLE_USER:user_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
+      "ROLE_READ:oauth_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
+      "ROLE_WRITE:oauth_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS"
+  };
 
+  @Override
+  @Transactional
+  public void run(ApplicationArguments applicationArguments) {
+    String password = encoder.encode(defaultPassword);
 
-    @Override
-    @Transactional
-    public void run(ApplicationArguments applicationArguments) {
-        String password = encoder.encode(defaultPassword);
+    this.insertRoles();
+    this.insertClients(password);
+    this.insertUser(password);
+  }
 
-        this.insertRoles();
-        this.insertClients(password);
-        this.insertUser(password);
-    }
-
-    @Transactional
-    public void insertRoles() {
-        for (String role: roles) {
-            String[] str = role.split(":");
-            String name = str[0];
-            String type = str[1];
-            String pattern = str[2];
-            String[] methods = str[3].split("\\|");
-            Roles oldRole = roleRepository.findOneByName(name);
-            if (null == oldRole) {
-                oldRole = new Roles();
-                oldRole.setName(name);
-                oldRole.setType(type);
-                oldRole.setRolePaths(new ArrayList<>());
-                for (String m: methods) {
-                    String rolePathName = name.toLowerCase()+"_"+m.toLowerCase();
-                    RolePath rolePath = rolePathRepository.findOneByName(rolePathName);
-                    if (null == rolePath) {
-                        rolePath = new RolePath();
-                        rolePath.setName(rolePathName);
-                        rolePath.setMethod(m.toUpperCase());
-                        rolePath.setPattern(pattern);
-                        rolePath.setRole(oldRole);
-                        rolePathRepository.save(rolePath);
-                        oldRole.getRolePaths().add(rolePath);
-                    }
-                }
-            }
-
-            roleRepository.save(oldRole);
+  @Transactional
+  public void insertRoles() {
+    for (String role: roles) {
+      String[] str = role.split(":");
+      String name = str[0];
+      String type = str[1];
+      String pattern = str[2];
+      String[] methods = str[3].split("\\|");
+      Roles oldRole = roleRepository.findOneByName(name);
+      if (null == oldRole) {
+        oldRole = new Roles();
+        oldRole.setName(name);
+        oldRole.setType(type);
+        oldRole.setRolePaths(new ArrayList<>());
+        for (String m: methods) {
+          String rolePathName = name.toLowerCase()+"_"+m.toLowerCase();
+          RolePath rolePath = rolePathRepository.findOneByName(rolePathName);
+          if (null == rolePath) {
+            rolePath = new RolePath();
+            rolePath.setName(rolePathName);
+            rolePath.setMethod(m.toUpperCase());
+            rolePath.setPattern(pattern);
+            rolePath.setRole(oldRole);
+            rolePathRepository.save(rolePath);
+            oldRole.getRolePaths().add(rolePath);
+          }
         }
+      }
+
+      roleRepository.save(oldRole);
     }
+  }
 
-    @Transactional
-    public void insertClients(String password) {
-        for (String c: clients) {
-            String[] s = c.split(":");
-            String clientName = s[0];
-            String[] clientRoles = s[1].split("\\s");
-            Client oldClient = clientRepository.findOneByClientId(clientName);
-            if (null == oldClient) {
-                oldClient = new Client();
-                oldClient.setClientId(clientName);
-                oldClient.setAccessTokenValiditySeconds(28800);//1 jam 3600 :token valid : seharian kerja : normal 1 jam
-                oldClient.setRefreshTokenValiditySeconds(7257600);// refresh
-                oldClient.setGrantTypes("password refresh_token authorization_code");
-                oldClient.setClientSecret(password);
-                oldClient.setApproved(true);
-                oldClient.setRedirectUris("");
-                oldClient.setScopes("read write");
-                List<Roles> rls = roleRepository.findByNameIn(clientRoles);
+  @Transactional
+  public void insertClients(String password) {
+    for (String c: clients) {
+      String[] s = c.split(":");
+      String clientName = s[0];
+      String[] clientRoles = s[1].split("\\s");
+      Client oldClient = clientRepository.findOneByClientId(clientName);
+      if (null == oldClient) {
+        oldClient = new Client();
+        oldClient.setClientId(clientName);
+        oldClient.setAccessTokenValiditySeconds(28800);//1 jam 3600 :token valid : seharian kerja : normal 1 jam
+        oldClient.setRefreshTokenValiditySeconds(7257600);// refresh
+        oldClient.setGrantTypes("password refresh_token authorization_code");
+        oldClient.setClientSecret(password);
+        oldClient.setApproved(true);
+        oldClient.setRedirectUris("");
+        oldClient.setScopes("read write");
+        List<Roles> rls = roleRepository.findByNameIn(clientRoles);
 
-                if (rls.size() > 0) {
-                    oldClient.getAuthorities().addAll(rls);
-                }
-            }
-            clientRepository.save(oldClient);
+        if (rls.size() > 0) {
+          oldClient.getAuthorities().addAll(rls);
         }
+      }
+      clientRepository.save(oldClient);
     }
+  }
 
-    @Transactional
-    public void insertUser(String password) {
-        for (String userNames: users) {
-            String[] str = userNames.split(":");
-            String username = str[0];
-            String[] roleNames = str[1].split("\\s");
+  @Transactional
+  public void insertUser(String password) {
+    for (String userNames: users) {
+      String[] str = userNames.split(":");
+      String username = str[0];
+      String[] roleNames = str[1].split("\\s");
 
-            Users oldUser = userRepository.findOneByUsername(username);
-            if (null == oldUser) {
-                oldUser = new Users();
-                oldUser.setUsername(username);
-                oldUser.setPassword(password);
-                List<Roles> r = roleRepository.findByNameIn(roleNames);
-                oldUser.setRoles(r);
-            }
-
-            userRepository.save(oldUser);
-        }
+      Users oldUser = userRepository.findOneByUsername(username);
+      if (null == oldUser) {
+        oldUser = new Users();
+        oldUser.setUsername(username);
+        oldUser.setPassword(password);
+        oldUser.setPhoneNumber("0218207977");
+        List<Roles> r = roleRepository.findByNameIn(roleNames);
+        oldUser.setRoles(r);
+      }
+      userRepository.save(oldUser);
     }
+  }
 }

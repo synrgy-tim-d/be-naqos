@@ -8,6 +8,7 @@ import com.binar.kelompokd.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
@@ -17,23 +18,26 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user-login/")
 public class LoginController {
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    Config config = new Config();
+  Config config = new Config();
 
-    @Autowired
-    public IUserAuthService serviceReq;
+  @Autowired
+  public IUserAuthService serviceReq;
 
+  @Autowired
+  public Response templateCRUD;
 
+  @PostMapping("/login")
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<Map> login(@Valid @RequestBody LoginDTO objModel) {
+    Map map = serviceReq.login(objModel);
+    return new ResponseEntity<Map>(map, HttpStatus.OK);
+  }
 
-    @Autowired
-    public Response templateCRUD;
-
-    @PostMapping("/login")
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map> login(@Valid @RequestBody LoginDTO objModel) {
-        Map map = serviceReq.login(objModel);
-        return new ResponseEntity<Map>(map, HttpStatus.OK);
-    }
+  @GetMapping("/login")
+  public Map<String, Object> currentUser(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+    return oAuth2AuthenticationToken.getPrincipal().getAttributes();
+  }
 }

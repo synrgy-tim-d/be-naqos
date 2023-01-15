@@ -1,8 +1,7 @@
-package com.binar.kelompokd.models.entity.oauath;
+package com.binar.kelompokd.models.entity.oauth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,9 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-@Getter
-@Setter
-
+@Data
 @Entity
 @Table(name = "oauth_user")
 public class Users implements UserDetails, Serializable {
@@ -30,6 +27,9 @@ public class Users implements UserDetails, Serializable {
     @Column(length = 100, nullable = true)
     private String fullname;
 
+    @Column(length = 13)
+    private String phoneNumber;
+
     @JsonIgnore
     private String password;
 
@@ -43,7 +43,6 @@ public class Users implements UserDetails, Serializable {
     private String otp;
 
     private Date otpExpiredDate;
-
 
     @JsonIgnore
     private boolean enabled = true;

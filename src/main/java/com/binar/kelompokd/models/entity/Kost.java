@@ -1,7 +1,7 @@
 package com.binar.kelompokd.models.entity;
 
 import com.binar.kelompokd.models.DateModel;
-import com.binar.kelompokd.models.entity.oauath.Users;
+import com.binar.kelompokd.models.entity.oauth.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

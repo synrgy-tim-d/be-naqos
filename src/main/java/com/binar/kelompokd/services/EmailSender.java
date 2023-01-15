@@ -67,7 +67,6 @@ public class EmailSender {
         taskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-
                 send(to, subject, message);
             }
         });

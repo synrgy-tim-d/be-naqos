@@ -19,53 +19,53 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @EnableAuthorizationServer
 public class Oauth2AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
-    private Oauth2ClientDetailsService clientDetailsService;
+  @Autowired
+  private Oauth2ClientDetailsService clientDetailsService;
 
-    @Autowired
-    private Oauth2UserDetailsService userDetailsService;
+  @Autowired
+  private Oauth2UserDetailsService userDetailsService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+  @Autowired
+  private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AccessTokenConverter accessTokenConverter;
+  @Autowired
+  private AccessTokenConverter accessTokenConverter;
 
-    @Autowired
-    private TokenStore tokenStore;
+  @Autowired
+  private TokenStore tokenStore;
 
-    /**
-     * Change server config, password encoder etc.
-     */
-    @Override
-    public void configure(AuthorizationServerSecurityConfigurer server) throws Exception {
-        server.allowFormAuthenticationForClients()
+  /**
+   * Change server config, password encoder etc.
+   */
+  @Override
+  public void configure(AuthorizationServerSecurityConfigurer server) throws Exception {
+    server.allowFormAuthenticationForClients()
 //                .tokenKeyAccess("permitAll()")
 //                .checkTokenAccess("isAuthenticated()")
-                .passwordEncoder(passwordEncoder)
-        ;
-    }
+        .passwordEncoder(passwordEncoder)
+    ;
+  }
 
-    /**
-     * Change client details etc.
-     */
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.withClientDetails(clientDetailsService);
-    }
+  /**
+   * Change client details etc.
+   */
+  @Override
+  public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+    clients.withClientDetails(clientDetailsService);
+  }
 
-    /**
-     * Change user details etc.
-     */
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.authenticationManager(authenticationManager)
-                .tokenStore(tokenStore)
-                .accessTokenConverter(accessTokenConverter)
-                .userDetailsService(userDetailsService)
-        ;
-    }
+  /**
+   * Change user details etc.
+   */
+  @Override
+  public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    endpoints.authenticationManager(authenticationManager)
+        .tokenStore(tokenStore)
+        .accessTokenConverter(accessTokenConverter)
+        .userDetailsService(userDetailsService)
+    ;
+  }
 }
