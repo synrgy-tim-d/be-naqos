@@ -1,39 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.6</version>
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
-  <groupId>com.binar</groupId>
-  <artifactId>kelompokd</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>backend</name>
-  <description>Backend Project for Final Project Binar Synrgy Batch 5 Kelompok D</description>
-  <properties>
-    <java.version>8</java.version>
-  </properties>
-  <dependencies>
-    <!-- JDBC Driver -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jdbc</artifactId>
-    </dependency>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.6</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.binar</groupId>
+	<artifactId>kelompokd</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>backend</name>
+	<description>Backend Project for Final Project Binar Synrgy Batch 5 Kelompok D</description>
+	<properties>
+		<java.version>8</java.version>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<oauth2.version>2.0.14.RELEASE</oauth2.version>
+		<jwt.version>1.0.9.RELEASE</jwt.version>
 
+	</properties>
+	<dependencies>
     <!-- JPA Driver -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
-
-    <!-- REDIS / CACHE -->
-    <!--		<dependency>-->
-    <!--			<groupId>org.springframework.boot</groupId>-->
-    <!--			<artifactId>spring-boot-starter-data-redis</artifactId>-->
-    <!--		</dependency>-->
 
     <!-- SECURITY -->
     <dependency>
@@ -44,6 +36,21 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
+
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>${oauth2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+			<version>${jwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
     <!-- SCHEDULER -->
     <dependency>
@@ -56,17 +63,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-
-    <!-- KAFKA -->
-    <!--		<dependency>-->
-    <!--			<groupId>org.springframework.kafka</groupId>-->
-    <!--			<artifactId>spring-kafka</artifactId>-->
-    <!--		</dependency>-->
-    <!--		<dependency>-->
-    <!--			<groupId>org.apache.kafka</groupId>-->
-    <!--			<artifactId>kafka-clients</artifactId>-->
-    <!--			<version>3.3.1</version>-->
-    <!--		</dependency>-->
 
     <!-- DEVTOOLS -->
     <dependency>
@@ -96,11 +92,7 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.kafka</groupId>
-      <artifactId>spring-kafka-test</artifactId>
-      <scope>test</scope>
-    </dependency>
+
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-test</artifactId>
@@ -121,17 +113,28 @@
       <version>0.9.1</version>
     </dependency>
 
-    <!-- VALIDATOR -->
-    <dependency>
-      <groupId>org.hibernate.validator</groupId>
-      <artifactId>hibernate-validator</artifactId>
-      <version>8.0.0.Final</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-      <version>2.0.1.Final</version>
-    </dependency>
+		<!-- VALIDATOR -->
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>8.0.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+
+		<!--       email -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
     <!-- PGW Midtrans -->
     <!--		<dependency>-->
