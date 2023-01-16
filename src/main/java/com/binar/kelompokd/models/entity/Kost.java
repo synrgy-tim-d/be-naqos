@@ -1,59 +1,66 @@
 package com.binar.kelompokd.models.entity;
 
+import com.binar.kelompokd.enums.KostType;
 import com.binar.kelompokd.models.DateModel;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "t_kost_property")
+@Table(name = "t_kost")
 public class Kost extends DateModel implements Serializable {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue(generator = "UUID")
+  @GenericGenerator(
+          name = "UUID",
+          strategy = "org.hibernate.id.UUIDGenerator",
+          parameters = {
+                  @Parameter(
+                          name = "uuid_gen_strategy_class",
+                          value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
+                  )
+          }
+  )
+  @Cascade(CascadeType.ALL)
+  private UUID id;
 
-  @ManyToOne
-  private Users user;
-
-  @NotNull
+  @Column(length = 100, nullable = false)
   private String name;
 
-  @NotNull
+  @Column(nullable = false)
   private String description;
 
-  private String street;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private KostType kostType;
 
-  @NotNull
-  private Double pricePerCategory;
-
-  @NotNull
+  @Column(nullable = false)
   private Boolean isAvailable;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "specification_id", referencedColumnName = "id")
-  private KostSpecification specificationId;
+  // owner id int
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "facility_id", referencedColumnName = "id")
-  private KostFacility facilityId;
+//  @OneToOne
+//  @Cascade(CascadeType.ALL)
+//  private Address location;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "type_id", referencedColumnName = "id")
-  private KostType typeId;
+  private Integer locationId;
 
-  @OneToOne
-  private Subcity location;
-
-  @OneToOne
-  private PriceCategory priceCategory;
+  // room id array[]
+  private UUID[] roomId;
 }
