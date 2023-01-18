@@ -23,11 +23,11 @@ public class CorsOriginConfiguration implements Filter {
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain filter) throws IOException, ServletException {
     HttpServletResponse response = (HttpServletResponse) res;
     HttpServletRequest request = (HttpServletRequest) req;
-    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Origin", "https://app.swaggerhub.com");
     response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, PATCH, OPTIONS, DELETE");
     response.setHeader("Access-Control-Max-Age", "3600");
     response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control, X-Auth-Token, Data");
-    // response.setHeader("Access-Control-Allow-Headers", "*");
+    response.setHeader("Access-Control-Allow-Credentials", "true");
 
     if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
       response.setStatus(HttpServletResponse.SC_OK);
