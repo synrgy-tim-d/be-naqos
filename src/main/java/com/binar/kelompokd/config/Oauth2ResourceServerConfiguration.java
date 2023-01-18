@@ -32,7 +32,7 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
         .antMatcher("/**")
         .authorizeRequests()
         .antMatchers("/user-login/*",
-            "/user-register/*",
+            "/user-register/**",
             "/swagger-ui/**",
             "/naqos-swagger.html",
             "/v3/api-docs/**").permitAll()
