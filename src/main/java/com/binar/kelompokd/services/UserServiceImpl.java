@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserAuthService {
     try {
       Map<String, Object> map = new HashMap<>();
 
-      Users checkUser = userRepository.findOneByUsername(loginModel.getEmail());
+      Users checkUser = userRepository.findOneByUsername(loginModel.getUsername());
 
       if ((checkUser != null) && (encoder.matches(loginModel.getPassword(), checkUser.getPassword()))) {
         if (!checkUser.isEnabled()) {
@@ -67,17 +67,17 @@ public class UserServiceImpl implements IUserAuthService {
       if (!(encoder.matches(loginModel.getPassword(), checkUser.getPassword()))) {
         return templateResponse.templateEror("wrong password");
       }
-      String url = baseUrl +"/api"+ "/oauth/token?username=" + loginModel.getEmail() +
-          "&password=" + loginModel.getPassword() +
-          "&grant_type=password" +
-          "&client_id=my-client-web" +
-          "&client_secret=password";
+      String url = baseUrl +"/api"+ "/oauth/token?username=" + loginModel.getUsername() +
+              "&password=" + loginModel.getPassword() +
+              "&grant_type=password" +
+              "&client_id=my-client-web" +
+              "&client_secret=password";
       ResponseEntity<Map> response = restTemplateBuilder.build().exchange(url, HttpMethod.POST, null, new
-          ParameterizedTypeReference<Map>() {
-          });
+              ParameterizedTypeReference<Map>() {
+              });
 
       if (response.getStatusCode() == HttpStatus.OK) {
-        Users user = userRepository.findOneByUsername(loginModel.getEmail());
+        Users user = userRepository.findOneByUsername(loginModel.getUsername());
         List<String> roles = new ArrayList<>();
 
         for (Roles role : user.getRoles()) {
