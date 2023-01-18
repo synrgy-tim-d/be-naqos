@@ -48,14 +48,15 @@ public class RegisterController {
       return new ResponseEntity<Map>(templateCRUD.notFound("Username sudah ada"), HttpStatus.OK);
 
     }
-    sendEmailegister(objModel);
     map = serviceReq.registerManual(objModel);
+    Map sendOTP = sendEmailegister(objModel);
     return new ResponseEntity<Map>(templateCRUD.templateSukses(map), HttpStatus.OK);
   }
 
   @Value("${expired.token.password.minute}")
   int expiredToken;
 
+  @PostMapping("/send-otp")
   public Map sendEmailegister(
       @NonNull @RequestBody RegisterDTO user) {
     String message = "Thanks, please check your email for activation.";
