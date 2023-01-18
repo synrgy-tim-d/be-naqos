@@ -9,6 +9,7 @@ import com.binar.kelompokd.services.EmailSender;
 import com.binar.kelompokd.utils.EmailTemplate;
 import com.binar.kelompokd.utils.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -47,17 +48,16 @@ public class RegisterController {
       return new ResponseEntity<Map>(templateCRUD.notFound("Username sudah ada"), HttpStatus.OK);
 
     }
+    sendEmailegister(objModel);
     map = serviceReq.registerManual(objModel);
-    Map sendOTP = sendEmailegister(objModel);
-    return new ResponseEntity<Map>(map, HttpStatus.OK);
+    return new ResponseEntity<Map>(templateCRUD.templateSukses(map), HttpStatus.OK);
   }
 
   @Value("${expired.token.password.minute}")
   int expiredToken;
 
-  @PostMapping("/send-otp")//send OTP
   public Map sendEmailegister(
-      @RequestBody RegisterDTO user) {
+      @NonNull @RequestBody RegisterDTO user) {
     String message = "Thanks, please check your email for activation.";
 
     if (user.getUsername() == null) return templateCRUD.templateEror("No email provided");

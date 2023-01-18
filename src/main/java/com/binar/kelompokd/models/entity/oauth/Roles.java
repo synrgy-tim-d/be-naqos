@@ -1,16 +1,14 @@
 package com.binar.kelompokd.models.entity.oauth;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.List;
-@Getter
-@Setter
-
-@Entity()
+@Data
+@Entity
 @Table(
     name = "oauth_role",
     uniqueConstraints = {
@@ -31,6 +29,7 @@ public class Roles implements GrantedAuthority {
   private String type;
 
   @OneToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JsonBackReference
   private List<RolePath> rolePaths;
 
   @JsonIgnore

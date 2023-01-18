@@ -128,6 +128,7 @@ public class UserServiceImpl implements IUserAuthService {
       Users user = new Users();
       user.setUsername(registerModel.getUsername().toLowerCase());
       user.setFullname(registerModel.getFullname());
+      user.setPhoneNumber(registerModel.getPhoneNumber());
 
       //step 1 :
       user.setEnabled(false); // matikan user

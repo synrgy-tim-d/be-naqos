@@ -1,6 +1,7 @@
 package com.binar.kelompokd.models.entity.oauth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +23,7 @@ public class RolePath implements Serializable {
 
   @ManyToOne(targetEntity = Roles.class, cascade = CascadeType.ALL)
   @JsonIgnore
+  @JsonManagedReference
   private Roles roles;
 
   public Long getId() {

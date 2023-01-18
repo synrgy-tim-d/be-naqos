@@ -36,8 +36,4 @@ public class LoginController {
     return new ResponseEntity<Map>(map, HttpStatus.OK);
   }
 
-  @GetMapping("/login")
-  public Map<String, Object> currentUser(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-    return oAuth2AuthenticationToken.getPrincipal().getAttributes();
-  }
 }
