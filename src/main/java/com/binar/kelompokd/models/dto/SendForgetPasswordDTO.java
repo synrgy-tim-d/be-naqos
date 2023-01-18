@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class SendForgetPasswordDTO {
-    public String email;
+    public String username;
 }

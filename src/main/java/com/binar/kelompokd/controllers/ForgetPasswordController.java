@@ -65,8 +65,8 @@ public class ForgetPasswordController {
   public Map sendEmailPassword(@RequestBody SendForgetPasswordDTO user) {
     String message = "Thanks, please check your email";
 
-    if (StringUtils.isEmpty(user.getEmail())) return templateCRUD.templateEror("No email provided");
-    Users found = userRepository.findOneByUsername(user.getEmail());
+    if (StringUtils.isEmpty(user.getUsername())) return templateCRUD.templateEror("No email provided");
+    Users found = userRepository.findOneByUsername(user.getUsername());
     if (found == null) return templateCRUD.notFound("Email not found"); //throw new BadRequest("Email not found");
 
     String template = emailTemplate.getResetPassword();
