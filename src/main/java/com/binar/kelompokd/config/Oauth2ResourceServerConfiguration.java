@@ -33,8 +33,8 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
         .authorizeRequests()
         .antMatchers("/user-login/*",
             "/user-register/**",
-            "/forget-password/*",
             "/swagger-ui/**",
+            "/forget-password/*",
             "/naqos-swagger.html",
             "/v3/api-docs/**").permitAll()
 //        .antMatchers("/v1/role-test-global/list-barang").hasAnyAuthority("ROLE_READ")
