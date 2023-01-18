@@ -47,7 +47,7 @@ public class KostRequest {
     private Integer location_id;
 
     @NotNull
-    @Schema(example = "123e4567-e89b-12d3-a456-426614174000")
+    @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
     private UUID[] room_id; // seperti yg bisa dilihat, kita harus memasukan room id secara manual karena tipe data di erd adalah array. oleh karena itu, untuk membuat kos, kita perlu membuat room terlebih dahulu.
 
 //    private Double latitude;

@@ -7,6 +7,7 @@ import com.binar.kelompokd.models.response.KostResponse;
 import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
@@ -42,8 +44,14 @@ public class KostController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getKostById(@PathVariable("id") UUID id){
-        Kost kost = kostService.getKostById(id).get();
-        return new ResponseEntity<>(kost, HttpStatus.OK);
+
+        try {
+            Kost kost = kostService.getKostById(id).get();
+            return new ResponseEntity<>(kost, HttpStatus.OK);
+        }
+        catch (NoSuchElementException noSuchElementException){
+            return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping()
@@ -60,12 +68,23 @@ public class KostController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateKost(@PathVariable("id") UUID id, @RequestBody KostRequest kostRequest){
-        return new ResponseEntity<>(kostService.updateKost(id, kostRequest), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(kostService.updateKost(id, kostRequest), HttpStatus.OK);
+        }
+        catch (NoSuchElementException noSuchElementException){
+            return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteKost(@PathVariable("id") UUID id){
-        return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.NO_CONTENT);
+
+        try {
+            return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.NO_CONTENT);
+        }
+        catch (EmptyResultDataAccessException emptyResultDataAccessException){
+            return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+        }
     }
 
 //    @PostMapping("/add-arrays")

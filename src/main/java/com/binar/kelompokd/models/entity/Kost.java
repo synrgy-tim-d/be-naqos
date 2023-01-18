@@ -69,6 +69,6 @@ public class Kost extends DateModel implements Serializable {
   private Integer locationId;
 
   // room id array[]
-  @Schema(example = "123e4567-e89b-12d3-a456-426614174000")
+  @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
   private UUID[] roomId;  // tipe data menyesuaikan erd, relasi belum terbuat
 }

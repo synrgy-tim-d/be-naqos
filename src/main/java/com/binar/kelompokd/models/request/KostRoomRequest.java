@@ -49,11 +49,11 @@ public class KostRoomRequest {
 
     // facility_id array[]
     @NotNull
-    @Schema(example = "123e4567-e89b-12d3-a456-426614174000")
+    @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
     private UUID[] facility_id; // untuk membuat room kita perlu membuat facility dulu agar mendapatkan uuid nya
 
     // image_id array[]
     @NotNull
-    @Schema(example = "1")
+    @Schema(example = "[\"1\"]")
     private Integer[] image_id; // untuk membuat room kita perlu membuat image dulu agar mendapatkan uuid nya
 }

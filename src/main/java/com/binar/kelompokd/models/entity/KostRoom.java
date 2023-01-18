@@ -64,11 +64,11 @@ public class KostRoom extends DateModel implements Serializable {
     private Boolean isAvailable;
 
     // facility_id array[]
-    @Schema(example = "123e4567-e89b-12d3-a456-426614174000")
+    @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
     private UUID[] facilityId;  // tipe data menyesuaikan erd, relasi belum terbuat
 
 
     // image_id array[]
-    @Schema(example = "1")
+    @Schema(example = "[\"1\"]")
     private Integer[] imageId;  // tipe data menyesuaikan erd, relasi belum terbuat
 }
