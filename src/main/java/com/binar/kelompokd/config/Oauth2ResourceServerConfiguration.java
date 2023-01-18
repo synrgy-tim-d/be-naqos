@@ -34,6 +34,7 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
         .antMatchers("/user-login/*",
             "/user-register/**",
             "/swagger-ui/**",
+            "/forget-password/*",
             "/naqos-swagger.html",
             "/v3/api-docs/**").permitAll()
 //        .antMatchers("/v1/role-test-global/list-barang").hasAnyAuthority("ROLE_READ")
