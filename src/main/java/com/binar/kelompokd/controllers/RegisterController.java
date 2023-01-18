@@ -9,6 +9,11 @@ import com.binar.kelompokd.services.EmailSender;
 import com.binar.kelompokd.utils.EmailTemplate;
 import com.binar.kelompokd.utils.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +43,12 @@ public class RegisterController {
 
   @Autowired
   public Response templateCRUD;
+
+  @Operation(summary = "Register User with username, fullname, phoneNumber, and password")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Register User Success",
+          content = {@Content(schema = @Schema(example = "User Added!"))})
+  })
   @PostMapping("/register")
   public ResponseEntity<Map> saveRegisterManual(@Valid
                                                 @RequestBody RegisterDTO objModel) throws RuntimeException {
@@ -56,6 +67,11 @@ public class RegisterController {
   @Value("${expired.token.password.minute}")
   int expiredToken;
 
+  @Operation(summary = "Send Email OTP to User")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "OTP Send!",
+          content = {@Content(schema = @Schema(example = "OTP Send!"))})
+  })
   @PostMapping("/send-otp")
   public Map sendEmailegister(
       @NonNull @RequestBody RegisterDTO user) {
@@ -92,6 +108,11 @@ public class RegisterController {
     return templateCRUD.templateSukses(message);
   }
 
+  @Operation(summary = "Input OTP from Email")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Input OTP Success!",
+          content = {@Content(schema = @Schema(example = "Input OTP Success!"))})
+  })
   @GetMapping("/register-confirm-otp/{token}")
   public ResponseEntity<Map> saveRegisterManual(@PathVariable(value = "token") String tokenOtp) throws RuntimeException {
     Users user = userRepository.findOneByOTP(tokenOtp);

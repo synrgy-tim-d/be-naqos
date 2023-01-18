@@ -9,6 +9,11 @@ import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.models.response.MessageResponse;
 import com.binar.kelompokd.models.response.NotificationPageResponse;
 import com.binar.kelompokd.models.response.NotificationResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,12 +39,22 @@ public class NotificationController {
   @Autowired
   private IUserAuthService iUserService;
 
+  @Operation(summary = "Update unread notification when notification has been read by user")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "update to read notification!",
+          content = {@Content(schema = @Schema(example = "Notification viewed!"))})
+  })
   @PutMapping("/read")
   public ResponseEntity<MessageResponse> readNotification(@RequestBody ReadNotificationDTO request) {
     iNotificationService.updateIsRead(request.getId());
     return ResponseEntity.ok(new MessageResponse("Notification Read."));
   }
 
+  @Operation(summary = "Update all unread notification when notification has been read by user")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "update to read notification!",
+          content = {@Content(schema = @Schema(example = "Notification viewed!"))})
+  })
   @PutMapping("/all-read")
   public ResponseEntity<MessageResponse> markAllAsRead(Authentication authentication) {
     Users user = iUserService.findByUsername(authentication.getName());
@@ -47,6 +62,11 @@ public class NotificationController {
     return ResponseEntity.ok(new MessageResponse("All Notifications Read."));
   }
 
+  @Operation(summary = "Count all unread notification")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Summary Notification!",
+          content = {@Content(schema = @Schema(example = "Summary Notification!"))})
+  })
   @GetMapping("/unread")
   public ResponseEntity<NotificationUnreadCountDTO> countNotifications(Authentication authentication) {
     Users user = iUserService.findByUsername(authentication.getName());
@@ -56,6 +76,11 @@ public class NotificationController {
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
+  @Operation(summary = "List notification")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List Notification!",
+          content = {@Content(schema = @Schema(example = "List Notification!"))})
+  })
   @GetMapping("/get")
   public ResponseEntity<NotificationPageResponse> getNotificationAuth(Authentication authentication,
                                                                       @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,

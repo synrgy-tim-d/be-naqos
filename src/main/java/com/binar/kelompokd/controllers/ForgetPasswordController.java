@@ -9,6 +9,11 @@ import com.binar.kelompokd.services.EmailSender;
 import com.binar.kelompokd.utils.EmailTemplate;
 import com.binar.kelompokd.utils.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,6 +55,11 @@ public class ForgetPasswordController {
   private PasswordEncoder passwordEncoder;
 
   // Step 1 : Send OTP
+  @Operation(summary = "Send Email OTP Forget Password")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "OTP Send!",
+          content = {@Content(schema = @Schema(example = "OTP Send!"))})
+  })
   @PostMapping("/forgot-password")//send OTP
   public Map sendEmailPassword(@RequestBody ResetPasswordDTO user) {
     String message = "Thanks, please check your email";
@@ -93,6 +103,11 @@ public class ForgetPasswordController {
   }
 
   //Step 2 : CHek TOKEN OTP EMAIL
+  @Operation(summary = "Check Token OTP Email")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Check OTP!",
+          content = {@Content(schema = @Schema(example = "Check OTP!"))})
+  })
   @PostMapping("/forgot-password-chek-token")
   public Map cheKTOkenValid(@RequestBody ResetPasswordDTO model) {
     if (model.getOtp() == null) return templateCRUD.notFound("Token " + config.isRequired);
@@ -105,6 +120,11 @@ public class ForgetPasswordController {
   }
 
   // Step 3 : lakukan reset password baru
+  @Operation(summary = "Reset Password Login Naqos")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Reset Password Login Naqos!",
+          content = {@Content(schema = @Schema(example = "Reset Password Login Naqos!"))})
+  })
   @PostMapping("/forgot-password-reset")
   public Map<String, String> resetPassword(@RequestBody ResetPasswordDTO model) {
     if (model.getOtp() == null) return templateCRUD.notFound("Token " + config.isRequired);
