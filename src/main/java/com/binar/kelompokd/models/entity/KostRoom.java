@@ -2,6 +2,7 @@ package com.binar.kelompokd.models.entity;
 
 import com.binar.kelompokd.enums.RoomType;
 import com.binar.kelompokd.models.DateModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,27 +39,36 @@ public class KostRoom extends DateModel implements Serializable {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private UUID id;
 
+    @Schema(example = "FULL_FURNISHED")
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
 
     // rules text
+    @Schema(example = "Jangan berisik di atas jam 10 malam")
     @Column(columnDefinition="TEXT", nullable = false)
     private String rules;
 
-    private BigDecimal pricePerDaily;
+    @Schema(example = "150000")
+    private BigDecimal pricePerDaily;   // saya tidak tau gmn caranya buat tipe data decimal di postgres. tapi berdasarkan riset kita bisa menggunakan bigdecimal untuk tipe data decimal
+
+    @Schema(example = "650000")
     private BigDecimal pricePerWeekly;
 
+    @Schema(example = "2000000")
     @Column(nullable = false)
     private BigDecimal pricePerMonthly;
 
+    @Schema(example = "true")
     @Column(nullable = false)
     private Boolean isAvailable;
 
     // facility_id array[]
-    private UUID[] facilityId;
+    @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
+    private UUID[] facilityId;  // tipe data menyesuaikan erd, relasi belum terbuat
 
 
     // image_id array[]
-    private Integer[] imageId;
+    @Schema(example = "[\"1\"]")
+    private Integer[] imageId;  // tipe data menyesuaikan erd, relasi belum terbuat
 }

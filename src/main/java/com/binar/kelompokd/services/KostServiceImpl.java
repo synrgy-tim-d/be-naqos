@@ -1,5 +1,6 @@
 package com.binar.kelompokd.services;
 
+import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.models.entity.*;
 import com.binar.kelompokd.models.request.KostRequest;
 import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
@@ -17,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class KostServiceImpl implements KostService{
+public class KostServiceImpl implements KostService {
 
     @Autowired
     KostRepository kostRepository;
@@ -138,24 +139,24 @@ public class KostServiceImpl implements KostService{
         return "Kost deleted successfully";
     }
 
-    @Override
-    @Transactional
-    public Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request) {
-        Kost kost = kostRepository.findById(kostId).get();
-
-        kost.setRoomId(request.getRoomId());
-
-        kostRepository.save(kost);
-
-        KostRoom kostRoom = kostRoomRepository.findById(roomId).get();
-
-        kostRoom.setFacilityId(request.getFacilityId());
-        kostRoom.setImageId(request.getImageId());
-
-        kostRoomRepository.save(kostRoom);
-
-        return kost;
-    }
+//    @Override
+//    @Transactional
+//    public Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request) {
+//        Kost kost = kostRepository.findById(kostId).get();
+//
+//        kost.setRoomId(request.getRoomId());
+//
+//        kostRepository.save(kost);
+//
+//        KostRoom kostRoom = kostRoomRepository.findById(roomId).get();
+//
+//        kostRoom.setFacilityId(request.getFacilityId());
+//        kostRoom.setImageId(request.getImageId());
+//
+//        kostRoomRepository.save(kostRoom);
+//
+//        return kost;
+//    }
 
     @Override
     public Page<Kost> getListData(Pageable pageable) {

@@ -1,5 +1,6 @@
 package com.binar.kelompokd.services;
 
+import com.binar.kelompokd.interfaces.ImageService;
 import com.binar.kelompokd.models.entity.Image;
 import com.binar.kelompokd.models.request.ImageRequest;
 import com.binar.kelompokd.repos.ImageRepository;
@@ -10,7 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class ImageServiceImpl implements ImageService{
+public class ImageServiceImpl implements ImageService {
 
     @Autowired
     ImageRepository imageRepository;

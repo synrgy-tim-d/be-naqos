@@ -4,9 +4,11 @@ import com.binar.kelompokd.models.entity.Kost;
 import com.binar.kelompokd.models.request.KostRequest;
 import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
 import com.binar.kelompokd.models.response.KostResponse;
-import com.binar.kelompokd.services.KostService;
+import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.utils.SimpleStringUtils;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
@@ -34,16 +37,22 @@ public class KostController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() int page, @RequestParam() int size, @RequestParam(required = false, defaultValue = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") String orderType){
+    public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() @Schema(example = "1") int page, @RequestParam() @Schema(example = "10") int size, @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType){
         Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
         Page<Kost> kosts = kostService.getListData(pageable);
         return new ResponseEntity<>(kosts.getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getKostById(@PathVariable("id") UUID id){
-        Kost kost = kostService.getKostById(id).get();
-        return new ResponseEntity<>(kost, HttpStatus.OK);
+    public ResponseEntity<?> getKostById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
+
+        try {
+            Kost kost = kostService.getKostById(id).get();
+            return new ResponseEntity<>(kost, HttpStatus.OK);
+        }
+        catch (NoSuchElementException noSuchElementException){
+            return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping()
@@ -59,17 +68,28 @@ public class KostController {
 //    }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateKost(@PathVariable("id") UUID id, @RequestBody KostRequest kostRequest){
-        return new ResponseEntity<>(kostService.updateKost(id, kostRequest), HttpStatus.OK);
+    public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody KostRequest kostRequest){
+        try {
+            return new ResponseEntity<>(kostService.updateKost(id, kostRequest), HttpStatus.OK);
+        }
+        catch (NoSuchElementException noSuchElementException){
+            return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteKost(@PathVariable("id") UUID id){
-        return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> deleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
+
+        try {
+            return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.NO_CONTENT);
+        }
+        catch (EmptyResultDataAccessException emptyResultDataAccessException){
+            return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PostMapping("/add-arrays")
-    public ResponseEntity<?> addArrays(@RequestParam("kostId") UUID kostId, @RequestParam("roomId") UUID roomId,@RequestBody KostRoomFacilityImageRequest request){
-        return new ResponseEntity<>(kostService.addArrays(kostId, roomId, request), HttpStatus.CREATED);
-    }
+//    @PostMapping("/add-arrays")
+//    public ResponseEntity<?> addArrays(@RequestParam("kostId") UUID kostId, @RequestParam("roomId") UUID roomId,@RequestBody KostRoomFacilityImageRequest request){
+//        return new ResponseEntity<>(kostService.addArrays(kostId, roomId, request), HttpStatus.CREATED);
+//    }
 }

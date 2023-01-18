@@ -1,4 +1,4 @@
-package com.binar.kelompokd.services;
+package com.binar.kelompokd.interfaces;
 
 import com.binar.kelompokd.models.entity.RoomFacility;
 import com.binar.kelompokd.models.request.RoomFacilityRequest;

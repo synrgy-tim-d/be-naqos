@@ -1,20 +1,12 @@
 package com.binar.kelompokd.controllers;
 
-import com.binar.kelompokd.models.entity.Kost;
 import com.binar.kelompokd.models.entity.Province;
-import com.binar.kelompokd.models.request.KostRequest;
-import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
-import com.binar.kelompokd.models.response.KostResponse;
-import com.binar.kelompokd.services.ProvinceService;
+import com.binar.kelompokd.interfaces.ProvinceService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/province")
@@ -29,7 +21,7 @@ public class ProvinceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProvinceById(@PathVariable("id") Integer id){
+    public ResponseEntity<?> getProvinceById(@PathVariable("id") @Schema(example = "1") Integer id){
         return new ResponseEntity<>(provinceService.getProvinceById(id), HttpStatus.OK);
     }
 
@@ -39,12 +31,12 @@ public class ProvinceController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateProvince(@PathVariable("id") Integer id, @RequestBody Province province){
+    public ResponseEntity<?> updateProvince(@PathVariable("id") @Schema(example = "1") Integer id, @RequestBody Province province){
         return new ResponseEntity<>(provinceService.update(id, province), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProvince(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteProvince(@PathVariable("id") @Schema(example = "1") Integer id){
         provinceService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -1,4 +1,4 @@
-package com.binar.kelompokd.services;
+package com.binar.kelompokd.interfaces;
 
 import com.binar.kelompokd.models.entity.Kost;
 import com.binar.kelompokd.models.request.KostRequest;
@@ -16,6 +16,6 @@ public interface KostService {
     List<Kost> getAllKost();
     Kost updateKost(UUID id, KostRequest kostRequest);
     String deleteKost(UUID id);
-    Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request);
+//    Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request);
     Page<Kost> getListData(Pageable pageable);
 }
