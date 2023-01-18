@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * class ini digunakan untuk mendapatkan object address dan province dan city. hal ini dilakukan untuk mendapatkan detail yang bagus di response saat api di hit
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

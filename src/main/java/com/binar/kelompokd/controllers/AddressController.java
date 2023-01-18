@@ -1,8 +1,7 @@
 package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.models.entity.Address;
-import com.binar.kelompokd.models.entity.City;
-import com.binar.kelompokd.services.AddressService;
+import com.binar.kelompokd.interfaces.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,20 +1,11 @@
 package com.binar.kelompokd.controllers;
 
-import com.binar.kelompokd.models.entity.Kost;
 import com.binar.kelompokd.models.entity.Province;
-import com.binar.kelompokd.models.request.KostRequest;
-import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
-import com.binar.kelompokd.models.response.KostResponse;
-import com.binar.kelompokd.services.ProvinceService;
+import com.binar.kelompokd.interfaces.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/province")

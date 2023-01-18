@@ -1,5 +1,6 @@
 package com.binar.kelompokd.services;
 
+import com.binar.kelompokd.interfaces.RoomFacilityService;
 import com.binar.kelompokd.models.entity.RoomFacility;
 import com.binar.kelompokd.models.request.RoomFacilityRequest;
 import com.binar.kelompokd.repos.RoomFacilityRepository;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class RoomFacilityServiceImpl implements RoomFacilityService{
+public class RoomFacilityServiceImpl implements RoomFacilityService {
 
     @Autowired
     RoomFacilityRepository roomFacilityRepository;

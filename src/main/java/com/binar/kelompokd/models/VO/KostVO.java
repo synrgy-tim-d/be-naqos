@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * class ini digunakan untuk mendapatkan object kos bersamaan dengan addressnya dan room2nya. hal ini dilakukan untuk mendapatkan detail yang bagus di response saat api di hit
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

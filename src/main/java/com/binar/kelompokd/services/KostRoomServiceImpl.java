@@ -1,5 +1,6 @@
 package com.binar.kelompokd.services;
 
+import com.binar.kelompokd.interfaces.KostRoomService;
 import com.binar.kelompokd.models.entity.KostRoom;
 import com.binar.kelompokd.models.request.KostRoomRequest;
 import com.binar.kelompokd.repos.KostRoomRepository;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class KostRoomServiceImpl implements KostRoomService{
+public class KostRoomServiceImpl implements KostRoomService {
 
     @Autowired
     KostRoomRepository kostRoomRepository;

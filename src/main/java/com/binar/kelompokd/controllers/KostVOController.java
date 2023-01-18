@@ -1,10 +1,10 @@
 package com.binar.kelompokd.controllers;
 
+import com.binar.kelompokd.interfaces.*;
 import com.binar.kelompokd.models.VO.AddressVO;
 import com.binar.kelompokd.models.VO.KostVO;
 import com.binar.kelompokd.models.VO.RoomVO;
 import com.binar.kelompokd.models.entity.*;
-import com.binar.kelompokd.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +43,7 @@ public class KostVOController {
     ImageService imageService;
 
     /**
-     * this method is used to get kost data along with its address, city, province, rooms, room images, room facilities
+     * method ini akan mengambil kos bersamaan dengan list kamar, list fasilitas kamar, list foto kamar, address, kota dan provincenya berdasarkan kos id.
      */
     @GetMapping("/data/{kostId}")
     public ResponseEntity<?> getKosWithAll(@PathVariable("kostId") UUID kostId){

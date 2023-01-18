@@ -1,19 +1,22 @@
 package com.binar.kelompokd.services;
 
+import com.binar.kelompokd.interfaces.CityService;
 import com.binar.kelompokd.models.entity.City;
 import com.binar.kelompokd.repos.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class CityServiceImpl implements CityService{
+public class CityServiceImpl implements CityService {
 
     @Autowired
     CityRepository cityRepository;
 
     @Override
+    @Transactional
     public City save(City city) {
         return cityRepository.save(city);
     }
@@ -29,6 +32,7 @@ public class CityServiceImpl implements CityService{
     }
 
     @Override
+    @Transactional
     public City update(Integer id, City city) {
         City city1 = cityRepository.findById(id).get();
 
@@ -38,6 +42,7 @@ public class CityServiceImpl implements CityService{
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
         cityRepository.deleteById(id);
     }

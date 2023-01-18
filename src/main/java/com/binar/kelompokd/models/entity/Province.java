@@ -1,5 +1,6 @@
 package com.binar.kelompokd.models.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class Province {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Schema(example = "Jawa Tengah")
     @Column(nullable = false, length = 50)
     private String province;
 }

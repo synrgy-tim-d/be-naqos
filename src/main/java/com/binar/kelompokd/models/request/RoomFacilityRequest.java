@@ -1,6 +1,7 @@
 package com.binar.kelompokd.models.request;
 
 import com.binar.kelompokd.enums.Condition;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,11 +19,14 @@ import javax.validation.constraints.NotNull;
 public class RoomFacilityRequest {
     @NotNull
     @Column(length = 50)
+    @Schema(example = "AC")
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Schema(example = "BARU")
     private Condition condition;
 
     @NotNull
+    @Schema(example = "true")
     private Boolean isActive;
 }

@@ -4,7 +4,7 @@ import com.binar.kelompokd.models.entity.Kost;
 import com.binar.kelompokd.models.request.KostRequest;
 import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
 import com.binar.kelompokd.models.response.KostResponse;
-import com.binar.kelompokd.services.KostService;
+import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,8 +68,8 @@ public class KostController {
         return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/add-arrays")
-    public ResponseEntity<?> addArrays(@RequestParam("kostId") UUID kostId, @RequestParam("roomId") UUID roomId,@RequestBody KostRoomFacilityImageRequest request){
-        return new ResponseEntity<>(kostService.addArrays(kostId, roomId, request), HttpStatus.CREATED);
-    }
+//    @PostMapping("/add-arrays")
+//    public ResponseEntity<?> addArrays(@RequestParam("kostId") UUID kostId, @RequestParam("roomId") UUID roomId,@RequestBody KostRoomFacilityImageRequest request){
+//        return new ResponseEntity<>(kostService.addArrays(kostId, roomId, request), HttpStatus.CREATED);
+//    }
 }

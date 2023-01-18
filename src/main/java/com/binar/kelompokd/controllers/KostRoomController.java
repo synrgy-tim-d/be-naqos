@@ -3,7 +3,7 @@ package com.binar.kelompokd.controllers;
 import com.binar.kelompokd.models.entity.KostRoom;
 import com.binar.kelompokd.models.request.KostRoomRequest;
 import com.binar.kelompokd.models.response.KostRoomResponse;
-import com.binar.kelompokd.services.KostRoomService;
+import com.binar.kelompokd.interfaces.KostRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

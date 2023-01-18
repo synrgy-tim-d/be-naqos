@@ -1,19 +1,22 @@
 package com.binar.kelompokd.services;
 
+import com.binar.kelompokd.interfaces.AddressService;
 import com.binar.kelompokd.models.entity.Address;
 import com.binar.kelompokd.repos.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class AddressServiceImpl implements AddressService{
+public class AddressServiceImpl implements AddressService {
 
     @Autowired
     AddressRepository addressRepository;
 
     @Override
+    @Transactional
     public Address save(Address address) {
         return addressRepository.save(address);
     }
@@ -29,6 +32,7 @@ public class AddressServiceImpl implements AddressService{
     }
 
     @Override
+    @Transactional
     public Address update(Integer id, Address address) {
         Address address1 = addressRepository.findById(id).get();
 
@@ -45,6 +49,7 @@ public class AddressServiceImpl implements AddressService{
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
         addressRepository.deleteById(id);
     }

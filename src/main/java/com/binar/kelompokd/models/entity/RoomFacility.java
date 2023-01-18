@@ -2,6 +2,7 @@ package com.binar.kelompokd.models.entity;
 
 
 import com.binar.kelompokd.enums.Condition;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,12 +36,15 @@ public class RoomFacility {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private UUID id;
 
+    @Schema(example = "AC")
     @Column(nullable = false, length = 50)
     private String name;
 
+    @Schema(example = "BARU")
     @Enumerated(EnumType.STRING)
     private Condition condition;
 
+    @Schema(example = "true")
     @Column(nullable = false)
     private Boolean isActive = false;
 }

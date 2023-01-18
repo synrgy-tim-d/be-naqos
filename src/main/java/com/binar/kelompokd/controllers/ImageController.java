@@ -1,8 +1,7 @@
 package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.models.request.ImageRequest;
-import com.binar.kelompokd.models.request.KostRoomRequest;
-import com.binar.kelompokd.services.ImageService;
+import com.binar.kelompokd.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

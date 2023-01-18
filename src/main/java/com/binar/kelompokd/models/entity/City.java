@@ -1,6 +1,7 @@
 package com.binar.kelompokd.models.entity;
 
 import com.binar.kelompokd.models.DateModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class City {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  @Schema(example = "Yogyakarta")
   @Column(length = 50, nullable = false)
   private String city;
 }

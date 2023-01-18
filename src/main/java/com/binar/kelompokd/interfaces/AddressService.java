@@ -1,4 +1,4 @@
-package com.binar.kelompokd.services;
+package com.binar.kelompokd.interfaces;
 
 import com.binar.kelompokd.models.entity.Address;
 import com.binar.kelompokd.models.entity.City;
