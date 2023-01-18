@@ -6,6 +6,7 @@ import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
 import com.binar.kelompokd.models.response.KostResponse;
 import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.utils.SimpleStringUtils;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -36,14 +37,14 @@ public class KostController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() int page, @RequestParam() int size, @RequestParam(required = false, defaultValue = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") String orderType){
+    public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() @Schema(example = "1") int page, @RequestParam() @Schema(example = "10") int size, @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType){
         Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
         Page<Kost> kosts = kostService.getListData(pageable);
         return new ResponseEntity<>(kosts.getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getKostById(@PathVariable("id") UUID id){
+    public ResponseEntity<?> getKostById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
 
         try {
             Kost kost = kostService.getKostById(id).get();
@@ -67,7 +68,7 @@ public class KostController {
 //    }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateKost(@PathVariable("id") UUID id, @RequestBody KostRequest kostRequest){
+    public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody KostRequest kostRequest){
         try {
             return new ResponseEntity<>(kostService.updateKost(id, kostRequest), HttpStatus.OK);
         }
@@ -77,7 +78,7 @@ public class KostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteKost(@PathVariable("id") UUID id){
+    public ResponseEntity<?> deleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
 
         try {
             return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.NO_CONTENT);

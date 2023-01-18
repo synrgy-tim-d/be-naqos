@@ -5,6 +5,7 @@ import com.binar.kelompokd.models.VO.AddressVO;
 import com.binar.kelompokd.models.VO.KostVO;
 import com.binar.kelompokd.models.VO.RoomVO;
 import com.binar.kelompokd.models.entity.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class KostVOController {
      * method ini akan mengambil kos bersamaan dengan list kamar, list fasilitas kamar, list foto kamar, address, kota dan provincenya berdasarkan kos id.
      */
     @GetMapping("/data/{kostId}")
-    public ResponseEntity<?> getKosWithAll(@PathVariable("kostId") UUID kostId){
+    public ResponseEntity<?> getKosWithAll(@PathVariable("kostId") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID kostId){
 
         Kost kost = kostService.getKostById(kostId).get();
 

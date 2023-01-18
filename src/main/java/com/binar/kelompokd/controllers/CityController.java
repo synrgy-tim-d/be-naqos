@@ -2,6 +2,7 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.models.entity.City;
 import com.binar.kelompokd.interfaces.CityService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class CityController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCityById(@PathVariable("id") Integer id){
+    public ResponseEntity<?> getCityById(@PathVariable("id") @Schema(example = "1") Integer id){
         return new ResponseEntity<>(cityService.getCityById(id), HttpStatus.OK);
     }
 
@@ -30,12 +31,12 @@ public class CityController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateCity(@PathVariable("id") Integer id, @RequestBody City city){
+    public ResponseEntity<?> updateCity(@PathVariable("id") @Schema(example = "1") Integer id, @RequestBody City city){
         return new ResponseEntity<>(cityService.update(id, city), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCity(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteCity(@PathVariable("id") @Schema(example = "1") Integer id){
         cityService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

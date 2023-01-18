@@ -4,6 +4,7 @@ import com.binar.kelompokd.models.entity.KostRoom;
 import com.binar.kelompokd.models.request.KostRoomRequest;
 import com.binar.kelompokd.models.response.KostRoomResponse;
 import com.binar.kelompokd.interfaces.KostRoomService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class KostRoomController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<?> editRoom(@PathVariable("id") UUID id, @RequestBody KostRoomRequest kostRoomRequest){
+    public ResponseEntity<?> editRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody KostRoomRequest kostRoomRequest){
         try {
             return new ResponseEntity<>(kostRoomService.updateRoom(id, kostRoomRequest), HttpStatus.OK);        }
         catch (NoSuchElementException noSuchElementException){
@@ -36,7 +37,7 @@ public class KostRoomController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteRoom(@PathVariable("id") UUID id){
+    public ResponseEntity<?> deleteRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
         try {
             kostRoomService.deleteRoom(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -54,7 +55,7 @@ public class KostRoomController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getRoomById(@PathVariable("id") UUID id){
+    public ResponseEntity<?> getRoomById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
         try {
             return new ResponseEntity<>(kostRoomService.getRoomById(id), HttpStatus.OK);
         }
