@@ -2,7 +2,8 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.config.Config;
 import com.binar.kelompokd.interfaces.IUserAuthService;
-import com.binar.kelompokd.models.dto.user.RegisterDTO;
+import com.binar.kelompokd.models.dto.RegisterDTO;
+import com.binar.kelompokd.models.dto.SendOTPDTO;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.UserRepository;
 import com.binar.kelompokd.services.oauth.EmailSender;
@@ -60,7 +61,9 @@ public class RegisterController {
 
     }
     map = serviceReq.registerManual(objModel);
-    Map sendOTP = sendEmailegister(objModel);
+    SendOTPDTO username = new SendOTPDTO();
+    username.setUsername(objModel.getUsername());
+    Map sendOTP = sendEmailegister(username);
     return new ResponseEntity<Map>(templateCRUD.templateSukses(map), HttpStatus.OK);
   }
 
@@ -74,7 +77,7 @@ public class RegisterController {
   })
   @PostMapping("/send-otp")
   public Map sendEmailegister(
-      @NonNull @RequestBody RegisterDTO user) {
+      @NonNull @RequestBody SendOTPDTO user) {
     String message = "Thanks, please check your email for activation.";
 
     if (user.getUsername() == null) return templateCRUD.templateEror("No email provided");
