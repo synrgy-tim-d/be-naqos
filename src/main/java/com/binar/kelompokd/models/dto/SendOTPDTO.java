@@ -3,6 +3,6 @@ package com.binar.kelompokd.models.dto;
 import lombok.Data;
 
 @Data
-public class SendForgetPasswordDTO {
+public class SendOTPDTO {
     public String username;
 }
