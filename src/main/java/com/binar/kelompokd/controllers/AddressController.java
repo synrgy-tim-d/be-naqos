@@ -1,8 +1,8 @@
 package com.binar.kelompokd.controllers;
 
-import com.binar.kelompokd.models.entity.Address;
-import com.binar.kelompokd.models.entity.City;
-import com.binar.kelompokd.services.AddressService;
+import com.binar.kelompokd.models.entity.location.Address;
+import com.binar.kelompokd.interfaces.AddressService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class AddressController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getAddressById(@PathVariable("id") Integer id){
+    public ResponseEntity<?> getAddressById(@PathVariable("id") @Schema(example = "1") Integer id){
         return new ResponseEntity<>(addressService.getAddressById(id), HttpStatus.OK);
     }
 
@@ -31,12 +31,12 @@ public class AddressController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateAddress(@PathVariable("id") Integer id, @RequestBody Address address){
+    public ResponseEntity<?> updateAddress(@PathVariable("id") @Schema(example = "1") Integer id, @RequestBody Address address){
         return new ResponseEntity<>(addressService.update(id, address), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAddress(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteAddress(@PathVariable("id") @Schema(example = "1") Integer id){
         addressService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

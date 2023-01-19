@@ -1,5 +1,6 @@
 package com.binar.kelompokd.models.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,11 +17,14 @@ import java.util.UUID;
 @Builder
 public class KostRoomFacilityImageRequest {
     @NotNull
+    @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
     private UUID[] roomId;
 
     @NotNull
+    @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
     private UUID[] facilityId;
 
     @NotNull
+    @Schema(example = "[\"1\"]")
     private Integer[] imageId;
 }

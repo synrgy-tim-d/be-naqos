@@ -1,7 +1,6 @@
 package com.binar.kelompokd.models.response;
 
-import com.binar.kelompokd.models.entity.Kost;
-import com.binar.kelompokd.models.entity.KostRoom;
+import com.binar.kelompokd.models.entity.kost.Kost;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

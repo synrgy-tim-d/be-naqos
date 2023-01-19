@@ -6,7 +6,7 @@ import com.binar.kelompokd.models.dto.ResetPasswordDTO;
 import com.binar.kelompokd.models.dto.SendOTPDTO;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.UserRepository;
-import com.binar.kelompokd.services.EmailSender;
+import com.binar.kelompokd.services.oauth.EmailSender;
 import com.binar.kelompokd.utils.EmailTemplate;
 import com.binar.kelompokd.utils.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;

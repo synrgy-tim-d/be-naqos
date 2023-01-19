@@ -4,7 +4,7 @@ import com.binar.kelompokd.interfaces.INotificationService;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.models.entity.Notification;
 import com.binar.kelompokd.models.entity.oauth.Users;
-import com.binar.kelompokd.repos.NotificationRepo;
+import com.binar.kelompokd.repos.notification.NotificationRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
