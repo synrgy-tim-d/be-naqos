@@ -39,9 +39,11 @@ public class Users implements UserDetails, Serializable {
     @JsonIgnore
     private Date expiredVerifyToken;
 
+    @JsonIgnore
     @Column(length = 100, nullable = true)
     private String otp;
 
+    @JsonIgnore
     private Date otpExpiredDate;
 
     @JsonIgnore
