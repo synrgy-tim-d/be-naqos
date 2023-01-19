@@ -1,8 +1,8 @@
-//package com.binar.kelompokd.models.dto;
-//
-//import lombok.Data;
-//
-//@Data
-//public class SendForgetPasswordDTO {
-//    public String username;
-//}
+package com.binar.kelompokd.models.dto;
+
+import lombok.Data;
+
+@Data
+public class SendForgetPasswordDTO {
+    public String username;
+}
