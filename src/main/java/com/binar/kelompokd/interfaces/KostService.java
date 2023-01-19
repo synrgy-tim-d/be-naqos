@@ -1,8 +1,7 @@
 package com.binar.kelompokd.interfaces;
 
-import com.binar.kelompokd.models.entity.Kost;
+import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.request.KostRequest;
-import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,6 +1,6 @@
 package com.binar.kelompokd.interfaces;
 
-import com.binar.kelompokd.models.entity.Province;
+import com.binar.kelompokd.models.entity.location.Province;
 
 import java.util.List;
 

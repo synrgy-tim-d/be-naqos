@@ -1,6 +1,6 @@
 package com.binar.kelompokd.interfaces;
 
-import com.binar.kelompokd.models.entity.RoomFacility;
+import com.binar.kelompokd.models.entity.kost.RoomFacility;
 import com.binar.kelompokd.models.request.RoomFacilityRequest;
 
 import java.util.List;

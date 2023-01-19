@@ -1,6 +1,6 @@
 package com.binar.kelompokd.controllers;
 
-import com.binar.kelompokd.models.entity.Address;
+import com.binar.kelompokd.models.entity.location.Address;
 import com.binar.kelompokd.interfaces.AddressService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,7 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.config.Config;
 import com.binar.kelompokd.interfaces.IUserAuthService;
-import com.binar.kelompokd.models.dto.LoginDTO;
+import com.binar.kelompokd.models.dto.user.LoginDTO;
 import com.binar.kelompokd.repos.oauth.UserRepository;
 import com.binar.kelompokd.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,7 +1,7 @@
 package com.binar.kelompokd.interfaces;
 
-import com.binar.kelompokd.models.dto.LoginDTO;
-import com.binar.kelompokd.models.dto.RegisterDTO;
+import com.binar.kelompokd.models.dto.user.LoginDTO;
+import com.binar.kelompokd.models.dto.user.RegisterDTO;
 import com.binar.kelompokd.models.entity.oauth.Users;
 
 import java.util.Map;

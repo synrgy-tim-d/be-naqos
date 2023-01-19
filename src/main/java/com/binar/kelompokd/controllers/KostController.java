@@ -1,8 +1,7 @@
 package com.binar.kelompokd.controllers;
 
-import com.binar.kelompokd.models.entity.Kost;
+import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.request.KostRequest;
-import com.binar.kelompokd.models.request.KostRoomFacilityImageRequest;
 import com.binar.kelompokd.models.response.KostResponse;
 import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.utils.SimpleStringUtils;

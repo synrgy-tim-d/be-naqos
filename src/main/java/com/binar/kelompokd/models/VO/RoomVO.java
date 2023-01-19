@@ -1,8 +1,8 @@
 package com.binar.kelompokd.models.VO;
 
 import com.binar.kelompokd.models.entity.Image;
-import com.binar.kelompokd.models.entity.KostRoom;
-import com.binar.kelompokd.models.entity.RoomFacility;
+import com.binar.kelompokd.models.entity.kost.KostRoom;
+import com.binar.kelompokd.models.entity.kost.RoomFacility;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

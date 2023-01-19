@@ -1,14 +1,24 @@
 package com.binar.kelompokd.interfaces;
 
 import com.binar.kelompokd.models.entity.Image;
-import com.binar.kelompokd.models.request.ImageRequest;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 
 public interface ImageService {
-    Image addImage(ImageRequest imageRequest);
+    String uploadFileKost(MultipartFile image);
+
+    File convertMultiPartToFile(MultipartFile file) throws IOException;
+
+    LinkedHashMap<String, Object> modifyJsonResponse(String requestType, String url);
+
+//  void deleteImageKost(Image imageKost, Kost currentKost);
+
+    Image findImageKostByUrl(String fileLocation);
+
+    void saveImageKostToDb(String url);
+
     Image getImageById(Integer id);
-    List<Image> getAllImages();
-    Image editImage(Integer id, ImageRequest imageRequest);
-    String deleteImage(Integer id);
 }

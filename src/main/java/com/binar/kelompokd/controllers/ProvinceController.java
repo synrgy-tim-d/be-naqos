@@ -1,6 +1,6 @@
 package com.binar.kelompokd.controllers;
 
-import com.binar.kelompokd.models.entity.Province;
+import com.binar.kelompokd.models.entity.location.Province;
 import com.binar.kelompokd.interfaces.ProvinceService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;

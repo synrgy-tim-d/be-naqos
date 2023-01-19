@@ -1,8 +1,8 @@
 package com.binar.kelompokd.models.VO;
 
-import com.binar.kelompokd.models.entity.Address;
-import com.binar.kelompokd.models.entity.City;
-import com.binar.kelompokd.models.entity.Province;
+import com.binar.kelompokd.models.entity.location.Address;
+import com.binar.kelompokd.models.entity.location.City;
+import com.binar.kelompokd.models.entity.location.Province;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
