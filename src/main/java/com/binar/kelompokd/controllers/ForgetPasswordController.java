@@ -2,8 +2,8 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.config.Config;
 import com.binar.kelompokd.interfaces.IUserAuthService;
-import com.binar.kelompokd.models.dto.ResetPasswordDTO;
-import com.binar.kelompokd.models.dto.SendOTPDTO;
+import com.binar.kelompokd.models.dto.user.ResetPasswordDTO;
+import com.binar.kelompokd.models.dto.user.SendOTPDTO;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.UserRepository;
 import com.binar.kelompokd.services.oauth.EmailSender;
