@@ -6,9 +6,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 
-//@OpenAPIDefinition(
-//		info = @Info(title = "Backend Naqos API", version = "1.0.0", description = "Backend Project for Final Project Binar Synrgy Batch 5 Kelompok D"),
-//		servers = @Server(url = "https://be-naqos.up.railway.app/api"))
+@OpenAPIDefinition(
+		info = @Info(title = "Backend Naqos API", version = "1.0.0", description = "Backend Project for Final Project Binar Synrgy Batch 5 Kelompok D"),
+		servers = @Server(url = "https://be-naqos.up.railway.app/api"))
 @SpringBootApplication
 public class BackendApplication {
 
