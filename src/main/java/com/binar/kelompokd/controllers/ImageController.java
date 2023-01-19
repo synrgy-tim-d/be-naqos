@@ -26,7 +26,7 @@ public class ImageController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteImage(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteImage(@PathVariable("id") @Schema(example = "1") Integer id){
         imageService.deleteImage(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -37,7 +37,7 @@ public class ImageController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getImageById(@PathVariable("id") Integer id){
+    public ResponseEntity<?> getImageById(@PathVariable("id") @Schema(example = "1") Integer id){
         return new ResponseEntity<>(imageService.getImageById(id), HttpStatus.OK);
     }
 }

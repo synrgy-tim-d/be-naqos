@@ -40,7 +40,7 @@ public class KostRequest {
 
     @NotNull
     @Schema(example = "123e4567-e89b-12d3-a456-426614174000")
-    private Integer owner_id;
+    private UUID owner_id;
 
     @NotNull
     @Schema(example = "1")
