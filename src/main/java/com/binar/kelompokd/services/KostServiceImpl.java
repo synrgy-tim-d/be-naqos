@@ -88,12 +88,12 @@ public class KostServiceImpl implements KostService {
 
     @Override
     public Optional<Kost> getKostById(UUID id) {
-        return kostRepository.findById(id);
+        return kostRepository.getKostByIdWhereIsAvailableTrue(id);
     }
 
     @Override
     public List<Kost> getAllKost() {
-        return kostRepository.findAll();
+        return kostRepository.getAllKostWhereIsAvailableTrue();
     }
 
     @Override
@@ -135,7 +135,7 @@ public class KostServiceImpl implements KostService {
     @Override
     @Transactional
     public String deleteKost(UUID id) {
-        kostRepository.deleteById(kostRepository.findById(id).get().getId());
+        kostRepository.deleteById(id);
         return "Kost deleted successfully";
     }
 
@@ -161,6 +161,13 @@ public class KostServiceImpl implements KostService {
     @Override
     public Page<Kost> getListData(Pageable pageable) {
         return kostRepository.findAll(pageable);
+    }
+
+    @Override
+    @Transactional
+    public String softDeleteKost(UUID id) {
+        kostRepository.softDeleteKost(id);
+        return "Kost deleted successfully";
     }
 
 }

@@ -88,6 +88,17 @@ public class KostController {
         }
     }
 
+    @DeleteMapping("/soft-delete/{id}")
+    public ResponseEntity<?> softDeleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
+
+        try {
+            return new ResponseEntity<>(kostService.softDeleteKost(id), HttpStatus.NO_CONTENT);
+        }
+        catch (EmptyResultDataAccessException emptyResultDataAccessException){
+            return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+        }
+    }
+
 //    @PostMapping("/add-arrays")
 //    public ResponseEntity<?> addArrays(@RequestParam("kostId") UUID kostId, @RequestParam("roomId") UUID roomId,@RequestBody KostRoomFacilityImageRequest request){
 //        return new ResponseEntity<>(kostService.addArrays(kostId, roomId, request), HttpStatus.CREATED);

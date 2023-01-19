@@ -15,6 +15,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -60,6 +61,10 @@ public class Kost extends DateModel implements Serializable {
 
   // tambah owner id here, sengaja belum dibuat karena tabel user belum jadi
   // owner id int
+
+  @NotNull
+  @Schema(example = "123e4567-e89b-12d3-a456-426614174000")
+  private UUID ownerId;
 
 //  @OneToOne
 //  @Cascade(CascadeType.ALL)
