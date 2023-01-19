@@ -64,12 +64,19 @@ public class KostRoomServiceImpl implements KostRoomService {
     }
 
     @Override
+    @Transactional
+    public String softDeleteRoom(UUID id) {
+        kostRoomRepository.softDeleteRoom(id);
+        return "Kost room deleted successfully";
+    }
+
+    @Override
     public List<KostRoom> getAllRooms() {
-        return kostRoomRepository.findAll();
+        return kostRoomRepository.getAllRoomsWhereIsAvailableTrue();
     }
 
     @Override
     public KostRoom getRoomById(UUID id) {
-        return kostRoomRepository.findById(id).get();
+        return kostRoomRepository.getRoomByIdWhereIsAvailableTrue(id).get();
     }
 }

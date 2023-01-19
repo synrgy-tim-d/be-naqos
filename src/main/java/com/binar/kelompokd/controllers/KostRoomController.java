@@ -47,6 +47,17 @@ public class KostRoomController {
         }
     }
 
+    @DeleteMapping("/soft-delete/{id}")
+    public ResponseEntity<?> softDeleteRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
+
+        try {
+            return new ResponseEntity<>(kostRoomService.softDeleteRoom(id), HttpStatus.NO_CONTENT);
+        }
+        catch (EmptyResultDataAccessException emptyResultDataAccessException){
+            return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping()
     public ResponseEntity<?> getAllRooms(){
         List<KostRoom> room = kostRoomService.getAllRooms();

@@ -14,4 +14,6 @@ public interface KostRoomService {
     List<KostRoom> getAllRooms();
 
     KostRoom getRoomById(UUID id);
+
+    String softDeleteRoom(UUID id);
 }
