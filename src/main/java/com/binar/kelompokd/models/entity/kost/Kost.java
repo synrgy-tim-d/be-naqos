@@ -3,6 +3,7 @@ package com.binar.kelompokd.models.entity.kost;
 import com.binar.kelompokd.enums.KostType;
 import com.binar.kelompokd.models.DateModel;
 //import com.binar.kelompokd.models.entity.oauth.Users;
+import com.binar.kelompokd.models.entity.Image;
 import com.binar.kelompokd.models.entity.location.City;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -93,6 +95,9 @@ public class Kost extends DateModel implements Serializable {
   @ManyToOne
   @JoinColumn(name="city_id", referencedColumnName = "id")
   private City city;
+
+  @OneToMany(mappedBy="kost")
+  private Set<Image> images;
 
 
 //  @OneToOne
