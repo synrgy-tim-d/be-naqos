@@ -56,11 +56,11 @@ public class RegisterController {
 
     Users user = userRepository.checkExistingEmail(objModel.getUsername());
     if (null != user) {
-      return new ResponseEntity<Map>(templateCRUD.notFound("Username sudah ada"), HttpStatus.OK);
+      return new ResponseEntity<Map>(templateCRUD.templateSukses("Username sudah ada"), HttpStatus.OK);
 
     }
     map = serviceReq.registerManual(objModel);
-    Map sendOTP = sendEmailegister(objModel);
+    Map sendOTP = sendEmailRegister(objModel);
     return new ResponseEntity<Map>(templateCRUD.templateSukses(map), HttpStatus.OK);
   }
 
@@ -73,11 +73,11 @@ public class RegisterController {
           content = {@Content(schema = @Schema(example = "OTP Send!"))})
   })
   @PostMapping("/send-otp")
-  public Map sendEmailegister(
+  public Map sendEmailRegister(
       @NonNull @RequestBody RegisterDTO user) {
     String message = "Thanks, please check your email for activation.";
 
-    if (user.getUsername() == null) return templateCRUD.templateEror("No email provided");
+    if (user.getUsername() == null) return templateCRUD.badRequest("No email provided");
     Users found = userRepository.findOneByUsername(user.getUsername());
     if (found == null) return templateCRUD.notFound("Email not found"); //throw new BadRequest("Email not found");
 
@@ -117,7 +117,7 @@ public class RegisterController {
   public ResponseEntity<Map> saveRegisterManual(@PathVariable(value = "token") String tokenOtp) throws RuntimeException {
     Users user = userRepository.findOneByOTP(tokenOtp);
     if (null == user) {
-      return new ResponseEntity<Map>(templateCRUD.templateEror("OTP tidak ditemukan"), HttpStatus.OK);
+      return new ResponseEntity<Map>(templateCRUD.notFound("OTP tidak ditemukan"), HttpStatus.NOT_FOUND);
     }
 
     if(user.isEnabled()){
@@ -127,7 +127,7 @@ public class RegisterController {
 
     String dateToken = config.convertDateToString(user.getOtpExpiredDate());
     if(Long.parseLong(today) > Long.parseLong(dateToken)){
-      return new ResponseEntity<Map>(templateCRUD.templateEror("Your token is expired. Please Get token again."), HttpStatus.OK);
+      return new ResponseEntity<Map>(templateCRUD.unauthorized("Your token is expired. Please Get token again."), HttpStatus.OK);
     }
     //update user
     user.setEnabled(true);

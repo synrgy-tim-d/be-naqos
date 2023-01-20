@@ -17,6 +17,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,16 +60,18 @@ public class ForgetPasswordController {
   // Step 1 : Send OTP
   @Operation(summary = "Send Email OTP Forget Password")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "OTP Send!",
-          content = {@Content(schema = @Schema(example = "OTP Send!"))})
+          @ApiResponse(responseCode = "200", description = "OTP Send!",
+                  content = {@Content(schema = @Schema(example = "OTP Send!"))})
   })
   @PostMapping("/forgot-password")//send OTP
-  public Map sendEmailPassword(@RequestBody SendForgetPasswordDTO user) {
+  public ResponseEntity<?> sendEmailPassword(@RequestBody SendForgetPasswordDTO user) {
     String message = "Thanks, please check your email";
 
-    if (StringUtils.isEmpty(user.getUsername())) return templateCRUD.templateEror("No email provided");
+    if (StringUtils.isEmpty(user.getUsername()))
+      return new ResponseEntity<>(templateCRUD.badRequest("No email provided"), HttpStatus.BAD_REQUEST);
     Users found = userRepository.findOneByUsername(user.getUsername());
-    if (found == null) return templateCRUD.notFound("Email not found"); //throw new BadRequest("Email not found");
+    if (found == null)
+      return new ResponseEntity<>(templateCRUD.notFound("Email not found"), HttpStatus.NOT_FOUND); //throw new BadRequest("Email not found");
 
     String template = emailTemplate.getResetPassword();
     if (StringUtils.isEmpty(found.getOtp())) {
@@ -100,24 +104,25 @@ public class ForgetPasswordController {
       template = template.replaceAll("\\{\\{PASS_TOKEN}}", found.getOtp());
     }
     emailSender.sendAsync(found.getUsername(), "Chute - Forget Password", template);
-    return templateCRUD.templateSukses("success");
+    return new ResponseEntity<>(templateCRUD.templateSukses("success"), HttpStatus.OK);
   }
 
   //Step 2 : CHek TOKEN OTP EMAIL
   @Operation(summary = "Check Token OTP Email")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Check OTP!",
-          content = {@Content(schema = @Schema(example = "Check OTP!"))})
+          @ApiResponse(responseCode = "200", description = "Check OTP!",
+                  content = {@Content(schema = @Schema(example = "Check OTP!"))})
   })
-  @PostMapping("/forgot-password-chek-token")
-  public Map cheKTOkenValid(@RequestBody ResetPasswordDTO model) {
-    if (model.getOtp() == null) return templateCRUD.notFound("Token " + config.isRequired);
+  @PostMapping("/forgot-password-check-token")
+  public ResponseEntity<?> validateToken(@RequestBody ResetPasswordDTO model) {
+    if (model.getOtp() == null)
+      return new ResponseEntity<>(templateCRUD.badRequest("Token " + config.isRequired), HttpStatus.BAD_REQUEST);
 
     Users user = userRepository.findOneByOTP(model.getOtp());
     if (user == null) {
-      return templateCRUD.templateEror("Token not valid");
+      return new ResponseEntity<>(templateCRUD.notFound("Token not valid"), HttpStatus.NOT_FOUND);
     }
-    return templateCRUD.templateSukses("Success");
+    return new ResponseEntity<>(templateCRUD.templateSukses("Success"), HttpStatus.OK);
   }
 
   // Step 3 : lakukan reset password baru
@@ -127,12 +132,12 @@ public class ForgetPasswordController {
           content = {@Content(schema = @Schema(example = "Reset Password Login Naqos!"))})
   })
   @PostMapping("/forgot-password-reset")
-  public Map<String, String> resetPassword(@RequestBody ResetPasswordDTO model) {
-    if (model.getOtp() == null) return templateCRUD.notFound("Token " + config.isRequired);
-    if (model.getNewPassword() == null) return templateCRUD.notFound("New Password " + config.isRequired);
+  public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO model) {
+    if (model.getOtp() == null) return new ResponseEntity<>(templateCRUD.badRequest("Token " + config.isRequired), HttpStatus.BAD_REQUEST);
+    if (model.getNewPassword() == null) return new ResponseEntity<>(templateCRUD.badRequest("New Password " + config.isRequired), HttpStatus.BAD_REQUEST);
     Users user = userRepository.findOneByOTP(model.getOtp());
     String success;
-    if (user == null) return templateCRUD.notFound("Token not valid");
+    if (user == null) return new ResponseEntity<>(templateCRUD.notFound("Token not valid"), HttpStatus.NOT_FOUND);
 
     user.setPassword(passwordEncoder.encode(model.getNewPassword().replaceAll("\\s+", "")));
     user.setOtpExpiredDate(null);
@@ -142,8 +147,8 @@ public class ForgetPasswordController {
       userRepository.save(user);
       success = "success";
     } catch (Exception e) {
-      return templateCRUD.templateEror("Gagal simpan user");
+      return new ResponseEntity<>( templateCRUD.templateEror("Gagal simpan user"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return templateCRUD.templateSukses(success);
+    return new ResponseEntity<>(templateCRUD.templateSukses(success), HttpStatus.OK);
   }
 }
