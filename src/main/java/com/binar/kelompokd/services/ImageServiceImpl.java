@@ -5,6 +5,7 @@ import com.binar.kelompokd.models.entity.Image;
 import com.binar.kelompokd.repos.ImageRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class ImageServiceImpl implements ImageService {
 
     private Cloudinary cloudinary;

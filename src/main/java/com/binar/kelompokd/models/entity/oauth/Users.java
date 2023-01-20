@@ -1,7 +1,9 @@
 package com.binar.kelompokd.models.entity.oauth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "oauth_user")
 public class Users implements UserDetails, Serializable {
 
@@ -22,7 +26,6 @@ public class Users implements UserDetails, Serializable {
 
     @Column(length = 100,unique=true)
     private String username;
-
 
     @Column(length = 100, nullable = true)
     private String fullname;
@@ -147,8 +150,6 @@ public class Users implements UserDetails, Serializable {
     public boolean isEnabled() {
         return enabled;
     }
-
-
 
     public String getFullname() {
         return fullname;

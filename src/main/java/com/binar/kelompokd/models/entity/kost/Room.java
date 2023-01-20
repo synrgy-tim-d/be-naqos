@@ -2,6 +2,7 @@ package com.binar.kelompokd.models.entity.kost;
 
 import com.binar.kelompokd.enums.RoomType;
 import com.binar.kelompokd.models.DateModel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,8 +65,9 @@ public class Room extends DateModel implements Serializable {
     private Boolean isAvailable;
 
     @ManyToOne
-    @JoinColumn(name="kos_id", referencedColumnName = "id")
+    @JoinColumn(name="kost_id", referencedColumnName = "id")
     @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
+    @JsonBackReference
     private Kost kost;
 
     @ManyToMany

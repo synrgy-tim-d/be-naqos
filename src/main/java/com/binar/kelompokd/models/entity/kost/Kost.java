@@ -5,8 +5,10 @@ import com.binar.kelompokd.models.DateModel;
 //import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.models.entity.Image;
 import com.binar.kelompokd.models.entity.location.City;
+import com.binar.kelompokd.models.entity.oauth.Users;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -31,7 +33,6 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(name = "t_kost")
 public class Kost extends DateModel implements Serializable {
   @Id
@@ -66,10 +67,12 @@ public class Kost extends DateModel implements Serializable {
   @Column(nullable = false)
   private Boolean isAvailable;
 
-  @Schema(example = "-6")  // untuk set example di swagger
+  @Schema(example = "-6")
+  @Column(precision = 10)// untuk set example di swagger
   private Double latitude;
 
   @Schema(example = "106")  // untuk set example di swagger
+  @Column(precision = 10)
   private Double longitude;
 
   @Schema(example = "Jl. Kabupaten, Nusupan, Trihanggo, Gamping, Sleman Regency")  // untuk set example di swagger
@@ -85,11 +88,41 @@ public class Kost extends DateModel implements Serializable {
   private String subdistrict;
 
   @Schema(example = "55291")
-  @Column(nullable = false, length = 10)
+  @Column(nullable = false, length = 10, name = "postal_code")
   private String postalCode;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "owner_id", referencedColumnName = "id")
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private Users ownerId;
+
+  @OneToOne
   @JoinColumn(name="city_id", referencedColumnName = "id")
   @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
   private City city;
+
+  @OneToMany(
+      mappedBy = "kost",
+      cascade = javax.persistence.CascadeType.MERGE,
+      orphanRemoval = true)
+  @JsonManagedReference
+  private List<Room> rooms = new ArrayList<>();
+
+  @OneToMany(
+      mappedBy = "kosts",
+      cascade = javax.persistence.CascadeType.MERGE,
+      orphanRemoval = true)
+  @JsonManagedReference
+  private List<Image> imageKosts = new ArrayList<>();
+
+  public void add(Image imageKost) {
+    imageKosts.add(imageKost);
+    imageKost.setKosts(this);
+  }
+
+  public void deleteImageKost(Image imageKost) {
+    imageKosts.remove(imageKost);
+    imageKost.setKosts(null);
+  }
+
 }

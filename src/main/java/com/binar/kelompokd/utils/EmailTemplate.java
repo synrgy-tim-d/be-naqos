@@ -1,9 +1,14 @@
 package com.binar.kelompokd.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component("emailTemplate")
 public class EmailTemplate {
+
+  @Value("${BASE_URL}")
+  private String BASE_URL;
+
   public String getRegisterTemplate() {
     return "<!DOCTYPE html>\n" +
         "<html>\n" +
@@ -53,11 +58,9 @@ public class EmailTemplate {
         "<body>\n" +
         "\t<div class=\"email-container\">\n" +
         "\t\t<p>Halo <span class=\"user-name\">{{USERNAME}}</span></p>\n" +
-        "\t\t<p>Harap konfirmasikan email kamu dengan memasukan kode dibawah ini</p>\n" +
+        "\t\t<p>Harap konfirmasikan email kamu dengan klik link dibawah ini</p>\n" +
         "\t\t\n" +
-        "\t\tkode: <b>{{VERIFY_TOKEN}}</b>\n" +
-        "\t\t\n" +
-        "atau klik link berikut ini :<b>https://be-naqos.up.railway.app/api/user-register/register-confirm-otp/{{VERIFY_TOKEN}}</b>" +
+        BASE_URL+"/api/user-register/register-confirm-otp/{{VERIFY_TOKEN}}</b>" +
         "\t\t\n" +
         "\t\t<p class=\"mt--15\">Jika kamu butuh bantuan atau pertanyaan, hubungi customer care kami di (021)-1500123 atau kirim email ke mfauzi@naqos.app</p>\n" +
         "\t\t\n" +

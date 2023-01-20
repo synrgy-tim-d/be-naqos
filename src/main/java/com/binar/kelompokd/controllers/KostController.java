@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/kos")
+@RequestMapping("/kost")
 public class KostController {
 
     @Autowired

@@ -1,6 +1,8 @@
 package com.binar.kelompokd.models.entity.location;
 
 import com.binar.kelompokd.models.DateModel;
+import com.binar.kelompokd.models.entity.kost.Kost;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +29,10 @@ public class City {
   @Column(length = 50, nullable = false)
   private String city;
 
-  @ManyToOne()
+  @OneToOne(mappedBy = "city")
+  private Kost kost;
+
+  @ManyToOne
   @JoinColumn(name="province_id", referencedColumnName = "id")
   @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
   private Province province;

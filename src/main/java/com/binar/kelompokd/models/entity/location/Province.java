@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -23,4 +24,7 @@ public class Province {
     @Schema(example = "Jawa Tengah")
     @Column(nullable = false, length = 50)
     private String province;
+
+    @OneToMany(mappedBy="province")
+    private Set<City> cities;
 }
