@@ -6,7 +6,7 @@
 //import com.binar.kelompokd.repos.*;
 //import com.binar.kelompokd.repos.kost.KostRepository;
 //import com.binar.kelompokd.repos.kost.RoomRepository;
-//import com.binar.kelompokd.repos.kost.RoomFacilityRepository;
+//import com.binar.kelompokd.repos.kost.FacilityRepository;
 //import com.binar.kelompokd.repos.location.AddressRepository;
 //import com.binar.kelompokd.repos.location.CityRepository;
 //import com.binar.kelompokd.repos.location.ProvinceRepository;
@@ -44,7 +44,7 @@
 //    RoomRepository roomRepository;
 //
 //    @Autowired
-//    RoomFacilityRepository roomFacilityRepository;
+//    FacilityRepository facilityRepository;
 //
 //    @Autowired
 //    SimpleStringUtils simpleStringUtils;

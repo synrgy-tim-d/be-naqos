@@ -7,7 +7,7 @@
 //import com.binar.kelompokd.models.entity.*;
 //import com.binar.kelompokd.models.entity.kost.Kost;
 //import com.binar.kelompokd.models.entity.kost.Room;
-//import com.binar.kelompokd.models.entity.kost.RoomFacility;
+//import com.binar.kelompokd.models.entity.kost.Facility;
 //import com.binar.kelompokd.models.entity.location.Address;
 //import com.binar.kelompokd.models.entity.location.City;
 //import com.binar.kelompokd.models.entity.location.Province;
@@ -44,7 +44,7 @@
 //    ProvinceService provinceService;
 //
 //    @Autowired
-//    RoomFacilityService roomFacilityService;
+//    FacilityService facilityService;
 //
 //    @Autowired
 //    ImageService imageService;
@@ -69,7 +69,7 @@
 //
 //        Image image = new Image();
 //
-//        RoomFacility facility = new RoomFacility();
+//        Facility facility = new Facility();
 //
 //        // 1 kos punya banyak rooms, tiap room punya banyak facilitas dan foto
 //
@@ -80,7 +80,7 @@
 //            RoomVO roomVO = new RoomVO();
 //            Room room = new Room();
 //            List<Image> images = new ArrayList<>();
-//            List<RoomFacility> facilities = new ArrayList<>();
+//            List<Facility> facilities = new ArrayList<>();
 //
 //            room = roomService.getRoomById(roomIds[i]);
 //
@@ -93,7 +93,7 @@
 //            UUID[] facilityIds=room.getFacilityId();
 //
 //            for(int j=0;j<facilityIds.length;j++){
-//                facilities.add(roomFacilityService.getFacilityById(facilityIds[j]));
+//                facilities.add(facilityService.getFacilityById(facilityIds[j]));
 //            }
 //
 //            roomVO.setRoom(room);
