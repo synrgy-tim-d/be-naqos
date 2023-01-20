@@ -10,10 +10,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface KostService {
-    Kost createKost(KostRequest kostRequest);
+    Kost createKost(Kost kost);
     Optional<Kost> getKostById(UUID id);
     List<Kost> getAllKost();
-    Kost updateKost(UUID id, KostRequest kostRequest);
+    Page<Kost> getAllKost(Pageable pageable);
+    Kost updateKost(UUID id, Kost kost);
     String deleteKost(UUID id);
 //    Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request);
     Page<Kost> getListData(Pageable pageable);

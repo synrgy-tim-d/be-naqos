@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Table(name = "t_room_facility")
-public class RoomFacility {
+public class Facility {
 
     @Id
     @GeneratedValue(generator = "UUID")

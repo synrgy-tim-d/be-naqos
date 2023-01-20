@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,4 +26,9 @@ public class City {
   @Schema(example = "Yogyakarta")
   @Column(length = 50, nullable = false)
   private String city;
+
+  @ManyToOne()
+  @JoinColumn(name="province_id", referencedColumnName = "id")
+  @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
+  private Province province;
 }

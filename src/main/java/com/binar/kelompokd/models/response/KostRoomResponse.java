@@ -1,6 +1,6 @@
 package com.binar.kelompokd.models.response;
 
-import com.binar.kelompokd.models.entity.kost.KostRoom;
+import com.binar.kelompokd.models.entity.kost.Room;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KostRoomResponse {
-    private List<KostRoom> room;
+    private List<Room> room;
 }

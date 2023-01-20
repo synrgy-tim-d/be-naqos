@@ -1,9 +1,9 @@
 package com.binar.kelompokd.controllers;
 
-import com.binar.kelompokd.models.entity.kost.KostRoom;
+import com.binar.kelompokd.interfaces.RoomService;
+import com.binar.kelompokd.models.entity.kost.Room;
 import com.binar.kelompokd.models.request.KostRoomRequest;
 import com.binar.kelompokd.models.response.KostRoomResponse;
-import com.binar.kelompokd.interfaces.KostRoomService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,20 +17,20 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/room")
-public class KostRoomController {
+public class RoomController {
 
     @Autowired
-    KostRoomService kostRoomService;
+    RoomService roomService;
 
     @PostMapping()
-    public ResponseEntity<?> addRoom(@RequestBody KostRoomRequest kostRoomRequest){
-        return new ResponseEntity<>(kostRoomService.addRoom(kostRoomRequest), HttpStatus.OK);
+    public ResponseEntity<?> addRoom(@RequestBody Room room){
+        return new ResponseEntity<>(roomService.addRoom(room), HttpStatus.OK);
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<?> editRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody KostRoomRequest kostRoomRequest){
+    public ResponseEntity<?> editRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody Room room){
         try {
-            return new ResponseEntity<>(kostRoomService.updateRoom(id, kostRoomRequest), HttpStatus.OK);        }
+            return new ResponseEntity<>(roomService.updateRoom(id, room), HttpStatus.OK);        }
         catch (NoSuchElementException noSuchElementException){
             return new ResponseEntity<>("error : \"Room doesn't exist\"", HttpStatus.NOT_FOUND);
         }
@@ -39,7 +39,7 @@ public class KostRoomController {
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
         try {
-            kostRoomService.deleteRoom(id);
+            roomService.deleteRoom(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         catch (EmptyResultDataAccessException emptyResultDataAccessException){
@@ -51,7 +51,7 @@ public class KostRoomController {
     public ResponseEntity<?> softDeleteRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
 
         try {
-            return new ResponseEntity<>(kostRoomService.softDeleteRoom(id), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(roomService.softDeleteRoom(id), HttpStatus.NO_CONTENT);
         }
         catch (EmptyResultDataAccessException emptyResultDataAccessException){
             return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
@@ -60,7 +60,7 @@ public class KostRoomController {
 
     @GetMapping()
     public ResponseEntity<?> getAllRooms(){
-        List<KostRoom> room = kostRoomService.getAllRooms();
+        List<Room> room = roomService.getAllRooms();
         KostRoomResponse kostRoomResponse = KostRoomResponse.builder().room(room).build();
         return new ResponseEntity<>(kostRoomResponse, HttpStatus.OK);
     }
@@ -68,7 +68,7 @@ public class KostRoomController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getRoomById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
         try {
-            return new ResponseEntity<>(kostRoomService.getRoomById(id), HttpStatus.OK);
+            return new ResponseEntity<>(roomService.getRoomById(id), HttpStatus.OK);
         }
         catch (NoSuchElementException noSuchElementException){
             return new ResponseEntity<>("error : \"Room doesn't exist\"", HttpStatus.NOT_FOUND);
