@@ -12,6 +12,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,9 +35,9 @@ public class Image extends DateModel implements Serializable {
     @Column(name = "url", columnDefinition="TEXT", nullable = false)
     private String url;
 
-    @ManyToOne
-    @JoinColumn(name="kost_id")
-    @JsonManagedReference
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "kost_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Kost kost;
+
 }

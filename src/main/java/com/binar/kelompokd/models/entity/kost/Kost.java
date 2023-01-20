@@ -90,10 +90,6 @@ public class Kost extends DateModel implements Serializable {
 
   @ManyToOne
   @JoinColumn(name="city_id", referencedColumnName = "id")
-  @Cascade(CascadeType.ALL)
+  @Cascade(CascadeType.MERGE)
   private City city;
-
-  @OneToMany(mappedBy="kost")
-  @Cascade(org.hibernate.annotations.CascadeType.ALL)
-  private List<Image> images = new ArrayList<>();
 }
