@@ -3,6 +3,7 @@ package com.binar.kelompokd.models.entity.kost;
 import com.binar.kelompokd.enums.KostType;
 import com.binar.kelompokd.models.DateModel;
 //import com.binar.kelompokd.models.entity.oauth.Users;
+import com.binar.kelompokd.models.entity.location.City;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,21 +60,43 @@ public class Kost extends DateModel implements Serializable {
   @Column(nullable = false)
   private Boolean isAvailable;
 
-  // tambah owner id here, sengaja belum dibuat karena tabel user belum jadi
-  // owner id int
+  @Schema(example = "-6")  // untuk set example di swagger
+  private Double latitude;
 
-  @NotNull
-  @Schema(example = "123e4567-e89b-12d3-a456-426614174000")
-  private UUID ownerId;
+  @Schema(example = "106")  // untuk set example di swagger
+  private Double longitude;
+
+  @Schema(example = "Jl. Kabupaten, Nusupan, Trihanggo, Gamping, Sleman Regency")  // untuk set example di swagger
+  @Column(nullable = false, length = 100)
+  private String address;
+
+  @Schema(example = "Disctrict A")  // untuk set example di swagger
+  @Column(nullable = false, length = 50)
+  private String district;
+
+  @Schema(example = "Subdistrict B")  // untuk set example di swagger
+  @Column(nullable = false, length = 50)
+  private String subdistrict;
+
+  @Schema(example = "55291")
+  @Column(nullable = false, length = 10)
+  private String postalCode;
+
+//    @OneToOne
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    private Province province;
+
+//    @OneToOne
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    private City city;
+
+  @ManyToOne
+  @JoinColumn(name="city_id", referencedColumnName = "id")
+  private City city; // tipe data menyesuaikan erd. relasi belum terbuat
+
 
 //  @OneToOne
 //  @Cascade(CascadeType.ALL)
 //  private Address location;
 
-  @Schema(example = "1")
-  private Integer locationId;
-
-  // room id array[]
-  @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
-  private UUID[] roomId;  // tipe data menyesuaikan erd, relasi belum terbuat
 }
