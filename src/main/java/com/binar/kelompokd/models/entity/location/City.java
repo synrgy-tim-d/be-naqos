@@ -25,4 +25,8 @@ public class City {
   @Schema(example = "Yogyakarta")
   @Column(length = 50, nullable = false)
   private String city;
+
+  @ManyToOne
+  @JoinColumn(name="province_id", referencedColumnName = "id")
+  private Province province;
 }

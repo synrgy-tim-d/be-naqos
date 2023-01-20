@@ -92,7 +92,7 @@ public class Kost extends DateModel implements Serializable {
 
   @ManyToOne
   @JoinColumn(name="city_id", referencedColumnName = "id")
-  private City city; // tipe data menyesuaikan erd. relasi belum terbuat
+  private City city;
 
 
 //  @OneToOne
