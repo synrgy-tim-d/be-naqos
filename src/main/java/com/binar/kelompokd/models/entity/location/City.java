@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -28,5 +29,6 @@ public class City {
 
   @ManyToOne
   @JoinColumn(name="province_id", referencedColumnName = "id")
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
   private Province province;
 }

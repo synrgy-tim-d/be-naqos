@@ -5,6 +5,9 @@ import com.binar.kelompokd.models.DateModel;
 //import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.models.entity.Image;
 import com.binar.kelompokd.models.entity.location.City;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -84,24 +88,12 @@ public class Kost extends DateModel implements Serializable {
   @Column(nullable = false, length = 10)
   private String postalCode;
 
-//    @OneToOne
-//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-//    private Province province;
-
-//    @OneToOne
-//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-//    private City city;
-
   @ManyToOne
   @JoinColumn(name="city_id", referencedColumnName = "id")
+  @Cascade(CascadeType.ALL)
   private City city;
 
   @OneToMany(mappedBy="kost")
-  private Set<Image> images;
-
-
-//  @OneToOne
-//  @Cascade(CascadeType.ALL)
-//  private Address location;
-
+  @Cascade(org.hibernate.annotations.CascadeType.ALL)
+  private List<Image> images = new ArrayList<>();
 }

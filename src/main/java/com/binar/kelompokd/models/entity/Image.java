@@ -2,11 +2,16 @@ package com.binar.kelompokd.models.entity;
 
 import com.binar.kelompokd.models.DateModel;
 import com.binar.kelompokd.models.entity.kost.Kost;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -30,5 +35,7 @@ public class Image extends DateModel implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="kost_id")
+    @JsonManagedReference
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Kost kost;
 }
