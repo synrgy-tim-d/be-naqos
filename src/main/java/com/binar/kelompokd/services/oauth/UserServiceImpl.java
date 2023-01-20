@@ -62,10 +62,10 @@ public class UserServiceImpl implements IUserAuthService {
         }
       }
       if (checkUser == null) {
-        return templateResponse.notFound("user not found");
+        return templateResponse.notFound("User not found");
       }
       if (!(encoder.matches(loginModel.getPassword(), checkUser.getPassword()))) {
-        return templateResponse.templateEror("wrong password");
+        return templateResponse.unauthorized("Your password is not correct");
       }
       String url = baseUrl +"/api"+ "/oauth/token?username=" + loginModel.getUsername() +
               "&password=" + loginModel.getPassword() +
