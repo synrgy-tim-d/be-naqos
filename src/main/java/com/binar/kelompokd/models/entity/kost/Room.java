@@ -13,7 +13,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -66,8 +65,10 @@ public class Room extends DateModel implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="kos_id", referencedColumnName = "id")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
     private Kost kost;
 
     @ManyToMany
+    @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
     Set<Facility> facility;
 }

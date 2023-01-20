@@ -29,6 +29,6 @@ public class City {
 
   @ManyToOne()
   @JoinColumn(name="province_id", referencedColumnName = "id")
-  @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+  @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
   private Province province;
 }

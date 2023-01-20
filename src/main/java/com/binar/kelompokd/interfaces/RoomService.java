@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RoomService {
-    Room addRoom(KostRoomRequest kostRoomRequest);
-    Room updateRoom(UUID id, KostRoomRequest kostRoomRequest);
+    Room addRoom(Room room);
+    Room updateRoom(UUID id, Room room);
     String deleteRoom(UUID id);
 
     List<Room> getAllRooms();
