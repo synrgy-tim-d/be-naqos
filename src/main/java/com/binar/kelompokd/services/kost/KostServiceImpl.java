@@ -42,6 +42,11 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
+    public Page<Kost> getAllKost(Pageable pageable) {
+        return kostRepository.getAllKostWhereIsAvailableTrue(pageable);
+    }
+
+    @Override
     @Transactional
     public Kost updateKost(UUID id, Kost kost) {
 
@@ -72,7 +77,7 @@ public class KostServiceImpl implements KostService {
 
     @Override
     public Page<Kost> getListData(Pageable pageable) {
-        return kostRepository.findAll(pageable);
+        return kostRepository.getAllKostWhereIsAvailableTrue(pageable);
     }
 
     @Override

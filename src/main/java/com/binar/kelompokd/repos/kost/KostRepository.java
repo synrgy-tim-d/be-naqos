@@ -1,6 +1,8 @@
 package com.binar.kelompokd.repos.kost;
 
 import com.binar.kelompokd.models.entity.kost.Kost;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,6 +28,12 @@ public interface KostRepository extends JpaRepository<Kost, UUID> {
             value = "select * from t_kost where is_available = true"
     )
     List<Kost> getAllKostWhereIsAvailableTrue();
+
+    @Query(
+            nativeQuery = true,
+            value = "select * from t_kost where is_available = true"
+    )
+    Page<Kost> getAllKostWhereIsAvailableTrue(Pageable pageable);
 
     @Query(
             nativeQuery = true,

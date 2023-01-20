@@ -13,6 +13,7 @@ public interface KostService {
     Kost createKost(Kost kost);
     Optional<Kost> getKostById(UUID id);
     List<Kost> getAllKost();
+    Page<Kost> getAllKost(Pageable pageable);
     Kost updateKost(UUID id, Kost kost);
     String deleteKost(UUID id);
 //    Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request);
