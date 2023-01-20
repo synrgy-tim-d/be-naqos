@@ -6,7 +6,7 @@
 //import com.binar.kelompokd.models.VO.RoomVO;
 //import com.binar.kelompokd.models.entity.*;
 //import com.binar.kelompokd.models.entity.kost.Kost;
-//import com.binar.kelompokd.models.entity.kost.KostRoom;
+//import com.binar.kelompokd.models.entity.kost.Room;
 //import com.binar.kelompokd.models.entity.kost.RoomFacility;
 //import com.binar.kelompokd.models.entity.location.Address;
 //import com.binar.kelompokd.models.entity.location.City;
@@ -35,7 +35,7 @@
 //    AddressService addressService;
 //
 //    @Autowired
-//    KostRoomService kostRoomService;
+//    RoomService roomService;
 //
 //    @Autowired
 //    CityService cityService;
@@ -78,11 +78,11 @@
 //        for(int i=0;i<roomIds.length;i++){
 //
 //            RoomVO roomVO = new RoomVO();
-//            KostRoom room = new KostRoom();
+//            Room room = new Room();
 //            List<Image> images = new ArrayList<>();
 //            List<RoomFacility> facilities = new ArrayList<>();
 //
-//            room = kostRoomService.getRoomById(roomIds[i]);
+//            room = roomService.getRoomById(roomIds[i]);
 //
 //            Integer[] imageIds=room.getImageId();
 //

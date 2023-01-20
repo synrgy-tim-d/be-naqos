@@ -5,7 +5,7 @@
 //import com.binar.kelompokd.models.request.KostRequest;
 //import com.binar.kelompokd.repos.*;
 //import com.binar.kelompokd.repos.kost.KostRepository;
-//import com.binar.kelompokd.repos.kost.KostRoomRepository;
+//import com.binar.kelompokd.repos.kost.RoomRepository;
 //import com.binar.kelompokd.repos.kost.RoomFacilityRepository;
 //import com.binar.kelompokd.repos.location.AddressRepository;
 //import com.binar.kelompokd.repos.location.CityRepository;
@@ -41,7 +41,7 @@
 //    ImageRepository imageRepository;
 //
 //    @Autowired
-//    KostRoomRepository kostRoomRepository;
+//    RoomRepository roomRepository;
 //
 //    @Autowired
 //    RoomFacilityRepository roomFacilityRepository;
@@ -153,12 +153,12 @@
 ////
 ////        kostRepository.save(kost);
 ////
-////        KostRoom kostRoom = kostRoomRepository.findById(roomId).get();
+////        Room kostRoom = roomRepository.findById(roomId).get();
 ////
 ////        kostRoom.setFacilityId(request.getFacilityId());
 ////        kostRoom.setImageId(request.getImageId());
 ////
-////        kostRoomRepository.save(kostRoom);
+////        roomRepository.save(kostRoom);
 ////
 ////        return kost;
 ////    }

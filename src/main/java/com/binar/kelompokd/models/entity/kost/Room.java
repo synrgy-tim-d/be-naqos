@@ -13,7 +13,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,7 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Table(name = "t_kost_rooms")
-public class KostRoom extends DateModel implements Serializable {
+public class Room extends DateModel implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -63,12 +62,7 @@ public class KostRoom extends DateModel implements Serializable {
     @Column(nullable = false)
     private Boolean isAvailable;
 
-    // facility_id array[]
-    @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
-    private UUID[] facilityId;  // tipe data menyesuaikan erd, relasi belum terbuat
-
-
-    // image_id array[]
-    @Schema(example = "[\"1\"]")
-    private Integer[] imageId;  // tipe data menyesuaikan erd, relasi belum terbuat
+    @ManyToOne
+    @JoinColumn(name="kos_id", referencedColumnName = "id")
+    private Kost kost;
 }

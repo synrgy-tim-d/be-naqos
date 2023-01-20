@@ -1,7 +1,7 @@
 package com.binar.kelompokd.models.VO;
 
 import com.binar.kelompokd.models.entity.Image;
-import com.binar.kelompokd.models.entity.kost.KostRoom;
+import com.binar.kelompokd.models.entity.kost.Room;
 import com.binar.kelompokd.models.entity.kost.RoomFacility;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class RoomVO {
-    private KostRoom room;
+    private Room room;
     private List<Image> images;
     private List<RoomFacility> facilities;
 }
