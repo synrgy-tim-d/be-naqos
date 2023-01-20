@@ -3,7 +3,7 @@ package com.binar.kelompokd.controllers;
 import com.binar.kelompokd.config.Config;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.models.dto.user.ResetPasswordDTO;
-import com.binar.kelompokd.models.dto.user.SendForgetPasswordDTO;
+import com.binar.kelompokd.models.dto.user.SendOTPDTO;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.UserRepository;
 import com.binar.kelompokd.services.oauth.EmailSender;
@@ -64,7 +64,7 @@ public class ForgetPasswordController {
                   content = {@Content(schema = @Schema(example = "OTP Send!"))})
   })
   @PostMapping("/forgot-password")//send OTP
-  public ResponseEntity<?> sendEmailPassword(@RequestBody SendForgetPasswordDTO user) {
+  public ResponseEntity<?> sendEmailPassword(@RequestBody SendOTPDTO user) {
     String message = "Thanks, please check your email";
 
     if (StringUtils.isEmpty(user.getUsername()))

@@ -55,21 +55,14 @@ public class KostController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createKost(@RequestBody KostRequest kostRequest){
-        Kost kost = kostService.createKost(kostRequest);
-        return new ResponseEntity<>(kost, HttpStatus.OK);
+    public ResponseEntity<?> createKost(@RequestBody Kost kost){
+        return new ResponseEntity<>(kostService.createKost(kost), HttpStatus.OK);
     }
 
-//    @PostMapping("/add-room")
-//    public ResponseEntity<?> createRoom(@RequestBody KostRo roomRequest){
-//        Kost kost = roomService.createKost(kostRequest);
-//        return new ResponseEntity<>(kost, HttpStatus.CREATED);
-//    }
-
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody KostRequest kostRequest){
+    public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody Kost kost){
         try {
-            return new ResponseEntity<>(kostService.updateKost(id, kostRequest), HttpStatus.OK);
+            return new ResponseEntity<>(kostService.updateKost(id, kost), HttpStatus.OK);
         }
         catch (NoSuchElementException noSuchElementException){
             return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
@@ -97,9 +90,4 @@ public class KostController {
             return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
         }
     }
-
-//    @PostMapping("/add-arrays")
-//    public ResponseEntity<?> addArrays(@RequestParam("kostId") UUID kostId, @RequestParam("roomId") UUID roomId,@RequestBody KostRoomFacilityImageRequest request){
-//        return new ResponseEntity<>(kostService.addArrays(kostId, roomId, request), HttpStatus.CREATED);
-//    }
 }

@@ -38,6 +38,29 @@ public class KostRequest {
     @Schema(example = "true")
     private Boolean is_available;
 
+    private Double latitude;
+
+    private Double longitude;
+
+    @Column(length = 100)
+    private String address;
+
+    @Column(length = 50)
+    private String district;
+
+    @Column(length = 50)
+    private String subdistrict;
+
+    @Column(length = 10)
+    private String postalCode;
+
+    @Column(length = 50)
+    private String province;
+
+    @Column(length = 50)
+    private String city;
+    // 	  location_id: int  ??
+
     @NotNull
     @Schema(example = "123e4567-e89b-12d3-a456-426614174000")
     private UUID owner_id;
@@ -50,26 +73,5 @@ public class KostRequest {
     @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
     private UUID[] room_id; // seperti yg bisa dilihat, kita harus memasukan room id secara manual karena tipe data di erd adalah array. oleh karena itu, untuk membuat kos, kita perlu membuat room terlebih dahulu.
 
-//    private Double latitude;
-//
-//    private Double longitude;
-//
-//    @Column(length = 50)
-//    private String district;
-//
-//    @Column(length = 50)
-//    private String subdistrict;
-//
-//    @Column(length = 100)
-//    private String address;
-//
-//    @Column(length = 10)
-//    private String postalCode;
-//
-//    @Column(length = 50)
-//    private String province;
-//
-//    @Column(length = 50)
-//    private String city;
-//    // 	  location_id: int  ??
+
 }
