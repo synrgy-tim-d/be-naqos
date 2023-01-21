@@ -7,7 +7,7 @@ import com.binar.kelompokd.models.entity.oauth.Users;
 import java.util.Map;
 
 public interface IUserAuthService {
-  Map registerManual(RegisterDTO objModel) ;
+  String registerManual(RegisterDTO objModel) ;
   Map login(LoginDTO loginModel);
 
   Users findUsersById(Long id);

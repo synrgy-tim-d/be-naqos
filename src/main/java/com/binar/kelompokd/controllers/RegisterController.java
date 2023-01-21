@@ -53,18 +53,18 @@ public class RegisterController {
   @PostMapping("/register")
   public ResponseEntity<Map> saveRegisterManual(@Valid
                                                 @RequestBody RegisterDTO objModel) throws RuntimeException {
-    Map map = new HashMap();
+
 
     Users user = userRepository.checkExistingEmail(objModel.getUsername());
     if (null != user) {
       return new ResponseEntity<Map>(templateCRUD.templateSukses("Username sudah ada"), HttpStatus.OK);
 
     }
-    map = serviceReq.registerManual(objModel);
+    String result = serviceReq.registerManual(objModel);
     SendOTPDTO username = new SendOTPDTO();
     username.setUsername(objModel.getUsername());
     Map sendOTP = sendEmailRegister(username);
-    return new ResponseEntity<Map>(templateCRUD.templateSukses(map), HttpStatus.OK);
+    return new ResponseEntity<Map>(templateCRUD.templateSukses(result), HttpStatus.OK);
   }
 
   @Value("${expired.token.password.minute}")
