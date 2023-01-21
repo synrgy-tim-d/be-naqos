@@ -1,5 +1,6 @@
 package com.binar.kelompokd.utils;
 
+import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.location.Province;
 import com.binar.kelompokd.models.entity.oauth.Client;
 import com.binar.kelompokd.models.entity.oauth.Roles;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Service
@@ -76,6 +78,15 @@ public class DatabaseSeeder implements ApplicationRunner {
   private final String[] provinces = new String[] {
       "Banten", "DKI Jakarta", "DI Yogyakarta", "Jawa Barat", "Jawa Tengah", "Jawa Timur"};
 
+  private final String[] cities = new String[] {
+      "Kabupaten Lebak:1", "Kabupaten Pandeglang:1", "Kabupaten Serang:1", "Kabupaten Tangerang:1", "Kota Cilegon:1", "Kota Serang:1", "Kota Tangerang:1", "Kota Tangerang Selatan:1",
+      "Kabupaten Administrasi Kepulauan Seribu:2", "Kota Administrasi Jakarta Barat:2", "Kota Administrasi Jakarta Pusat:2", "Kota Administrasi Jakarta Selatan:2", "Kota Administrasi Jakarta Timur:2", "Kota Administrasi Jakarta Utara:2",
+      "Kabupaten Bantul:3", "Kabupaten Gunungkidul:3", "Kabupaten Kulon Progo:3", "Kabupaten Sleman:3", "Kota Yogyakarta:3",
+      "Kabupaten Bandung:4", "Kabupaten Bandung Barat:4", "Kabupaten Bekasi:4", "Kabupaten Bogor:4", "Kabupaten Ciamis:4", "Kabupaten Cianjur:4", "Kabupaten Cirebon:4", "Kabupaten Garut:4", "Kabupaten Indramayu:4", "Kabupaten Karawang:4", "Kabupaten Kuningan:4", "Kabupaten Majalengka:4", "Kabupaten Pangandaran:4", "Kabupaten Purwakarta:4", "Kabupaten Subang:4", "Kabupaten Sukabumi:4", "Kabupaten Sumedang:4", "Kabupaten Tasikmalaya:4", "Kota Bandung:4", "Kota Banjar:4", "Kota Bekasi:4", "Kota Bogor:4", "Kota Cimahi:4", "Kota Cirebon:4", "Kota Depok:4", "Kota Sukabumi:4", "Kota Tasikmalaya:4",
+      "Kabupaten Banjarnegara:5", "Kabupaten Banyumas:5", "Kabupaten Batang:5", "Kabupaten Blora:5", "Kabupaten Boyolali:5", "Kabupaten Brebes:5", "Kabupaten Cilacap:5", "Kabupaten Demak:5", "Kabupaten Grobogan:5", "Kabupaten Jepara:5", "Kabupaten Semarang:5", "Kabupaten Sragen:5", "Kabupaten Sukoharjo:5", "Kabupaten Tegal:5", "Kabupaten Temanggung:5", "Kabupaten Wonogiri:5", "Kabupaten Wonosobo:5", "Kabupaten Karanganyar:5", "Kabupaten Kebumen:5", "Kabupaten Kendal:5", "Kabupaten Klaten:5", "Kabupaten Kudus:5", "Kabupaten Magelang:5", "Kabupaten Pati:5", "Kabupaten Pekalongan:5", "Kabupaten Pemalang:5", "Kabupaten Purbalingga:5", "Kabupaten Purworejo:5", "Kabupaten Rembang:5", "Kota Magelang:5", "Kota Pekalongan:5", "Kota Salatiga:5", "Kota Semarang:5", "Kota Surakarta:5", "Kota Tegal:5",
+      "Kabupaten Bangkalan:6", "Kabupaten Banyuwangi:6", "Kabupaten Blitar:6", "Kabupaten Bojonegoro:6", "Kabupaten Bondowoso:6", "Kabupaten Gresik:6", "Kabupaten Jember:6", "Kabupaten Jombang:6", "Kabupaten Kediri:6", "Kabupaten Lamongan:6", "Kabupaten Lumajang:6", "Kabupaten Madiun:6", "Kabupaten Magetan:6", "Kabupaten Malang:6", "Kabupaten Mojokerto:6", "Kabupaten Nganjuk:6", "Kabupaten Ngawi:6", "Kabupaten Pacitan:6", "Kabupaten Pamekasan:6", "Kabupaten Pasuruan:6", "Kabupaten Ponorogo:6", "Kabupaten Probolinggo:6", "Kabupaten Sampang:6", "Kabupaten Sidoarjo:6", "Kabupaten Situbondo:6", "Kabupaten Sumenep:6", "Kabupaten Trenggalek:6", "Kabupaten Tuban:6", "Kabupaten Tulungagung:6", "Kota Batu:6", "Kota Blitar:6", "Kota Kediri:6", "Kota Madiun:6", "Kota Malang:6", "Kota Mojokerto:6", "Kota Pasuruan:6", "Kota Probolinggo:6", "Kota Surabaya:6"
+  };
+
   @Override
   @Transactional
   public void run(ApplicationArguments applicationArguments) {
@@ -85,6 +96,7 @@ public class DatabaseSeeder implements ApplicationRunner {
     this.insertClients(password);
     this.insertUser(password);
     this.insertProvince();
+    this.insertCity();
   }
 
   @Transactional
@@ -177,6 +189,23 @@ public class DatabaseSeeder implements ApplicationRunner {
 
       }
       provinceRepository.save(oldProvince);
+    }
+  }
+
+  @Transactional
+  public void insertCity(){
+    for (String citiesName: cities){
+      String[] str = citiesName.split(":");
+      String city = str[0];
+      Integer province = Integer.valueOf(str[1]);
+      City oldCities = cityRepository.findByCity(citiesName);
+      if (oldCities==null){
+        oldCities = new City();
+        oldCities.setCity(city);
+        Province setProv = provinceRepository.findById(province).get();
+        oldCities.setProvince(setProv);
+      }
+      cityRepository.save(oldCities);
     }
   }
 }
