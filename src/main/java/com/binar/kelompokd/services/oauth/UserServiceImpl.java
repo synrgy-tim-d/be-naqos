@@ -122,7 +122,7 @@ public class UserServiceImpl implements IUserAuthService {
   }
 
   @Override
-  public Map registerManual(RegisterDTO registerModel) {
+  public String registerManual(RegisterDTO registerModel) {
     Map map = new HashMap();
     try {
       String[] roleNames = {"ROLE_USER", "ROLE_READ", "ROLE_CUSTOMER"}; // admin
@@ -140,11 +140,11 @@ public class UserServiceImpl implements IUserAuthService {
       user.setRoles(r);
       user.setPassword(password);
       Users obj = userRepository.save(user);
-      return templateResponse.templateSukses(obj);
+      return "Register User Success";
 
     } catch (Exception e) {
       logger.error("Eror registerManual=", e);
-      return templateResponse.templateEror("eror:"+e);
+      return ("eror:"+e);
     }
   }
 }
