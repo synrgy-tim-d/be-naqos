@@ -1,9 +1,12 @@
-package com.binar.kelompokd.services.oauth;
+package com.binar.kelompokd.utils;
 
+import com.binar.kelompokd.models.entity.location.Province;
 import com.binar.kelompokd.models.entity.oauth.Client;
 import com.binar.kelompokd.models.entity.oauth.Roles;
 import com.binar.kelompokd.models.entity.oauth.RolePath;
 import com.binar.kelompokd.models.entity.oauth.Users;
+import com.binar.kelompokd.repos.location.CityRepository;
+import com.binar.kelompokd.repos.location.ProvinceRepository;
 import com.binar.kelompokd.repos.oauth.ClientRepository;
 import com.binar.kelompokd.repos.oauth.RolePathRepository;
 import com.binar.kelompokd.repos.oauth.RoleRepository;
@@ -44,6 +47,12 @@ public class DatabaseSeeder implements ApplicationRunner {
   @Autowired
   private RolePathRepository rolePathRepository;
 
+  @Autowired
+  private ProvinceRepository provinceRepository;
+
+  @Autowired
+  private CityRepository cityRepository;
+
   private final String defaultPassword = "password";
 
   private final String[] users = new String[]{
@@ -64,6 +73,9 @@ public class DatabaseSeeder implements ApplicationRunner {
       "ROLE_WRITE:oauth_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS"
   };
 
+  private final String[] provinces = new String[] {
+      "Banten", "DKI Jakarta", "DI Yogyakarta", "Jawa Barat", "Jawa Tengah", "Jawa Timur"};
+
   @Override
   @Transactional
   public void run(ApplicationArguments applicationArguments) {
@@ -72,6 +84,7 @@ public class DatabaseSeeder implements ApplicationRunner {
     this.insertRoles();
     this.insertClients(password);
     this.insertUser(password);
+    this.insertProvince();
   }
 
   @Transactional
@@ -151,6 +164,19 @@ public class DatabaseSeeder implements ApplicationRunner {
         oldUser.setRoles(r);
       }
       userRepository.save(oldUser);
+    }
+  }
+
+  @Transactional
+  public void insertProvince(){
+    for (String provinceName: provinces){
+      Province oldProvince = provinceRepository.findByProvince(provinceName);
+      if (oldProvince==null){
+        oldProvince = new Province();
+        oldProvince.setProvince(provinceName);
+
+      }
+      provinceRepository.save(oldProvince);
     }
   }
 }

@@ -2,6 +2,7 @@ package com.binar.kelompokd.services;
 
 import com.binar.kelompokd.interfaces.ImageService;
 import com.binar.kelompokd.models.entity.Image;
+import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.repos.ImageRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -85,14 +86,22 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public void deleteImageKost(Image imageKost, Kost currentKost) {
+        currentKost.deleteImageKost(imageKost);
+        imageRepository.delete(imageKost);
+    }
+
+    @Override
     public Image findImageKostByUrl(String url) {
         return imageRepository.findImageKostByUrl(url);
     }
 
     @Override
-    public void saveImageKostToDb(String url) {
+    public void saveImageKostToDb(String url, Kost currentKost) {
         Image imageKost = new Image();
         imageKost.setUrl(url);
+        imageKost.setKosts(currentKost);
+        currentKost.add(imageKost);
         imageRepository.save(imageKost);
 
     }
