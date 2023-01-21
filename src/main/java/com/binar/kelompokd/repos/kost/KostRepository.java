@@ -42,4 +42,8 @@ public interface KostRepository extends JpaRepository<Kost, UUID> {
     @Transactional
     @Modifying
     void softDeleteKost(@Param("id") UUID id);
+
+    Kost findKostById(UUID id);
+
+    Kost getKostByName(String name);
 }

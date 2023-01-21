@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public interface ImageService {
     String uploadFileKost(MultipartFile image);

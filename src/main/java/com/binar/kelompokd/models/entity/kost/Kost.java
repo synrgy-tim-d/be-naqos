@@ -36,17 +36,6 @@ import java.util.UUID;
 @Table(name = "t_kost")
 public class Kost extends DateModel implements Serializable {
   @Id
-  @GeneratedValue(generator = "UUID")
-  @GenericGenerator(
-          name = "UUID",
-          strategy = "org.hibernate.id.UUIDGenerator",
-          parameters = {
-                  @Parameter(
-                          name = "uuid_gen_strategy_class",
-                          value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-                  )
-          }
-  )
   @Cascade(CascadeType.ALL)
   private UUID id;
 

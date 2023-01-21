@@ -34,7 +34,7 @@ public class ImageController {
         List<String> urls = new ArrayList<>();
         Arrays.stream(files)
             .forEach(imageFile -> urls.add(imageService.uploadFileKost(imageFile)));
-        Kost currentKost = kostService.getKostById(kostId).get();
+        Kost currentKost = kostService.getKostById(kostId);
         if (currentKost==null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

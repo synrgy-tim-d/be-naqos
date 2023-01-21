@@ -1,10 +1,15 @@
 package com.binar.kelompokd.services.kost;
 
+import com.binar.kelompokd.enums.KostType;
+import com.binar.kelompokd.interfaces.CityService;
+import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.interfaces.KostService;
-import com.binar.kelompokd.models.entity.Image;
 import com.binar.kelompokd.models.entity.kost.Kost;
+import com.binar.kelompokd.models.entity.location.City;
+import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.ImageRepository;
 import com.binar.kelompokd.repos.kost.KostRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class KostServiceImpl implements KostService {
 
     @Autowired
@@ -25,6 +31,9 @@ public class KostServiceImpl implements KostService {
     @Autowired
     ImageRepository imageRepository;
 
+    private IUserAuthService userAuthService;
+    private CityService cityService;
+
     @Override
     @Transactional
     public Kost createKost(Kost kost) {
@@ -32,8 +41,8 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
-    public Optional<Kost> getKostById(UUID id) {
-        return kostRepository.getKostByIdWhereIsAvailableTrue(id);
+    public Kost getKostById(UUID id) {
+        return kostRepository.findKostById(id);
     }
 
     @Override
@@ -85,6 +94,32 @@ public class KostServiceImpl implements KostService {
     public String softDeleteKost(UUID id) {
         kostRepository.softDeleteKost(id);
         return "Kost deleted successfully";
+    }
+
+    @Override
+    public Kost getKostByName(String kost) {
+        return kostRepository.getKostByName(kost);
+    }
+
+    @Override
+    public void saveKost(UUID uuid,String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address, String subdistrict, String district, String postalCode, Long ownerId, Integer city) {
+        Kost kost = new Kost();
+        kost.setId(uuid);
+        kost.setName(name);
+        kost.setDescription(description);
+        kost.setKostType(KostType.valueOf(kostType));
+        kost.setIsAvailable(isAvailable);
+        kost.setLatitude(latitude);
+        kost.setLongitude(longitude);
+        kost.setAddress(address);
+        kost.setDistrict(district);
+        kost.setSubdistrict(subdistrict);
+        kost.setPostalCode(postalCode);
+        City cityKost = cityService.getCityById(city);
+        kost.setCity(cityKost);
+        Users user = userAuthService.findUsersById(ownerId);
+        kost.setOwnerId(user);
+        kostRepository.save(kost);
     }
 
 }
