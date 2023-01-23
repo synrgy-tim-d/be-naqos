@@ -125,7 +125,18 @@ public class UserServiceImpl implements IUserAuthService {
   public String registerManual(RegisterDTO registerModel) {
     Map map = new HashMap();
     try {
-      String[] roleNames = {"ROLE_USER", "ROLE_READ", "ROLE_CUSTOMER"}; // admin
+      List<Roles> r;
+      if (registerModel.getRole().equals("PENYEWA")){
+        String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ", "ROLE_PENYEWA"}; // penyewa
+         r = repoRole.findByNameIn(roleNames);
+      }else if (registerModel.getRole().equals("PEMILIK")){
+        String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ", "ROLE_PEMILIK"}; // pemilik
+         r = repoRole.findByNameIn(roleNames);
+      }else {
+        String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ"}; // default
+         r = repoRole.findByNameIn(roleNames);
+      }
+
       Users user = new Users();
       user.setUsername(registerModel.getUsername().toLowerCase());
       user.setFullname(registerModel.getFullname());
@@ -135,7 +146,7 @@ public class UserServiceImpl implements IUserAuthService {
       user.setEnabled(false); // matikan user
 
       String password = encoder.encode(registerModel.getPassword().replaceAll("\\s+", ""));
-      List<Roles> r = repoRole.findByNameIn(roleNames);
+
 
       user.setRoles(r);
       user.setPassword(password);
