@@ -48,12 +48,6 @@
 			<version>${jwt.version}</version>
 		</dependency>
 
-    <!-- SCHEDULER -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-quartz</artifactId>
-    </dependency>
-
     <!-- SPRING WEB -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -121,24 +115,39 @@
 			<version>2.0.1.Final</version>
 		</dependency>
 
-		<!--       email -->
-		<dependency>
+		<!-- EMAIL -->
+    <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
     <!-- PGW Midtrans -->
-    <!--		<dependency>-->
-    <!--			<groupId>com.midtrans</groupId>-->
-    <!--			<artifactId>java-library</artifactId>-->
-    <!--			<version>3.1.4</version>-->
-    <!--		</dependency>-->
+<!--    		<dependency>-->
+<!--    			<groupId>com.midtrans</groupId>-->
+<!--    			<artifactId>java-library</artifactId>-->
+<!--    			<version>3.1.4</version>-->
+<!--    		</dependency>-->
+
+<!--    <dependency>-->
+<!--      <groupId>nz.net.ultraq.thymeleaf</groupId>-->
+<!--      <artifactId>thymeleaf-layout-dialect</artifactId>-->
+<!--      <version>2.3.0</version>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.boot</groupId>-->
+<!--      <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+<!--    </dependency>-->
 
     <!-- Image Cloud -->
     <dependency>
       <groupId>com.cloudinary</groupId>
       <artifactId>cloudinary-http44</artifactId>
       <version>1.33.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.cloudinary</groupId>
+      <artifactId>cloudinary-taglib</artifactId>
+      <version>1.4.4</version>
     </dependency>
   </dependencies>
 

@@ -87,32 +87,35 @@ public class KostController {
                                                     @RequestParam("postalCode") String postalCode,
                                                     @RequestParam("cityId") Integer cityId,
                                                     Authentication authentication){
-    if (imageFiles.length > 4){
-      return new ResponseEntity<>(templateCRUD.badRequest("Max Files Upload are 4 files"),HttpStatus.BAD_REQUEST);
-    }
-
     List<String> urls = new ArrayList<>();
     UUID uuid = UUID.randomUUID();
     Users user = iUserAuthService.findByUsername(authentication.getName());
     City cityKost = cityService.getCityById(cityId);
 
-    Arrays.stream(imageFiles)
-        .forEach(imageFile -> {
-            urls.add(imageService.uploadFileKost(imageFile));
-        });
-
-    kostService.saveKost(uuid, name, description, kostType, isAvailable, latitude, longitude,address, subdistrict, district, postalCode, user.getId(), cityKost.getId());
-
-    Kost currentKost = kostService.getKostById(uuid);
-    if (currentKost == null){
-      return new ResponseEntity<>(templateCRUD.notFound("Kost Not Found"),HttpStatus.NOT_FOUND);
-    } else {
-      for (String url : urls) {
-        imageService.saveImageKostToDb(url, currentKost);
-      }
+    if (imageFiles.length > 4){
+      return new ResponseEntity<>(templateCRUD.badRequest("Max Files Upload are 4 files"),HttpStatus.BAD_REQUEST);
     }
-    NewKostResponse kostResponse = new NewKostResponse(currentKost, currentKost.getOwnerId());
-    return new ResponseEntity<>(templateCRUD.sukses(kostResponse), HttpStatus.CREATED);
+
+    try {
+      Arrays.stream(imageFiles)
+          .forEach(imageFile -> {
+            urls.add(imageService.uploadFileKost(imageFile));
+          });
+
+      kostService.saveKost(uuid, name, description, kostType, isAvailable, latitude, longitude,address, subdistrict, district, postalCode, user.getId(), cityKost.getId());
+      Kost currentKost = kostService.getKostById(uuid);
+      if (currentKost == null){
+        return new ResponseEntity<>(templateCRUD.notFound("Kost Not Found"),HttpStatus.NOT_FOUND);
+      } else {
+        for (String url : urls) {
+          imageService.saveImageKostToDb(url, currentKost);
+        }
+      }
+      NewKostResponse kostResponse = new NewKostResponse(currentKost, currentKost.getOwnerId());
+      return new ResponseEntity<>(templateCRUD.sukses(kostResponse), HttpStatus.CREATED);
+    } catch (Exception e){
+      return new ResponseEntity<>(templateCRUD.badRequest(e), HttpStatus.BAD_REQUEST);
+    }
   }
 
   @PatchMapping("/{id}")

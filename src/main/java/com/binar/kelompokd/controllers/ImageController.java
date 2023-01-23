@@ -2,11 +2,13 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.interfaces.ImageService;
 import com.binar.kelompokd.interfaces.KostService;
+import com.binar.kelompokd.models.entity.Image;
 import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.response.ImageResponse;
 import com.binar.kelompokd.models.response.MessageResponse;
 import com.binar.kelompokd.utils.Response;
 import com.binar.kelompokd.utils.TemplateCRUD;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,20 +29,20 @@ public class ImageController {
     @Autowired
     public Response templateCRUD;
 
-    @PostMapping("/add/kost")
+    @Operation(summary = "Delete Image Kost", description = "Delete Image Kost")
+    @DeleteMapping("/delete")
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<MessageResponse> addImagesKost(@RequestParam MultipartFile[] files,
-                                                       @RequestParam(name = "kostId") UUID kostId){
-        List<String> urls = new ArrayList<>();
-        Arrays.stream(files)
-            .forEach(imageFile -> urls.add(imageService.uploadFileKost(imageFile)));
-        Kost currentKost = kostService.getKostById(kostId);
-        if (currentKost==null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> deleteImageKost(@RequestParam(name = "url") String url,
+                                                       @RequestParam(name = "kostId") String kostId){
+        Kost currentKost = kostService.getKostById(UUID.fromString(kostId));
+        Image currentUrl = imageService.findImageKostByUrl(url);
+
+        try {
+            imageService.deleteImageKost(currentUrl, currentKost);
+            return new ResponseEntity<>(templateCRUD.templateSukses("Image Deleted"), HttpStatus.OK);
+        }catch (RuntimeException e){
+            return new ResponseEntity<>(templateCRUD.notFound("Image Not Found"), HttpStatus.NOT_FOUND);
         }
-        for (String url : urls) {
-            imageService.saveImageKostToDb(url, currentKost);
-        }
-        return new ResponseEntity<>(new MessageResponse("Upload Success"),HttpStatus.CREATED);
+
     }
 }
