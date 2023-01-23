@@ -14,4 +14,5 @@ public class RegisterDTO {
     private String fullname;
     @NotEmpty(message = "phone is required.")
     private String phoneNumber;
+    private String role;
 }

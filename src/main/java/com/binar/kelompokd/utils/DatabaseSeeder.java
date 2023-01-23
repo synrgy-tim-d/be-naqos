@@ -72,7 +72,9 @@ public class DatabaseSeeder implements ApplicationRunner {
       "ROLE_ADMIN:user_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
       "ROLE_USER:user_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
       "ROLE_READ:oauth_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
-      "ROLE_WRITE:oauth_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS"
+      "ROLE_WRITE:oauth_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
+      "ROLE_PENYEWA:user_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS",
+      "ROLE_PEMILIK:user_role:^/.*:GET|PUT|POST|PATCH|DELETE|OPTIONS"
   };
 
   private final String[] provinces = new String[] {
