@@ -50,7 +50,7 @@ public class KostController {
   public ResponseEntity<?> getAllKosts(){
     List<Kost> kostList =  kostService.getAllKost();
     KostResponse kostResponse = KostResponse.builder().kos(kostList).build();
-    return new ResponseEntity<>(kostResponse, HttpStatus.OK);
+    return new ResponseEntity<>(templateCRUD.templateSukses(kostResponse), HttpStatus.OK);
   }
 
   @GetMapping("/page")
@@ -112,7 +112,7 @@ public class KostController {
         }
       }
       NewKostResponse kostResponse = new NewKostResponse(currentKost, currentKost.getOwnerId());
-      return new ResponseEntity<>(templateCRUD.sukses(kostResponse), HttpStatus.CREATED);
+      return new ResponseEntity<>(templateCRUD.templateSukses(kostResponse), HttpStatus.CREATED);
     } catch (Exception e){
       return new ResponseEntity<>(templateCRUD.badRequest(e), HttpStatus.BAD_REQUEST);
     }

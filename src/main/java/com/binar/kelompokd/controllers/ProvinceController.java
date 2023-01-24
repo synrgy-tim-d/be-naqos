@@ -1,12 +1,10 @@
 package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.interfaces.CityService;
-import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.location.Province;
 import com.binar.kelompokd.interfaces.ProvinceService;
 import com.binar.kelompokd.models.response.ProvinceResponse;
 import com.binar.kelompokd.utils.Response;
-import com.binar.kelompokd.utils.TemplateCRUD;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
