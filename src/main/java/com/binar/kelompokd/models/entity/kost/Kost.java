@@ -4,12 +4,10 @@ import com.binar.kelompokd.enums.KostType;
 import com.binar.kelompokd.models.DateModel;
 //import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.models.entity.Image;
+import com.binar.kelompokd.models.entity.KostWishlist;
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.oauth.Users;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -85,6 +83,7 @@ public class Kost extends DateModel implements Serializable {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Users ownerId;
 
+  @JsonBackReference
   @OneToOne
   @JoinColumn(name="city_id", referencedColumnName = "id")
   @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
@@ -103,6 +102,10 @@ public class Kost extends DateModel implements Serializable {
       orphanRemoval = true)
   @JsonManagedReference
   private List<Image> imageKosts = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "kostId")
+  private List<KostWishlist> wishlists;
 
   public void add(Image imageKost) {
     imageKosts.add(imageKost);

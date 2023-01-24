@@ -7,19 +7,24 @@ import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.oauth.Users;
+import com.binar.kelompokd.models.response.MessageResponse;
+import com.binar.kelompokd.models.response.NewKostResponse;
+import com.binar.kelompokd.models.response.WishlistKostPageResponse;
 import com.binar.kelompokd.repos.ImageRepository;
 import com.binar.kelompokd.repos.kost.KostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -122,4 +127,19 @@ public class KostServiceImpl implements KostService {
         kostRepository.save(kost);
     }
 
+    @Override
+    public ResponseEntity<MessageResponse> getMessageResponse(Integer page, Integer size, Page<Kost> kosts) {
+        List<NewKostResponse> productResponses = kosts.stream()
+            .map(product -> new NewKostResponse(product, product.getOwnerId()))
+            .collect(Collectors.toList());
+        if (kosts.hasContent()) {
+            WishlistKostPageResponse wishlistResponsePage = new WishlistKostPageResponse(kosts.getTotalPages(),
+                kosts.getTotalElements(), page, kosts.isFirst(), kosts.isLast(),
+                size, productResponses);
+            return new ResponseEntity(wishlistResponsePage, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(new MessageResponse("Data Empty"), HttpStatus.NO_CONTENT);
+        }
+
+    }
 }

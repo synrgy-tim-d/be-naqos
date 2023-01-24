@@ -36,10 +36,13 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
             "/swagger-ui/**",
             "/forget-password/*",
             "/naqos-swagger.html",
+            "/kost",
+            "/province/*",
+            "/city/*",
             "/v3/api-docs/**").permitAll()
-        .antMatchers("/kost/**").hasAnyAuthority("ROLE_READ")
-        .antMatchers("/kost/**").hasAnyAuthority("ROLE_WRITE")
-        .antMatchers("/kost/**").hasAnyAuthority("ROLE_USER")
+        .antMatchers("/kost/**","/image/*", "/wishlist/*").hasAnyAuthority("ROLE_READ")
+        .antMatchers("/kost/add","/image/*","/wishlist/*").hasAnyAuthority("ROLE_WRITE")
+        .antMatchers("/kost/**","/image/*","/wishlist/*").hasAnyAuthority("ROLE_USER")
 //        .antMatchers("/v1/role-test-global/post-barang-admin").hasAnyAuthority("ROLE_ADMIN")
         .and()
         .authorizeRequests()
