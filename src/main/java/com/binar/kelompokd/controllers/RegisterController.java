@@ -45,7 +45,7 @@ public class RegisterController {
   @Autowired
   public Response templateCRUD;
 
-  @Operation(summary = "Register User with username, fullname, phoneNumber, and password")
+  @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is not required yet")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Register User Success",
           content = {@Content(schema = @Schema(example = "User Added!"))})
