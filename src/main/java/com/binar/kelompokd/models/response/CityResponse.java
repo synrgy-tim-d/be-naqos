@@ -1,6 +1,7 @@
 package com.binar.kelompokd.models.response;
 
 import com.binar.kelompokd.models.entity.location.City;
+import com.binar.kelompokd.models.entity.location.Province;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import lombok.Data;
 

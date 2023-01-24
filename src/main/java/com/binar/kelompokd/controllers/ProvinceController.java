@@ -1,12 +1,19 @@
 package com.binar.kelompokd.controllers;
 
+import com.binar.kelompokd.interfaces.CityService;
+import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.location.Province;
 import com.binar.kelompokd.interfaces.ProvinceService;
+import com.binar.kelompokd.models.response.ProvinceResponse;
+import com.binar.kelompokd.utils.Response;
+import com.binar.kelompokd.utils.TemplateCRUD;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/province")
@@ -15,14 +22,31 @@ public class ProvinceController {
     @Autowired
     ProvinceService provinceService;
 
+    @Autowired
+    CityService cityService;
+
+    @Autowired
+    public Response templateCRUD;
+
     @GetMapping()
     public ResponseEntity<?> getAllProvinces(){
-        return new ResponseEntity<>(provinceService.getAllProvinces(), HttpStatus.OK);
+        try {
+            List<Province> get = provinceService.getAllProvinces();
+            ProvinceResponse res = new ProvinceResponse(get);
+            return new ResponseEntity<>(templateCRUD.templateSukses(res), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(templateCRUD.notFound(e), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getProvinceById(@PathVariable("id") @Schema(example = "1") Integer id){
-        return new ResponseEntity<>(provinceService.getProvinceById(id), HttpStatus.OK);
+        try {
+            Province getData = provinceService.getProvinceById(id);
+        return new ResponseEntity<>(templateCRUD.templateSukses(getData), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(templateCRUD.notFound("Province is not Found"),HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping()
