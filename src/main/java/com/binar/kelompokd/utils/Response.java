@@ -15,7 +15,7 @@ public class Response {
 
   public Map templateSukses(Object objek){
     Map map = new HashMap();
-    map.put("data", objek);
+    map.put("message", objek);
     map.put("code", HttpStatus.OK.value());
     map.put("status", HttpStatus.OK);
     return map;
@@ -51,4 +51,12 @@ public class Response {
         map.put("code", HttpStatus.UNAUTHORIZED.value());
         return map;
     }
+
+  public Map contentEmpty(Object objek){
+    Map map = new HashMap();
+    map.put("message", objek);
+    map.put("status", HttpStatus.NO_CONTENT);
+    map.put("code", HttpStatus.NO_CONTENT.value());
+    return map;
+  }
 }

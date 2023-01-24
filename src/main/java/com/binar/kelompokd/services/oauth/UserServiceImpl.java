@@ -95,6 +95,7 @@ public class UserServiceImpl implements IUserAuthService {
         map.put("scope", response.getBody().get("scope"));
         map.put("jti", response.getBody().get("jti"));
         map.put("status",response.getStatusCode());
+        map.put("code",response.getStatusCodeValue());
         return map;
       } else {
         return templateResponse.notFound("user not found");

@@ -130,7 +130,7 @@ public class RegisterController {
 
     String dateToken = config.convertDateToString(user.getOtpExpiredDate());
     if(Long.parseLong(today) > Long.parseLong(dateToken)){
-      return new ResponseEntity<Map>(templateCRUD.unauthorized("Your token is expired. Please Get token again."), HttpStatus.OK);
+      return new ResponseEntity<Map>(templateCRUD.unauthorized("Your token is expired. Please Get token again."), HttpStatus.GATEWAY_TIMEOUT);
     }
     //update user
     user.setEnabled(true);
