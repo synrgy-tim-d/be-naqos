@@ -36,7 +36,7 @@ public class KostController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() @Schema(example = "1") int page, @RequestParam() @Schema(example = "10") int size, @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType){
+    public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() @Schema(example = "1") int page, @RequestParam() @Schema(example = "10") int size, @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy, @RequestParam(required = false, defaultValue = "asc") @Schema(example = "asc") String orderType){
         Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
         Page<Kost> kosts = kostService.getListData(pageable);
         return new ResponseEntity<>(kosts.getContent(), HttpStatus.OK);
