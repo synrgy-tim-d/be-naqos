@@ -9,21 +9,6 @@ import java.util.Map;
 @Component
 public class Response {
 
-  public Map sukses(Object obj){
-    Map map = new HashMap();
-    map.put("data", obj);
-    map.put("code", HttpStatus.OK.value());
-    map.put("status", HttpStatus.OK);
-    return map;
-  }
-
-  public Map error(Object obj, Object code){
-    Map map = new HashMap();
-    map.put("code", code);
-    map.put("status", obj);
-    return map;
-  }
-
   public Boolean isRequired(Object obj){
     return obj == null;
   }
