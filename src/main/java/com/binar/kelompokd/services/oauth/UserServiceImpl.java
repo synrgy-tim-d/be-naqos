@@ -58,7 +58,7 @@ public class UserServiceImpl implements IUserAuthService {
       if ((checkUser != null) && (encoder.matches(loginModel.getPassword(), checkUser.getPassword()))) {
         if (!checkUser.isEnabled()) {
           map.put("is_enabled", checkUser.isEnabled());
-          return templateResponse.templateEror(map);
+          return templateResponse.unauthorized(map);
         }
       }
       if (checkUser == null) {
