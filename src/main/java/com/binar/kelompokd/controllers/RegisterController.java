@@ -57,7 +57,7 @@ public class RegisterController {
 
     Users user = userRepository.checkExistingEmail(objModel.getUsername());
     if (null != user) {
-      return new ResponseEntity<Map>(templateCRUD.notFound("Username sudah ada"), HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Map>(templateCRUD.templateSukses("Username sudah ada"), HttpStatus.OK);
 
     }
     String result = serviceReq.registerManual(objModel);
@@ -130,7 +130,7 @@ public class RegisterController {
 
     String dateToken = config.convertDateToString(user.getOtpExpiredDate());
     if(Long.parseLong(today) > Long.parseLong(dateToken)){
-      return new ResponseEntity<Map>(templateCRUD.unauthorized("Your token is expired. Please Get token again."), HttpStatus.UNAUTHORIZED);
+      return new ResponseEntity<Map>(templateCRUD.unauthorized("Your token is expired. Please Get token again."), HttpStatus.GATEWAY_TIMEOUT);
     }
     //update user
     user.setEnabled(true);
