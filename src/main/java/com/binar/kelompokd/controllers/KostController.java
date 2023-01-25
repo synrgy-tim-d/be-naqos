@@ -6,7 +6,6 @@ import com.binar.kelompokd.interfaces.ImageService;
 import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.oauth.Users;
-import com.binar.kelompokd.models.response.KostResponse;
 import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.models.response.NewKostResponse;
 import com.binar.kelompokd.utils.Response;
@@ -48,9 +47,7 @@ public class KostController {
 
   @GetMapping()
   public ResponseEntity<?> getAllKosts(){
-    List<Kost> kostList =  kostService.getAllKost();
-    KostResponse kostResponse = KostResponse.builder().kos(kostList).build();
-    return new ResponseEntity<>(templateCRUD.templateSukses(kostResponse), HttpStatus.OK);
+    return new ResponseEntity<>(templateCRUD.templateSukses(kostService.getAllKost()), HttpStatus.OK);
   }
 
   @GetMapping("/page")
