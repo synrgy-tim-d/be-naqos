@@ -94,6 +94,10 @@ public class UserServiceImpl implements IUserAuthService {
         map.put("expires_in", response.getBody().get("expires_in"));
         map.put("scope", response.getBody().get("scope"));
         map.put("jti", response.getBody().get("jti"));
+        map.put("user_id", checkUser.getId());
+        if (checkUser.getRoles().size() >2){
+          map.put("role", checkUser.getRoles().get(2).getName()) ;
+        }
         map.put("status",response.getStatusCode());
         map.put("code",response.getStatusCodeValue());
         return map;

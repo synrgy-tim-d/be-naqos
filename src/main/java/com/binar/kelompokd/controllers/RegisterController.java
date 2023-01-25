@@ -23,6 +23,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -45,13 +49,67 @@ public class RegisterController {
   @Autowired
   public Response templateCRUD;
 
+  @Value("${BASEURL:}")//FILE_SHOW_RUL
+  private String BASEURL;
+
+
   @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is not required yet")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Register User Success",
           content = {@Content(schema = @Schema(example = "User Added!"))})
   })
   @PostMapping("/register")
-  public ResponseEntity<Map> saveRegisterManual(@Valid
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<Map> saveRegisterManual(@Valid @RequestBody RegisterDTO objModel) throws RuntimeException {
+    Users user = userRepository.checkExistingEmail(objModel.getUsername());
+    if (null != user) {
+      return new ResponseEntity<Map>(templateCRUD.templateSukses("Username sudah ada"), HttpStatus.OK);
+
+    }
+
+    if(checkEmpty(objModel.getUsername())){
+      return new ResponseEntity<Map>(templateCRUD.badRequest("username is required."), HttpStatus.BAD_REQUEST);
+    } else if (checkEmpty(objModel.getPassword())) {
+      return new ResponseEntity<Map>(templateCRUD.badRequest("password is required."), HttpStatus.BAD_REQUEST);
+    } else if (checkEmpty(objModel.getFullname())) {
+      return new ResponseEntity<Map>(templateCRUD.badRequest("fullname is required."), HttpStatus.BAD_REQUEST);
+    }else if (checkEmpty(objModel.getPhoneNumber())) {
+      return new ResponseEntity<Map>(templateCRUD.badRequest("phone is required."), HttpStatus.BAD_REQUEST);
+    }else if (checkEmpty(objModel.getRole())) {
+      return new ResponseEntity<Map>(templateCRUD.badRequest("role is required."), HttpStatus.BAD_REQUEST);
+    }
+
+    if (objModel.getPassword().length() <= 6 ){
+      return new ResponseEntity<Map>(templateCRUD.badRequest("password must have 6 characters or more"), HttpStatus.BAD_REQUEST);
+    }
+
+    try {
+      InternetAddress internetAddress = new InternetAddress(objModel.getUsername());
+      internetAddress.validate();
+      // Email is valid
+      String result = serviceReq.registerManual(objModel);
+      SendOTPDTO username = new SendOTPDTO();
+      username.setUsername(objModel.getUsername());
+      Map sendOTP = sendEmailRegister(username);
+      return new ResponseEntity<Map>(templateCRUD.templateSukses(result), HttpStatus.OK);
+    } catch (AddressException e) {
+      return new ResponseEntity<Map>(templateCRUD.badRequest("Mohon masukkan alamat email anda dengan benar"), HttpStatus.BAD_REQUEST);
+    }
+  }
+public boolean checkEmpty(Object req){
+  if(req == null || req.toString().isEmpty()){
+return true;
+  }
+  return false;
+}
+  @Operation(summary = "Register Google Testing")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Register User Success",
+                  content = {@Content(schema = @Schema(example = "User Added!"))})
+  })
+  @PostMapping("/register-google")
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<Map> saveRegisterManualGoogle(@Valid
                                                 @RequestBody RegisterDTO objModel) throws RuntimeException {
 
 
@@ -61,9 +119,9 @@ public class RegisterController {
 
     }
     String result = serviceReq.registerManual(objModel);
-    SendOTPDTO username = new SendOTPDTO();
-    username.setUsername(objModel.getUsername());
-    Map sendOTP = sendEmailRegister(username);
+//    SendOTPDTO username = new SendOTPDTO();
+//    username.setUsername(objModel.getUsername());
+//    Map sendOTP = sendEmailRegister(username);
     return new ResponseEntity<Map>(templateCRUD.templateSukses(result), HttpStatus.OK);
   }
 
