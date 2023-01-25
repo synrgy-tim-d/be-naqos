@@ -140,7 +140,11 @@ return true;
 
     if (user.getUsername() == null) return templateCRUD.badRequest("No email provided");
     Users found = userRepository.findOneByUsername(user.getUsername());
+    if (checkEmpty(user.username)){
+      return templateCRUD.badRequest("username is required."); //throw new BadRequest("Email not found");
+    }
     if (found == null) return templateCRUD.notFound("Email not found"); //throw new BadRequest("Email not found");
+
 
     String template = emailTemplate.getRegisterTemplate();
     if (StringUtils.isEmpty(found.getOtp())) {
