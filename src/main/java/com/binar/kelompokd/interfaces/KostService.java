@@ -25,4 +25,5 @@ public interface KostService {
                   String address, String subdistrict, String district, String postalCode, Long ownerId, Integer city);
 
     ResponseEntity<MessageResponse> getMessageResponse(Integer page, Integer size, Page<Kost> kosts);
+    Page<Kost> getKostsByKostType(String kostType, Pageable pageable);
 }

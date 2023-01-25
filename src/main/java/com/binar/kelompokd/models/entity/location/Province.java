@@ -28,8 +28,4 @@ public class Province {
     @Schema(example = "Jawa Tengah")
     @Column(nullable = false, length = 50)
     private String province;
-
-    @JsonBackReference
-    @OneToMany(mappedBy="province")
-    private List<City> cities;
 }

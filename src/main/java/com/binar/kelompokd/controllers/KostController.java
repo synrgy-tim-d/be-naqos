@@ -57,6 +57,17 @@ public class KostController {
     return new ResponseEntity<>(kosts.getContent(), HttpStatus.OK);
   }
 
+  @GetMapping("/by-type/page")
+  public ResponseEntity<?> getKostsByKostType(
+          @RequestParam() @Schema(example = "1") int page,
+          @RequestParam() @Schema(example = "10") int size,
+          @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy,
+          @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType,
+          @RequestParam() @Schema(example = "KOS_PUTRA") String kostType){
+    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
+    Page<Kost> kosts = kostService.getKostsByKostType(kostType, pageable);
+    return new ResponseEntity<>(kosts.getContent(), HttpStatus.OK);
+  }
   @GetMapping("/{id}")
   public ResponseEntity<?> getKostById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
 
