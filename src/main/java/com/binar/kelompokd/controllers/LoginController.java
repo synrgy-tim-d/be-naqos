@@ -5,7 +5,6 @@ import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.models.dto.user.LoginDTO;
 import com.binar.kelompokd.models.dto.user.RegisterDTO;
 import com.binar.kelompokd.models.dto.user.SendOTPDTO;
-import com.binar.kelompokd.models.dto.user.UserUpdateDTO;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.UserRepository;
 import com.binar.kelompokd.services.oauth.EmailSender;
