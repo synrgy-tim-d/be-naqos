@@ -142,4 +142,9 @@ public class KostServiceImpl implements KostService {
         }
 
     }
+
+    @Override
+    public Page<Kost> getKostsByKostType(String kostType, Pageable pageable) {
+        return kostRepository.getKostsByKostType(kostType, pageable);
+    }
 }

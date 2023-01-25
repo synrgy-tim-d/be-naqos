@@ -43,6 +43,12 @@ public interface KostRepository extends JpaRepository<Kost, UUID> {
     @Modifying
     void softDeleteKost(@Param("id") UUID id);
 
+    @Query(
+            nativeQuery = true,
+            value = "select * from t_kost where kost_type=:kostType"
+    )
+    Page<Kost> getKostsByKostType(@Param("kostType") String kostType,Pageable pageable);
+
     Kost findKostById(UUID id);
 
     Kost getKostByName(String name);
