@@ -52,4 +52,10 @@ public interface KostRepository extends JpaRepository<Kost, UUID> {
     Kost findKostById(UUID id);
 
     Kost getKostByName(String name);
+
+    @Query(
+            nativeQuery = true,
+            value = "select * from t_kost where city_id=:cityId"
+    )
+    Page<Kost> getKostsByCityId(@Param("cityId") Integer cityId, Pageable pageable);
 }

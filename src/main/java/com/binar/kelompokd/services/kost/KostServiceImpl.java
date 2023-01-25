@@ -12,6 +12,7 @@ import com.binar.kelompokd.models.response.NewKostResponse;
 import com.binar.kelompokd.models.response.WishlistKostPageResponse;
 import com.binar.kelompokd.repos.ImageRepository;
 import com.binar.kelompokd.repos.kost.KostRepository;
+import com.binar.kelompokd.repos.location.CityRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,9 @@ public class KostServiceImpl implements KostService {
 
     @Autowired
     ImageRepository imageRepository;
+
+    @Autowired
+    CityRepository cityRepository;
 
     private IUserAuthService userAuthService;
     private CityService cityService;
@@ -147,4 +151,18 @@ public class KostServiceImpl implements KostService {
     public Page<Kost> getKostsByKostType(String kostType, Pageable pageable) {
         return kostRepository.getKostsByKostType(kostType, pageable);
     }
+
+    @Override
+    public Page<Kost> getKostsByCityId(Integer cityId, Pageable pageable) {
+        return kostRepository.getKostsByCityId(cityId, pageable);
+    }
+
+    @Override
+    public Page<Kost> getKostsByCity(String cityName, Pageable pageable) {
+        City city = cityRepository.getCityByName(cityName);
+        Integer cityId = city.getId();
+        return kostRepository.getKostsByCityId(cityId, pageable);
+    }
+
+
 }

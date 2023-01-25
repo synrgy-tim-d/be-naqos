@@ -50,6 +50,30 @@ public class KostController {
     return new ResponseEntity<>(templateCRUD.templateSukses(kostService.getAllKost()), HttpStatus.OK);
   }
 
+  @GetMapping("/city-id/{cityId}")
+  public ResponseEntity<?> getKostsByCityId(
+          @RequestParam() @Schema(example = "1") int page,
+          @RequestParam() @Schema(example = "10") int size,
+          @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy,
+          @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType,
+          @PathVariable("cityId") @Schema(example = "1") Integer cityId){
+    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
+    Page<Kost> kosts = kostService.getKostsByCityId(cityId, pageable);
+    return new ResponseEntity<>(templateCRUD.templateSukses(kosts.getContent()), HttpStatus.OK);
+  }
+
+  @GetMapping("/by-city/{cityName}")
+  public ResponseEntity<?> getKostsByCityName(
+          @RequestParam() @Schema(example = "1") int page,
+          @RequestParam() @Schema(example = "10") int size,
+          @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy,
+          @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType,
+          @PathVariable("cityName") @Schema(example = "Kabupaten Lebak") String cityName){
+    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
+    Page<Kost> kosts = kostService.getKostsByCity(cityName, pageable);
+    return new ResponseEntity<>(templateCRUD.templateSukses(kosts.getContent()), HttpStatus.OK);
+  }
+
   @GetMapping("/page")
   public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() @Schema(example = "1") int page, @RequestParam() @Schema(example = "10") int size, @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType){
     Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);

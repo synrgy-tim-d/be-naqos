@@ -26,4 +26,6 @@ public interface KostService {
 
     ResponseEntity<MessageResponse> getMessageResponse(Integer page, Integer size, Page<Kost> kosts);
     Page<Kost> getKostsByKostType(String kostType, Pageable pageable);
+    Page<Kost> getKostsByCityId(Integer cityId, Pageable pageable);
+    Page<Kost> getKostsByCity(String cityName, Pageable pageable);
 }
