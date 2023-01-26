@@ -7,6 +7,8 @@ import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/image")
 public class ImageController {
+    private final static Logger logger = LoggerFactory.getLogger(ImageController.class);
     private ImageService imageService;
     private KostService kostService;
 
@@ -35,8 +38,10 @@ public class ImageController {
 
         try {
             imageService.deleteImageKost(currentUrl, currentKost);
+            logger.info("delete image success", currentUrl);
             return new ResponseEntity<>(templateCRUD.templateSukses("Image Deleted"), HttpStatus.OK);
         }catch (RuntimeException e){
+            logger.error("delete image gagal", e);
             return new ResponseEntity<>(templateCRUD.notFound("Image Not Found"), HttpStatus.NOT_FOUND);
         }
 

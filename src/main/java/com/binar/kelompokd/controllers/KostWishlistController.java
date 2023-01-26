@@ -32,7 +32,7 @@ public class KostWishlistController {
   private KostService kostService;
 
   @Operation(summary = "Get all wishlist by user.", description = "Get all wishlist by user.")
-  @GetMapping("get")
+  @GetMapping("/get")
   public ResponseEntity<MessageResponse> getAllWishlistUser(Authentication authentication,
                                                             @RequestParam(value = "page", defaultValue = "0") int page,
                                                             @RequestParam(value = "size", defaultValue = "10") int size){

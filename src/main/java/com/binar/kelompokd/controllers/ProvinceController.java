@@ -6,6 +6,8 @@ import com.binar.kelompokd.interfaces.ProvinceService;
 import com.binar.kelompokd.models.response.ProvinceResponse;
 import com.binar.kelompokd.utils.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/province")
 public class ProvinceController {
-
+    private final static Logger logger = LoggerFactory.getLogger(ProvinceController.class);
     @Autowired
     ProvinceService provinceService;
 
@@ -31,8 +33,10 @@ public class ProvinceController {
         try {
             List<Province> get = provinceService.getAllProvinces();
             ProvinceResponse res = new ProvinceResponse(get);
+            logger.info("Get all Province",res);
             return new ResponseEntity<>(templateCRUD.templateSukses(res), HttpStatus.OK);
         } catch (Exception e){
+            logger.error("get all province error",e);
             return new ResponseEntity<>(templateCRUD.notFound(e), HttpStatus.NOT_FOUND);
         }
     }
@@ -43,6 +47,7 @@ public class ProvinceController {
             Province getData = provinceService.getProvinceById(id);
         return new ResponseEntity<>(templateCRUD.templateSukses(getData), HttpStatus.OK);
         } catch (Exception e){
+            logger.error("get province by id error",e);
             return new ResponseEntity<>(templateCRUD.notFound("Province is not Found"),HttpStatus.NOT_FOUND);
         }
     }

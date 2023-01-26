@@ -2,7 +2,6 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.interfaces.RoomService;
 import com.binar.kelompokd.models.entity.kost.Room;
-import com.binar.kelompokd.models.request.KostRoomRequest;
 import com.binar.kelompokd.models.response.KostRoomResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;

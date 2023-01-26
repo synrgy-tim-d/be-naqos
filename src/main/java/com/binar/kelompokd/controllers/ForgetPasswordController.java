@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/forget-password/")
 public class ForgetPasswordController {
-
+  private final static Logger logger = LoggerFactory.getLogger(ForgetPasswordController.class);
   @Autowired
   private UserRepository userRepository;
 
@@ -104,6 +106,7 @@ public class ForgetPasswordController {
       template = template.replaceAll("\\{\\{PASS_TOKEN}}", found.getOtp());
     }
     emailSender.sendAsync(found.getUsername(), "Chute - Forget Password", template);
+    logger.info("forget password success");
     return new ResponseEntity<>(templateCRUD.templateSukses("success"), HttpStatus.OK);
   }
 
@@ -147,6 +150,7 @@ public class ForgetPasswordController {
       userRepository.save(user);
       success = "success";
     } catch (Exception e) {
+      logger.error("gagal reset password", e);
       return new ResponseEntity<>( templateCRUD.templateEror("Gagal simpan user"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     return new ResponseEntity<>(templateCRUD.templateSukses(success), HttpStatus.OK);

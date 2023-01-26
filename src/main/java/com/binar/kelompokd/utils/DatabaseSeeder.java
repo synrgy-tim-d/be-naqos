@@ -200,7 +200,7 @@ public class DatabaseSeeder implements ApplicationRunner {
       String[] str = citiesName.split(":");
       String city = str[0];
       Integer province = Integer.valueOf(str[1]);
-      City oldCities = cityRepository.findByCity(city);
+      City oldCities = cityRepository.getCityByName(city);
       if (oldCities==null){
         oldCities = new City();
         oldCities.setCity(city);

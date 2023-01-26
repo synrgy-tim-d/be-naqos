@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/user-register/")
 public class RegisterController {
+  private final static Logger logger = LoggerFactory.getLogger(RegisterController.class);
   @Autowired
   private UserRepository userRepository;
 
@@ -91,16 +94,15 @@ public class RegisterController {
       SendOTPDTO username = new SendOTPDTO();
       username.setUsername(objModel.getUsername());
       Map sendOTP = sendEmailRegister(username);
+      logger.info("add user", result);
       return new ResponseEntity<Map>(templateCRUD.templateSukses(result), HttpStatus.OK);
     } catch (AddressException e) {
+      logger.error("email error", e);
       return new ResponseEntity<Map>(templateCRUD.badRequest("Mohon masukkan alamat email anda dengan benar"), HttpStatus.BAD_REQUEST);
     }
   }
 public boolean checkEmpty(Object req){
-  if(req == null || req.toString().isEmpty()){
-return true;
-  }
-  return false;
+  return req == null || req.toString().isEmpty();
 }
   @Operation(summary = "Register Google Testing")
   @ApiResponses(value = {
