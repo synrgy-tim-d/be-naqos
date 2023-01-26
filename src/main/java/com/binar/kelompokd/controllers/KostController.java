@@ -12,6 +12,7 @@ import com.binar.kelompokd.utils.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,36 +27,33 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Null;
 import java.util.*;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/kost")
+@Tag(name = "Kost Management", description = "APIs for Managing Kost")
 public class KostController {
   private final static Logger logger = LoggerFactory.getLogger(KostController.class);
-
   @Autowired
   KostService kostService;
-
   @Autowired
   SimpleStringUtils simpleStringUtils;
 
   private IUserAuthService iUserAuthService;
   private ImageService imageService;
-
   private CityService cityService;
 
   @Autowired
   public Response templateCRUD;
 
+  @Operation(summary = "Get All List Kosts", tags = {"Kost Management"})
   @GetMapping()
   public ResponseEntity<?> getAllKosts(){
     return new ResponseEntity<>(templateCRUD.templateSukses(kostService.getAllKost()), HttpStatus.OK);
   }
 
+  @Operation(summary = "Get List Kosts By City Id", tags = {"Kost Management"})
   @GetMapping("/city-id/{cityId}")
   public ResponseEntity<?> getKostsByCityId(
           @RequestParam() @Schema(example = "1") int page,
@@ -69,6 +67,7 @@ public class KostController {
     return new ResponseEntity<>(templateCRUD.templateSukses(kosts.getContent()), HttpStatus.OK);
   }
 
+  @Operation(summary = "Get List Kosts by City Name", tags = {"Kost Management"})
   @GetMapping("/by-city/{cityName}")
   public ResponseEntity<?> getKostsByCityName(
           @RequestParam() @Schema(example = "1") int page,
@@ -82,6 +81,7 @@ public class KostController {
     return new ResponseEntity<>(templateCRUD.templateSukses(kosts.getContent()), HttpStatus.OK);
   }
 
+  @Operation(summary = "Get All List Kosts with Pagination", tags = {"Kost Management"})
   @GetMapping("/page")
   public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() @Schema(example = "1") int page, @RequestParam() @Schema(example = "10") int size, @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType){
     Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
@@ -90,6 +90,7 @@ public class KostController {
     return new ResponseEntity<>(kosts.getContent(), HttpStatus.OK);
   }
 
+  @Operation(summary = "Get List Kosts by Kost Typee", tags = {"Kost Management"})
   @GetMapping("/by-type/page")
   public ResponseEntity<?> getKostsByKostType(
           @RequestParam() @Schema(example = "1") int page,
@@ -102,6 +103,8 @@ public class KostController {
     logger.info("getKostsByKostType",kosts);
     return new ResponseEntity<>(kosts.getContent(), HttpStatus.OK);
   }
+
+  @Operation(summary = "Get Kost by Id", tags = {"Kost Management"})
   @GetMapping("/{id}")
   public ResponseEntity<?> getKostById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
 
@@ -115,7 +118,7 @@ public class KostController {
     }
   }
 
-  @Operation(summary = "Add Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Add Kost")
+  @Operation(summary = "Add Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Add Kost", tags = {"Kost Management"})
   @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<?> createKost(@RequestPart("imageFiles") MultipartFile[] imageFiles,
                                       @RequestParam("name") @Schema(example = "Kost Binar Academy") String name,
@@ -165,7 +168,7 @@ public class KostController {
     }
   }
 
-  @Operation(summary = "Update Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Update Kost")
+  @Operation(summary = "Update Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Update Kost", tags = {"Kost Management"})
   @PatchMapping("/{id}")
   public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id,
                                       @RequestParam("name") @Schema(example = "Kost Binar Academy") String name,
@@ -197,6 +200,7 @@ public class KostController {
     }
   }
 
+  @Operation(summary = "Hard Delete Kost by Id", tags = {"Kost Management"})
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
 
@@ -209,6 +213,7 @@ public class KostController {
     }
   }
 
+  @Operation(summary = "Soft Delete Kost by Id", tags = {"Kost Management"})
   @DeleteMapping("/soft-delete/{id}")
   public ResponseEntity<?> softDeleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
 

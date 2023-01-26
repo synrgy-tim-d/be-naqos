@@ -5,7 +5,9 @@ import com.binar.kelompokd.models.entity.location.Province;
 import com.binar.kelompokd.interfaces.ProvinceService;
 import com.binar.kelompokd.models.response.ProvinceResponse;
 import com.binar.kelompokd.utils.Response;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/province")
+@Tag(name = "Province Management", description = "APIs for Managing Province")
+@RequestMapping("/provinces")
 public class ProvinceController {
     private final static Logger logger = LoggerFactory.getLogger(ProvinceController.class);
     @Autowired
@@ -28,6 +31,7 @@ public class ProvinceController {
     @Autowired
     public Response templateCRUD;
 
+    @Operation(summary = "Get All List Province", tags = {"Province Management"})
     @GetMapping()
     public ResponseEntity<?> getAllProvinces(){
         try {
@@ -41,6 +45,7 @@ public class ProvinceController {
         }
     }
 
+    @Operation(summary = "Get Province by Id", tags = {"Province Management"})
     @GetMapping("/{id}")
     public ResponseEntity<?> getProvinceById(@PathVariable("id") @Schema(example = "1") Integer id){
         try {
@@ -52,16 +57,19 @@ public class ProvinceController {
         }
     }
 
+    @Operation(summary = "Add Province", tags = {"Province Management"})
     @PostMapping()
     public ResponseEntity<?> saveProvince(@RequestBody Province province){
         return new ResponseEntity<>(provinceService.save(province), HttpStatus.OK);
     }
 
+    @Operation(summary = "Update Province by id", tags = {"Province Management"})
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateProvince(@PathVariable("id") @Schema(example = "1") Integer id, @RequestBody Province province){
         return new ResponseEntity<>(provinceService.update(id, province), HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete Province by id", tags = {"Province Management"})
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProvince(@PathVariable("id") @Schema(example = "1") Integer id){
         provinceService.delete(id);

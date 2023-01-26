@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,8 +31,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/notification")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/notifications")
+@Tag(name = "Notification Management", description = "APIs for Managing Notification")
 public class NotificationController {
   @Autowired
   private INotificationService iNotificationService;
@@ -39,7 +40,7 @@ public class NotificationController {
   @Autowired
   private IUserAuthService iUserService;
 
-  @Operation(summary = "Update unread notification when notification has been read by user")
+  @Operation(summary = "Update unread notification when notification has been read by user", tags = {"Notification Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "update to read notification!",
           content = {@Content(schema = @Schema(example = "Notification viewed!"))})
@@ -50,7 +51,7 @@ public class NotificationController {
     return ResponseEntity.ok(new MessageResponse("Notification Read."));
   }
 
-  @Operation(summary = "Update all unread notification when notification has been read by user")
+  @Operation(summary = "Update all unread notification when notification has been read by user", tags = {"Notification Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "update to read notification!",
           content = {@Content(schema = @Schema(example = "Notification viewed!"))})
@@ -62,7 +63,7 @@ public class NotificationController {
     return ResponseEntity.ok(new MessageResponse("All Notifications Read."));
   }
 
-  @Operation(summary = "Count all unread notification")
+  @Operation(summary = "Count all unread notification", tags = {"Notification Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Summary Notification!",
           content = {@Content(schema = @Schema(example = "Summary Notification!"))})
@@ -76,7 +77,7 @@ public class NotificationController {
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
-  @Operation(summary = "List notification")
+  @Operation(summary = "List notification", tags = {"Notification Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List Notification!",
           content = {@Content(schema = @Schema(example = "List Notification!"))})

@@ -6,6 +6,7 @@ import com.binar.kelompokd.models.entity.Image;
 import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,8 @@ import java.util.*;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/image")
+@Tag(name = "Image Managment", description = "APIs for Managing Image")
+@RequestMapping("/images")
 public class ImageController {
     private final static Logger logger = LoggerFactory.getLogger(ImageController.class);
     private ImageService imageService;
@@ -28,7 +30,7 @@ public class ImageController {
     @Autowired
     public Response templateCRUD;
 
-    @Operation(summary = "Delete Image Kost", description = "Delete Image Kost")
+    @Operation(summary = "Delete Image Kost", description = "Delete Image Kost", tags = {"Image Managment"})
     @DeleteMapping("/delete")
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> deleteImageKost(@RequestParam(name = "url") String url,
