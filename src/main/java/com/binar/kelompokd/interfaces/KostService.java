@@ -10,11 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface KostService {
-    Kost createKost(Kost kost);
     Kost getKostById(UUID id);
     List<Kost> getAllKost();
     Page<Kost> getAllKost(Pageable pageable);
-    Kost updateKost(UUID id, Kost kost);
     String deleteKost(UUID id);
 //    Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request);
     Page<Kost> getListData(Pageable pageable);
@@ -28,4 +26,7 @@ public interface KostService {
     Page<Kost> getKostsByKostType(String kostType, Pageable pageable);
     Page<Kost> getKostsByCityId(Integer cityId, Pageable pageable);
     Page<Kost> getKostsByCity(String cityName, Pageable pageable);
+
+    void updateKost(UUID uuid, String name, String description, String kostType,Boolean isAvailable,Double latitude,Double longitude,
+                    String address, String subdistrict, String district, String postalCode, Integer city);
 }

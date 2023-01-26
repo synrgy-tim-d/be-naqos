@@ -26,6 +26,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Null;
 import java.util.*;
 
 @AllArgsConstructor
@@ -112,7 +115,7 @@ public class KostController {
     }
   }
 
-  @Operation(summary = "Add Kost", description = "Add Kost")
+  @Operation(summary = "Add Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Add Kost")
   @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<?> createKost(@RequestPart("imageFiles") MultipartFile[] imageFiles,
                                       @RequestParam("name") @Schema(example = "Kost Binar Academy") String name,
@@ -162,10 +165,31 @@ public class KostController {
     }
   }
 
+  @Operation(summary = "Update Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Update Kost")
   @PatchMapping("/{id}")
-  public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody Kost kost){
+  public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id,
+                                      @RequestParam("name") @Schema(example = "Kost Binar Academy") String name,
+                                      @RequestParam("description") @Schema(example = "Description Binar Academy") String description,
+                                      @RequestParam("kostType") @Schema(example = "KOS_CAMPURAN") String kostType,
+                                      @RequestParam("isAvailable") Boolean isAvailable,
+                                      @RequestParam("latitude") Double latitude,
+                                      @RequestParam("longitude") Double longitude,
+                                      @RequestParam("address") @Schema(example = "Jl Medan Merdeka No 69") String address,
+                                      @RequestParam("subdistrict") @Schema(example = "Pengasinan") String subdistrict,
+                                      @RequestParam("district") @Schema(example = "Rawalumbu") String district,
+                                      @RequestParam("postalCode") @Schema(example = "18116") String postalCode,
+                                      @RequestParam("cityId") Integer cityId){
     try {
-      return new ResponseEntity<>(kostService.updateKost(id, kost), HttpStatus.OK);
+        Kost currentKost = kostService.getKostById(id);
+        if (currentKost == null) {
+          return new ResponseEntity<>(templateCRUD.notFound("Kost Not Found"),HttpStatus.NOT_FOUND);
+        }
+        kostService.updateKost(id,name,description,kostType,isAvailable,latitude,longitude,address,subdistrict,district,postalCode,cityId);
+
+      Kost updatedKost = kostService.getKostById(id);
+      NewKostResponse updateKostRes = new NewKostResponse(updatedKost, updatedKost.getOwnerId());
+
+      return new ResponseEntity<>(templateCRUD.templateSukses(updateKostRes), HttpStatus.OK);
     }
     catch (NoSuchElementException noSuchElementException){
       logger.error("Gagal update kost",noSuchElementException);
@@ -177,7 +201,7 @@ public class KostController {
   public ResponseEntity<?> deleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
 
     try {
-      return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.NO_CONTENT);
+      return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.ACCEPTED);
     }
     catch (EmptyResultDataAccessException emptyResultDataAccessException){
       logger.error(String.valueOf(emptyResultDataAccessException));
