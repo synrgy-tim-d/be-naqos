@@ -52,11 +52,11 @@ public class Response {
         return map;
     }
 
-  public Map contentEmpty(Object objek){
+  public Map notAccepted(Object objek){
     Map map = new HashMap();
     map.put("data", objek);
-    map.put("message", HttpStatus.NO_CONTENT);
-    map.put("code", HttpStatus.NO_CONTENT.value());
+    map.put("message", HttpStatus.NOT_ACCEPTABLE);
+    map.put("code", HttpStatus.NOT_ACCEPTABLE.value());
     return map;
   }
 }

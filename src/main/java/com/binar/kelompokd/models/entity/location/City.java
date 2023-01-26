@@ -30,11 +30,6 @@ public class City {
   @Column(length = 50, nullable = false)
   private String city;
 
-  @JsonManagedReference
-  @OneToOne(mappedBy = "city")
-  private Kost kost;
-
-  @JsonManagedReference
   @ManyToOne
   @JoinColumn(name="province_id", referencedColumnName = "id")
   @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})

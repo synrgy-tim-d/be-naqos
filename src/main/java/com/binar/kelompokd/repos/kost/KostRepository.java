@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
+@Transactional
 public interface KostRepository extends JpaRepository<Kost, UUID> {
 
     @Query(
@@ -43,7 +44,22 @@ public interface KostRepository extends JpaRepository<Kost, UUID> {
     @Modifying
     void softDeleteKost(@Param("id") UUID id);
 
-    Kost findKostById(UUID id);
+    @Query(
+            nativeQuery = true,
+            value = "select * from t_kost where kost_type=:kostType"
+    )
+    Page<Kost> getKostsByKostType(@Param("kostType") String kostType,Pageable pageable);
 
     Kost getKostByName(String name);
+
+    @Query(
+            nativeQuery = true,
+            value = "select * from t_kost where city_id=:cityId"
+    )
+    Page<Kost> getKostsByCityId(@Param("cityId") Integer cityId, Pageable pageable);
+
+    @Modifying
+    @Query(value = "update t_kost set name=?2, description=?3, kost_type=?4, is_available=?5, latitude=?6, longitude=?7, address=?8, subdistrict=?9, district=?10, postal_code=?11, city_id=?12 where id=?1", nativeQuery = true)
+    Integer updateKost(UUID uuid, String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address, String subdistrict, String district, String postalCode, Integer city);
+
 }

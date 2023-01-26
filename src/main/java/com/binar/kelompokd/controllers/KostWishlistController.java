@@ -11,6 +11,7 @@ import com.binar.kelompokd.models.response.MessageResponse;
 import com.binar.kelompokd.models.response.WishlistResponse;
 import com.binar.kelompokd.models.response.WishlistStatusResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,14 +26,15 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/wishlist")
+@Tag(name = "Wishlist Managment", description = "APIs for Managing Wishlist User")
+@RequestMapping("/wishlists")
 public class KostWishlistController {
   private IKostWishlistService kostWishlistService;
   private IUserAuthService iUserAuthService;
   private KostService kostService;
 
-  @Operation(summary = "Get all wishlist by user.", description = "Get all wishlist by user.")
-  @GetMapping("get")
+  @Operation(summary = "Get all wishlist by user.", description = "Get all wishlist by user.", tags ={"Wishlist Managment"})
+  @GetMapping("/get")
   public ResponseEntity<MessageResponse> getAllWishlistUser(Authentication authentication,
                                                             @RequestParam(value = "page", defaultValue = "0") int page,
                                                             @RequestParam(value = "size", defaultValue = "10") int size){
@@ -47,7 +49,7 @@ public class KostWishlistController {
     return kostService.getMessageResponse(page,size,kostResponsePage);
   }
 
-  @Operation(summary = "Get status wishlist kost by user.", description = "Get status wishlist kost by user.")
+  @Operation(summary = "Get status wishlist kost by user.", description = "Get status wishlist kost by user.", tags ={"Wishlist Managment"})
   @GetMapping("/status")
   public ResponseEntity<WishlistStatusResponse> getAWishlistAuth(@RequestParam("kostId") String kostId,
                                                                  Authentication authentication) {
@@ -61,7 +63,7 @@ public class KostWishlistController {
     return new ResponseEntity<>(wishlistStatusResponse, HttpStatus.OK);
   }
 
-  @Operation(summary = "Add Kost to user wishlist.", description = "Add Kost to user wishlist.")
+  @Operation(summary = "Add Kost to user wishlist.", description = "Add Kost to user wishlist.", tags ={"Wishlist Managment"})
   @PostMapping("/add")
   public ResponseEntity<WishlistResponse> addWishListAuth(@RequestBody WishlistAuthRequest request,
                                                           Authentication authentication) {
@@ -75,7 +77,7 @@ public class KostWishlistController {
     return new ResponseEntity<>(wishlistResponse, HttpStatus.CREATED);
   }
 
-  @Operation(summary = "delete Kost from user wishlist.", description = "delete Kost from user wishlist.")
+  @Operation(summary = "delete Kost from user wishlist.", description = "delete Kost from user wishlist.", tags ={"Wishlist Managment"})
   @DeleteMapping("/delete")
   public ResponseEntity<WishlistResponse> deleteWishlistAuth(@RequestParam("kostId") String kostId,
                                                              Authentication authentication) {

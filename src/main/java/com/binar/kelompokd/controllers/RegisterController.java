@@ -15,7 +15,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -31,8 +34,10 @@ import javax.validation.Valid;
 import java.util.*;
 
 @RestController
+@Tag(name = "User Management", description = "APIs for Managing User")
 @RequestMapping("/user-register/")
 public class RegisterController {
+  private final static Logger logger = LoggerFactory.getLogger(RegisterController.class);
   @Autowired
   private UserRepository userRepository;
 
@@ -53,7 +58,7 @@ public class RegisterController {
   private String BASEURL;
 
 
-  @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is not required yet")
+  @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is not required yet", tags = {"User Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Register User Success",
           content = {@Content(schema = @Schema(example = "User Added!"))})
@@ -82,36 +87,26 @@ public class RegisterController {
     if (objModel.getPassword().length() <= 6 ){
       return new ResponseEntity<Map>(templateCRUD.badRequest("password must have 6 characters or more"), HttpStatus.BAD_REQUEST);
     }
-    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
-    if(objModel.getUsername().matches(emailRegex)) {
+    try {
+      InternetAddress internetAddress = new InternetAddress(objModel.getUsername());
+      internetAddress.validate();
       // Email is valid
       String result = serviceReq.registerManual(objModel);
       SendOTPDTO username = new SendOTPDTO();
       username.setUsername(objModel.getUsername());
       Map sendOTP = sendEmailRegister(username);
+      logger.info("add user", result);
       return new ResponseEntity<Map>(templateCRUD.templateSukses(result), HttpStatus.OK);
-    } else {
-      // Email is invalid
+    } catch (AddressException e) {
+      logger.error("email error", e);
       return new ResponseEntity<Map>(templateCRUD.badRequest("Mohon masukkan alamat email anda dengan benar"), HttpStatus.BAD_REQUEST);
     }
-
-//    try {
-//      InternetAddress internetAddress = new InternetAddress(objModel.getUsername());
-//      internetAddress.validate();
-//      // Email is valid
-//     ;
-//    } catch (AddressException e) {
-//
-//    }
   }
 public boolean checkEmpty(Object req){
-  if(req == null || req.toString().isEmpty()){
-return true;
-  }
-  return false;
+  return req == null || req.toString().isEmpty();
 }
-  @Operation(summary = "Register Google Testing")
+  @Operation(summary = "Register Google Testing", tags = {"User Management"})
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Register User Success",
                   content = {@Content(schema = @Schema(example = "User Added!"))})
@@ -137,7 +132,7 @@ return true;
   @Value("${expired.token.password.minute}")
   int expiredToken;
 
-  @Operation(summary = "Send Email OTP to User")
+  @Operation(summary = "Send Email OTP to User", tags = {"User Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "OTP Send!",
           content = {@Content(schema = @Schema(example = "OTP Send!"))})
@@ -182,7 +177,7 @@ return true;
     return templateCRUD.templateSukses(message);
   }
 
-  @Operation(summary = "Input OTP from Email")
+  @Operation(summary = "Input OTP from Email", tags = {"User Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Input OTP Success!",
           content = {@Content(schema = @Schema(example = "Input OTP Success!"))})

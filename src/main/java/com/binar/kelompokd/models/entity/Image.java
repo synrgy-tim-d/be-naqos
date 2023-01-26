@@ -15,9 +15,6 @@ import java.io.Serializable;
 public class Image extends DateModel implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
     @Schema(example = "www.foto-kamar-1-kos-alamanda.com")
     @Column(name = "url", columnDefinition="TEXT", nullable = false)
     private String url;

@@ -12,6 +12,7 @@ import com.binar.kelompokd.models.response.NewKostResponse;
 import com.binar.kelompokd.models.response.WishlistKostPageResponse;
 import com.binar.kelompokd.repos.ImageRepository;
 import com.binar.kelompokd.repos.kost.KostRepository;
+import com.binar.kelompokd.repos.location.CityRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,18 +37,15 @@ public class KostServiceImpl implements KostService {
     @Autowired
     ImageRepository imageRepository;
 
+    @Autowired
+    CityRepository cityRepository;
+
     private IUserAuthService userAuthService;
     private CityService cityService;
 
     @Override
-    @Transactional
-    public Kost createKost(Kost kost) {
-        return kostRepository.save(kost);
-    }
-
-    @Override
     public Kost getKostById(UUID id) {
-        return kostRepository.findKostById(id);
+        return kostRepository.findById(id).get();
     }
 
     @Override
@@ -58,28 +56,6 @@ public class KostServiceImpl implements KostService {
     @Override
     public Page<Kost> getAllKost(Pageable pageable) {
         return kostRepository.getAllKostWhereIsAvailableTrue(pageable);
-    }
-
-    @Override
-    @Transactional
-    public Kost updateKost(UUID id, Kost kost) {
-
-        Kost kostUpdated = kostRepository.findById(id).get();
-
-        kostUpdated.setUpdatedAt(new Date());
-        kostUpdated.setName(kost.getName());
-        kostUpdated.setDescription(kost.getDescription());
-        kostUpdated.setKostType(kost.getKostType());
-        kostUpdated.setIsAvailable(kost.getIsAvailable());
-        kostUpdated.setLatitude(kost.getLatitude());
-        kostUpdated.setLongitude(kost.getLongitude());
-        kostUpdated.setAddress(kost.getAddress());
-        kostUpdated.setDistrict(kost.getDistrict());
-        kostUpdated.setSubdistrict(kost.getSubdistrict());
-        kostUpdated.setPostalCode(kost.getPostalCode());
-        kostUpdated.setCity(kost.getCity());
-
-        return kostRepository.save(kostUpdated);
     }
 
     @Override
@@ -142,4 +118,28 @@ public class KostServiceImpl implements KostService {
         }
 
     }
+
+    @Override
+    public Page<Kost> getKostsByKostType(String kostType, Pageable pageable) {
+        return kostRepository.getKostsByKostType(kostType, pageable);
+    }
+
+    @Override
+    public Page<Kost> getKostsByCityId(Integer cityId, Pageable pageable) {
+        return kostRepository.getKostsByCityId(cityId, pageable);
+    }
+
+    @Override
+    public Page<Kost> getKostsByCity(String cityName, Pageable pageable) {
+        City city = cityRepository.getCityByName(cityName);
+        Integer cityId = city.getId();
+        return kostRepository.getKostsByCityId(cityId, pageable);
+    }
+
+    @Override
+    public void updateKost(UUID uuid, String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address, String subdistrict, String district, String postalCode, Integer city) {
+        kostRepository.updateKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode, city);
+    }
+
+
 }

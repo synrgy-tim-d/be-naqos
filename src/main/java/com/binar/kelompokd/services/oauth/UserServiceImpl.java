@@ -100,7 +100,7 @@ public class UserServiceImpl implements IUserAuthService {
         }
         map.put("status",response.getStatusCode());
         map.put("code",response.getStatusCodeValue());
-        return map;
+        return templateResponse.templateSukses(map);
       } else {
         return templateResponse.notFound("user not found");
       }
@@ -124,6 +124,16 @@ public class UserServiceImpl implements IUserAuthService {
   @Override
   public Users findByUsername(String email) {
     return userRepository.findByUsername(email);
+  }
+
+  @Override
+  public void updateUser(Long id, String fullname, String phoneNumber) {
+    userRepository.updateUser(id, fullname, phoneNumber);
+  }
+
+  @Override
+  public void updatePassword(Long id, String password) {
+    userRepository.updatePassword(id, encoder.encode(password));
   }
 
   @Override
