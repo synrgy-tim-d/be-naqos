@@ -100,7 +100,7 @@ public class UserServiceImpl implements IUserAuthService {
         }
         map.put("status",response.getStatusCode());
         map.put("code",response.getStatusCodeValue());
-        return map;
+        return templateResponse.templateSukses(map);
       } else {
         return templateResponse.notFound("user not found");
       }
