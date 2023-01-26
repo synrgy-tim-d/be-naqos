@@ -35,7 +35,7 @@ public class LoginController {
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Map> login(@Valid @RequestBody LoginDTO objModel) {
     Map map = serviceReq.login(objModel);
-      return new ResponseEntity<Map>(map, (HttpStatus) map.get("status"));
+      return new ResponseEntity<Map>(map, (HttpStatus) map.get("message"));
   }
 
 }
