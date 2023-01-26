@@ -50,8 +50,6 @@ public interface KostRepository extends JpaRepository<Kost, UUID> {
     )
     Page<Kost> getKostsByKostType(@Param("kostType") String kostType,Pageable pageable);
 
-    Kost findKostById(UUID id);
-
     Kost getKostByName(String name);
 
     @Query(
