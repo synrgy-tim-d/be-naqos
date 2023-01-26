@@ -45,7 +45,7 @@ public class KostServiceImpl implements KostService {
 
     @Override
     public Kost getKostById(UUID id) {
-        return kostRepository.findKostById(id);
+        return kostRepository.findById(id).get();
     }
 
     @Override
