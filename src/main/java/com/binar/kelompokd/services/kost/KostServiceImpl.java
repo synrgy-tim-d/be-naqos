@@ -44,14 +44,8 @@ public class KostServiceImpl implements KostService {
     private CityService cityService;
 
     @Override
-    @Transactional
-    public Kost createKost(Kost kost) {
-        return kostRepository.save(kost);
-    }
-
-    @Override
     public Kost getKostById(UUID id) {
-        return kostRepository.findKostById(id);
+        return kostRepository.findById(id).get();
     }
 
     @Override
@@ -62,28 +56,6 @@ public class KostServiceImpl implements KostService {
     @Override
     public Page<Kost> getAllKost(Pageable pageable) {
         return kostRepository.getAllKostWhereIsAvailableTrue(pageable);
-    }
-
-    @Override
-    @Transactional
-    public Kost updateKost(UUID id, Kost kost) {
-
-        Kost kostUpdated = kostRepository.findById(id).get();
-
-        kostUpdated.setUpdatedAt(new Date());
-        kostUpdated.setName(kost.getName());
-        kostUpdated.setDescription(kost.getDescription());
-        kostUpdated.setKostType(kost.getKostType());
-        kostUpdated.setIsAvailable(kost.getIsAvailable());
-        kostUpdated.setLatitude(kost.getLatitude());
-        kostUpdated.setLongitude(kost.getLongitude());
-        kostUpdated.setAddress(kost.getAddress());
-        kostUpdated.setDistrict(kost.getDistrict());
-        kostUpdated.setSubdistrict(kost.getSubdistrict());
-        kostUpdated.setPostalCode(kost.getPostalCode());
-        kostUpdated.setCity(kost.getCity());
-
-        return kostRepository.save(kostUpdated);
     }
 
     @Override
@@ -162,6 +134,11 @@ public class KostServiceImpl implements KostService {
         City city = cityRepository.getCityByName(cityName);
         Integer cityId = city.getId();
         return kostRepository.getKostsByCityId(cityId, pageable);
+    }
+
+    @Override
+    public void updateKost(UUID uuid, String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address, String subdistrict, String district, String postalCode, Integer city) {
+        kostRepository.updateKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode, city);
     }
 
 

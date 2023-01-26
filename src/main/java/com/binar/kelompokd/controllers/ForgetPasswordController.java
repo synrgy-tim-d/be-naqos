@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/forget-password/")
+@Tag(name = "User Management", description = "APIs for Managing User")
 public class ForgetPasswordController {
   private final static Logger logger = LoggerFactory.getLogger(ForgetPasswordController.class);
   @Autowired
@@ -60,7 +62,7 @@ public class ForgetPasswordController {
   private PasswordEncoder passwordEncoder;
 
   // Step 1 : Send OTP
-  @Operation(summary = "Send Email OTP Forget Password")
+  @Operation(summary = "Send Email OTP Forget Password", tags = {"User Management"})
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "OTP Send!",
                   content = {@Content(schema = @Schema(example = "OTP Send!"))})
@@ -111,7 +113,7 @@ public class ForgetPasswordController {
   }
 
   //Step 2 : CHek TOKEN OTP EMAIL
-  @Operation(summary = "Check Token OTP Email")
+  @Operation(summary = "Check Token OTP Email", tags = {"User Management"})
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Check OTP!",
                   content = {@Content(schema = @Schema(example = "Check OTP!"))})
@@ -129,7 +131,7 @@ public class ForgetPasswordController {
   }
 
   // Step 3 : lakukan reset password baru
-  @Operation(summary = "Reset Password Login Naqos")
+  @Operation(summary = "Reset Password Login Naqos", tags = {"User Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Reset Password Login Naqos!",
           content = {@Content(schema = @Schema(example = "Reset Password Login Naqos!"))})

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
+@Tag(name = "User Management", description = "APIs for Managing User")
 @RequestMapping("/user-login/")
 public class LoginController {
   @Autowired
@@ -26,7 +28,7 @@ public class LoginController {
   @Autowired
   public IUserAuthService serviceReq;
 
-  @Operation(summary = "User Login with username/email and password")
+  @Operation(summary = "User Login with username/email and password", tags = {"User Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Login Success!",
           content = {@Content(schema = @Schema(example = "Login Success!"))})

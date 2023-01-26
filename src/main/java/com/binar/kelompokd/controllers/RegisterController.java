@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,7 @@ import javax.validation.Valid;
 import java.util.*;
 
 @RestController
+@Tag(name = "User Management", description = "APIs for Managing User")
 @RequestMapping("/user-register/")
 public class RegisterController {
   private final static Logger logger = LoggerFactory.getLogger(RegisterController.class);
@@ -56,7 +58,7 @@ public class RegisterController {
   private String BASEURL;
 
 
-  @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is not required yet")
+  @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is not required yet", tags = {"User Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Register User Success",
           content = {@Content(schema = @Schema(example = "User Added!"))})
@@ -104,7 +106,7 @@ public class RegisterController {
 public boolean checkEmpty(Object req){
   return req == null || req.toString().isEmpty();
 }
-  @Operation(summary = "Register Google Testing")
+  @Operation(summary = "Register Google Testing", tags = {"User Management"})
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Register User Success",
                   content = {@Content(schema = @Schema(example = "User Added!"))})
@@ -130,7 +132,7 @@ public boolean checkEmpty(Object req){
   @Value("${expired.token.password.minute}")
   int expiredToken;
 
-  @Operation(summary = "Send Email OTP to User")
+  @Operation(summary = "Send Email OTP to User", tags = {"User Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "OTP Send!",
           content = {@Content(schema = @Schema(example = "OTP Send!"))})
@@ -175,7 +177,7 @@ public boolean checkEmpty(Object req){
     return templateCRUD.templateSukses(message);
   }
 
-  @Operation(summary = "Input OTP from Email")
+  @Operation(summary = "Input OTP from Email", tags = {"User Management"})
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Input OTP Success!",
           content = {@Content(schema = @Schema(example = "Input OTP Success!"))})
