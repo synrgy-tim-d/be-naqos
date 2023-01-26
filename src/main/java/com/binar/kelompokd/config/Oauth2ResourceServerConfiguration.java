@@ -34,7 +34,7 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
         .antMatchers("/user-login/*",
             "/user-register/**",
             "/swagger-ui/**",
-            "/forget-password/*",
+            "/forget-password/**",
             "/naqos-swagger.html",
             "/kost",
             "/provinces/*",

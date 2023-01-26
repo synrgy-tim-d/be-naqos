@@ -24,10 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -118,12 +115,12 @@ public class ForgetPasswordController {
           @ApiResponse(responseCode = "200", description = "Check OTP!",
                   content = {@Content(schema = @Schema(example = "Check OTP!"))})
   })
-  @PostMapping("/forgot-password-check-token")
-  public ResponseEntity<?> validateToken(@RequestBody ResetPasswordDTO model) {
-    if (model.getOtp() == null)
+  @GetMapping("/forgot-password-check-token/{token}")
+  public ResponseEntity<?> validateToken(@PathVariable(value = "token") String tokenOtp) {
+    if (tokenOtp.isEmpty())
       return new ResponseEntity<>(templateCRUD.badRequest("Token " + config.isRequired), HttpStatus.BAD_REQUEST);
 
-    Users user = userRepository.findOneByOTP(model.getOtp());
+    Users user = userRepository.findOneByOTP(tokenOtp);
     if (user == null) {
       return new ResponseEntity<>(templateCRUD.notFound("Token not valid"), HttpStatus.NOT_FOUND);
     }
