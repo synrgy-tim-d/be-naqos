@@ -67,21 +67,41 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public Room updateRoom(UUID id, Room room) {
+    public Room updateRoom(UUID id, RoomRequest roomRequest) {
 
-        Room roomUpdated = roomRepository.findById(id).get();
+        BigDecimal pricePerDaily = new BigDecimal(0);
+        BigDecimal pricePerWeekly = new BigDecimal(0);
 
-        roomUpdated.setRoomType(room.getRoomType());
-        roomUpdated.setRules(room.getRules());
-        roomUpdated.setPricePerDaily(room.getPricePerDaily());
-        roomUpdated.setPricePerWeekly(room.getPricePerWeekly());
-        roomUpdated.setPricePerMonthly(room.getPricePerMonthly());
-        roomUpdated.setIsAvailable(room.getIsAvailable());
-        roomUpdated.setKost(room.getKost());
-        roomUpdated.setFacility(room.getFacility());
-        roomUpdated.setUpdatedAt(new Date());
+        if(roomRequest.getPrice_per_daily()!=null){
+            pricePerDaily = roomRequest.getPrice_per_daily();
+        }
 
-        return roomRepository.save(roomUpdated);
+        if(roomRequest.getPrice_per_weekly()!=null){
+            pricePerWeekly = roomRequest.getPrice_per_weekly();
+        }
+
+        Kost kost = kostRepository.findById(roomRequest.getKostId()).get();
+
+        Room room = roomRepository.findById(id).get();
+
+        Set<Facility> facilities = new HashSet<>();
+
+        for(UUID facilityIds: roomRequest.getFacility_id()){
+            Facility facility = facilityRepository.findById(facilityIds).get();
+            facilities.add(facility);
+        }
+
+        room.setRoomType(roomRequest.getRoom_type());
+        room.setRules(roomRequest.getRules());
+        room.setPricePerDaily(pricePerDaily);
+        room.setPricePerWeekly(pricePerWeekly);
+        room.setPricePerMonthly(roomRequest.getPrice_per_monthly());
+        room.setIsAvailable(roomRequest.getIs_available());
+        room.setKost(kost);
+        room.setFacility(facilities);
+        room.setUpdatedAt(new Date());
+
+        return roomRepository.save(room);
     }
 
     @Override

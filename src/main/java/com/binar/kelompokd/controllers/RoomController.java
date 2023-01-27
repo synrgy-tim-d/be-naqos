@@ -37,9 +37,9 @@ public class RoomController {
 
     @Operation(summary = "Update Kost Room by Id", tags = {"Kost Room Management"})
     @PatchMapping("{id}")
-    public ResponseEntity<?> editRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody Room room){
+    public ResponseEntity<?> editRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody RoomRequest roomRequest){
         try {
-            return new ResponseEntity<>(response.templateSukses(roomService.updateRoom(id, room)), HttpStatus.OK);        }
+            return new ResponseEntity<>(response.templateSukses(roomService.updateRoom(id, roomRequest)), HttpStatus.OK);        }
         catch (NoSuchElementException noSuchElementException){
             return new ResponseEntity<>(response.notFound("Room doesn't exist"), HttpStatus.NOT_FOUND);
         }
