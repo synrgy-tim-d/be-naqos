@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -132,7 +133,8 @@ public class KostController {
   public ResponseEntity<?> deleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
 
     try {
-      return new ResponseEntity<>(Response.accepted(kostService.deleteKost(id)), HttpStatus.ACCEPTED);
+      kostService.deleteKostById(id);
+      return new ResponseEntity<>(Response.accepted("Kost deleted"), HttpStatus.ACCEPTED);
     }
     catch (EmptyResultDataAccessException emptyResultDataAccessException){
       logger.error(String.valueOf(emptyResultDataAccessException));

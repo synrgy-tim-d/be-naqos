@@ -61,9 +61,8 @@ public class KostServiceImpl implements KostService {
 
     @Override
     @Transactional
-    public String deleteKost(UUID id) {
-        kostRepository.deleteById(id);
-        return "Kost deleted successfully";
+    public void deleteKostById(UUID id) {
+        kostRepository.deleteKostById(id);
     }
 
     @Override

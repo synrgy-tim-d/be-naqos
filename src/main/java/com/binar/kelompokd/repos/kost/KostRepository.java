@@ -62,4 +62,5 @@ public interface KostRepository extends JpaRepository<Kost, UUID> {
     @Query(value = "update t_kost set name=?2, description=?3, kost_type=?4, is_available=?5, latitude=?6, longitude=?7, address=?8, subdistrict=?9, district=?10, postal_code=?11, city_id=?12 where id=?1", nativeQuery = true)
     Integer updateKost(UUID uuid, String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address, String subdistrict, String district, String postalCode, Integer city);
 
+    void deleteKostById(UUID id);
 }

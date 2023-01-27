@@ -85,7 +85,7 @@ public class Kost extends DateModel implements Serializable {
 
   @ManyToOne
   @JoinColumn(name="city_id", referencedColumnName = "id")
-  @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
+  @Cascade(org.hibernate.annotations.CascadeType.MERGE)
   private City city;
 
   @OneToMany(

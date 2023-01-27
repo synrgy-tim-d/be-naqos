@@ -13,7 +13,7 @@ public interface KostService {
     Kost getKostById(UUID id);
     List<Kost> getAllKost();
     Page<Kost> getAllKost(Pageable pageable);
-    String deleteKost(UUID id);
+    void deleteKostById(UUID id);
 //    Kost addArrays(UUID kostId, UUID roomId, KostRoomFacilityImageRequest request);
     Page<Kost> getListData(Pageable pageable);
     String softDeleteKost(UUID id);
