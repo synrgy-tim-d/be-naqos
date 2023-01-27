@@ -61,6 +61,22 @@ public class Response {
     return map;
   }
 
+  public Map accepted(Object objek){
+    Map map = new HashMap();
+    map.put("data", objek);
+    map.put("message", HttpStatus.ACCEPTED);
+    map.put("code", HttpStatus.ACCEPTED.value());
+    return map;
+  }
+
+  public Map created(Object objek){
+    Map map = new HashMap();
+    map.put("data", objek);
+    map.put("message", HttpStatus.CREATED);
+    map.put("code", HttpStatus.CREATED.value());
+    return map;
+  }
+
   public Map paging(Page<?> paging){
     Map map = new HashMap();
     map.put("data", paging.getContent());
