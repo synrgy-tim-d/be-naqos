@@ -31,8 +31,7 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
         .disable()
         .antMatcher("/**")
         .authorizeRequests()
-        .antMatchers("/user-login/*",
-            "/user-register/**",
+        .antMatchers("/auth/*",
             "/swagger-ui/**",
             "/forget-password/**",
             "/naqos-swagger.html",
