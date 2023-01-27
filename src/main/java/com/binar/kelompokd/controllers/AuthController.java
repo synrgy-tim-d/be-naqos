@@ -28,17 +28,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.*;
 
 @RestController
 @Tag(name = "User Management", description = "APIs for Managing User")
-@RequestMapping("/auth/")
-public class RegisterController {
-  private final static Logger logger = LoggerFactory.getLogger(RegisterController.class);
+@RequestMapping("/auth")
+public class AuthController {
+  private final static Logger logger = LoggerFactory.getLogger(AuthController.class);
   @Autowired
   private UserRepository userRepository;
 
@@ -60,24 +58,14 @@ public class RegisterController {
 
 
   @Operation(summary = "User Login with username/email and password", tags = {"User Management"})
-  @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Login Success!",
-                  content = {@Content(schema = @Schema(example = "Login Success!"))})
-  })
   @PostMapping("/login")
-  @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Map> login(@Valid @RequestBody LoginDTO objModel) {
     Map map = serviceReq.login(objModel);
     return new ResponseEntity<Map>(map, (HttpStatus) map.get("message"));
   }
 
   @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is not required yet", tags = {"User Management"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Register User Success",
-          content = {@Content(schema = @Schema(example = "User Added!"))})
-  })
   @PostMapping("/register")
-  @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Map> saveRegisterManual(@Valid @RequestBody RegisterDTO objModel) throws RuntimeException {
     Users user = userRepository.checkExistingEmail(objModel.getUsername());
     if (null != user) {
@@ -113,24 +101,11 @@ public class RegisterController {
       // Email is invalid
       return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your email address correctly"), HttpStatus.BAD_REQUEST);
     }
-
-//    try {
-//      InternetAddress internetAddress = new InternetAddress(objModel.getUsername());
-//      internetAddress.validate();
-//      // Email is valid
-//     ;
-//    } catch (AddressException e) {
-//
-//    }
   }
 public boolean checkEmpty(Object req){
   return req == null || req.toString().isEmpty();
 }
   @Operation(summary = "Register Google Testing", tags = {"User Management"})
-  @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Register User Success",
-                  content = {@Content(schema = @Schema(example = "User Added!"))})
-  })
   @PostMapping("/register-google")
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Map> saveRegisterManualGoogle(@Valid
@@ -153,10 +128,6 @@ public boolean checkEmpty(Object req){
   int expiredToken;
 
   @Operation(summary = "Send Email OTP to User", tags = {"User Management"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "OTP Send!",
-          content = {@Content(schema = @Schema(example = "OTP Send!"))})
-  })
   @PostMapping("/send-otp")
   public Map sendEmailRegister(
       @NonNull @RequestBody SendOTPDTO user) {
@@ -198,10 +169,6 @@ public boolean checkEmpty(Object req){
   }
 
   @Operation(summary = "Input OTP from Email", tags = {"User Management"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Input OTP Success!",
-          content = {@Content(schema = @Schema(example = "Input OTP Success!"))})
-  })
   @GetMapping("/register-confirm-otp/{token}")
   public ResponseEntity<Map> saveRegisterManual(@PathVariable(value = "token") String tokenOtp) throws RuntimeException {
     Users user = userRepository.findOneByOTP(tokenOtp);

@@ -368,7 +368,7 @@ public class EmailTemplate {
         "                                <table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" +
         "                                  <tbody>\n" +
         "                                    <tr>\n" +
-        "                                      <td> <a href="+BASE_URL+"/api/user-register/register-confirm-otp/{{VERIFY_TOKEN}}" + " target=\"_blank\">Click Here!</a></td>\n" +
+        "                                      <td> <a href="+BASE_URL+"/api/auth/register-confirm-otp/{{VERIFY_TOKEN}}" + " target=\"_blank\">Click Here!</a></td>\n" +
         "                                    </tr>\n" +
         "                                  </tbody>\n" +
         "                                </table>\n" +

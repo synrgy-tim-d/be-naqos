@@ -3,6 +3,7 @@ package com.binar.kelompokd.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -29,21 +30,18 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
         .and()
         .csrf()
         .disable()
-        .antMatcher("/**")
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .authorizeRequests()
-        .antMatchers("/auth/*",
+        .antMatchers("/auth/**",
             "/swagger-ui/**",
             "/forget-password/**",
             "/naqos-swagger.html",
-            "/kost",
-            "/provinces/*",
-            "/cities/*",
+            "/provinces/**",
+            "/cities/**",
+            "/public/**",
             "/v3/api-docs/**").permitAll()
-        .antMatchers("/kost/**","/images/*", "/wishlists/*","/users/*").hasAnyAuthority("ROLE_READ")
-        .antMatchers("/kost/add","/images/*","/wishlists/*","/users/*").hasAnyAuthority("ROLE_WRITE")
-        .antMatchers("/kost/**","/images/*","/wishlists/*","/users/*").hasAnyAuthority("ROLE_PEMILIK")
-        .antMatchers("/kost/**","/images/*","/wishlists/*","/users/*").hasAnyAuthority("ROLE_PENYEWA")
-//        .antMatchers("/v1/role-test-global/post-barang-admin").hasAnyAuthority("ROLE_ADMIN")
+        .antMatchers("/kost/**","/images/*","/wishlists/*","/users/**","/notifications/**","/rooms/**","/facilities/**").hasAnyAuthority("ROLE_PEMILIK")
+        .antMatchers("/wishlists/*","/users/**","/notifications/**").hasAnyAuthority("ROLE_PENYEWA")
         .and()
         .authorizeRequests()
         .anyRequest()

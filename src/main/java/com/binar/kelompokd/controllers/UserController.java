@@ -59,18 +59,21 @@ public class UserController {
                                           @RequestBody ChangePasswordRequest request){
 
     Users user = userAuthService.findByUsername(authentication.getName());
-    if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
-      return new ResponseEntity<>(res.notAccepted("Wrong Password."), HttpStatus.NOT_ACCEPTABLE);
-    }
 
-    if (!request.getNewPassword().equals(request.getConfirmPassword())) {
-      return new ResponseEntity<>(res.notAccepted("Password Confirmation Mismatched."), HttpStatus.NOT_ACCEPTABLE);
-    }
     try {
+      if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+        return new ResponseEntity<>(res.notAccepted("Wrong Password."), HttpStatus.NOT_ACCEPTABLE);
+      }
+
+      if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+        return new ResponseEntity<>(res.notAccepted("Password Confirmation Mismatched."), HttpStatus.NOT_ACCEPTABLE);
+      }
+
       userAuthService.updatePassword(user.getId(), request.getNewPassword());
       return new ResponseEntity<>(res.templateSukses("Password Changed Successfully."), HttpStatus.OK);
+
     } catch (NullPointerException e){
-     return new ResponseEntity<>(res.notFound(e), HttpStatus.INTERNAL_SERVER_ERROR);
+     return new ResponseEntity<>(res.templateEror(e), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
