@@ -2,6 +2,7 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.config.Config;
 import com.binar.kelompokd.interfaces.IUserAuthService;
+import com.binar.kelompokd.models.dto.user.LoginDTO;
 import com.binar.kelompokd.models.dto.user.RegisterDTO;
 import com.binar.kelompokd.models.dto.user.SendOTPDTO;
 import com.binar.kelompokd.models.entity.oauth.Users;
@@ -35,7 +36,7 @@ import java.util.*;
 
 @RestController
 @Tag(name = "User Management", description = "APIs for Managing User")
-@RequestMapping("/user-register/")
+@RequestMapping("/auth/")
 public class RegisterController {
   private final static Logger logger = LoggerFactory.getLogger(RegisterController.class);
   @Autowired
@@ -57,6 +58,18 @@ public class RegisterController {
   @Value("${BASEURL:}")//FILE_SHOW_RUL
   private String BASEURL;
 
+
+  @Operation(summary = "User Login with username/email and password", tags = {"User Management"})
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Login Success!",
+                  content = {@Content(schema = @Schema(example = "Login Success!"))})
+  })
+  @PostMapping("/login")
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<Map> login(@Valid @RequestBody LoginDTO objModel) {
+    Map map = serviceReq.login(objModel);
+    return new ResponseEntity<Map>(map, (HttpStatus) map.get("message"));
+  }
 
   @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is not required yet", tags = {"User Management"})
   @ApiResponses(value = {
@@ -98,7 +111,7 @@ public class RegisterController {
       return new ResponseEntity<Map>(templateCRUD.templateSukses(result), HttpStatus.OK);
     } else {
       // Email is invalid
-      return new ResponseEntity<Map>(templateCRUD.badRequest("Mohon masukkan alamat email anda dengan benar"), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your email address correctly"), HttpStatus.BAD_REQUEST);
     }
 
 //    try {
@@ -126,7 +139,7 @@ public boolean checkEmpty(Object req){
 
     Users user = userRepository.checkExistingEmail(objModel.getUsername());
     if (null != user) {
-      return new ResponseEntity<Map>(templateCRUD.templateSukses("Username sudah ada"), HttpStatus.OK);
+      return new ResponseEntity<Map>(templateCRUD.templateSukses("Username is already exist"), HttpStatus.OK);
 
     }
     String result = serviceReq.registerManual(objModel);
@@ -152,7 +165,7 @@ public boolean checkEmpty(Object req){
     if (user.getUsername() == null) return templateCRUD.badRequest("No email provided");
     Users found = userRepository.findOneByUsername(user.getUsername());
     if (checkEmpty(user.username)){
-      return templateCRUD.badRequest("username is required."); //throw new BadRequest("Email not found");
+      return templateCRUD.badRequest("Username is required."); //throw new BadRequest("Email not found");
     }
     if (found == null) return templateCRUD.notFound("Email not found"); //throw new BadRequest("Email not found");
 
@@ -193,21 +206,21 @@ public boolean checkEmpty(Object req){
   public ResponseEntity<Map> saveRegisterManual(@PathVariable(value = "token") String tokenOtp) throws RuntimeException {
     Users user = userRepository.findOneByOTP(tokenOtp);
     if (null == user) {
-      return new ResponseEntity<Map>(templateCRUD.notFound("OTP tidak ditemukan"), HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Map>(templateCRUD.notFound("OTP not found"), HttpStatus.NOT_FOUND);
     }
 
     if(user.isEnabled()){
-      return new ResponseEntity<Map>(templateCRUD.templateSukses("Akun Anda sudah aktif, Silahkan melakukan login"), HttpStatus.OK);
+      return new ResponseEntity<Map>(templateCRUD.templateSukses("Your account is active now. Please login!"), HttpStatus.OK);
     }
     String today = config.convertDateToString(new Date());
 
     String dateToken = config.convertDateToString(user.getOtpExpiredDate());
     if(Long.parseLong(today) > Long.parseLong(dateToken)){
-      return new ResponseEntity<Map>(templateCRUD.unauthorized("Your token is expired. Please Get token again."), HttpStatus.GATEWAY_TIMEOUT);
+      return new ResponseEntity<Map>(templateCRUD.unauthorized("Your token is expired. Please Get token again!"), HttpStatus.GATEWAY_TIMEOUT);
     }
     //update user
     user.setEnabled(true);
     userRepository.save(user);
-    return new ResponseEntity<Map>(templateCRUD.templateSukses("Sukses, Silahkan Melakukan Login"), HttpStatus.OK);
+    return new ResponseEntity<Map>(templateCRUD.templateSukses("Verification success. Please login!"), HttpStatus.OK);
   }
 }

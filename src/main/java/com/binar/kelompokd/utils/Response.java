@@ -1,5 +1,6 @@
 package com.binar.kelompokd.utils;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -57,6 +58,34 @@ public class Response {
     map.put("data", objek);
     map.put("message", HttpStatus.NOT_ACCEPTABLE);
     map.put("code", HttpStatus.NOT_ACCEPTABLE.value());
+    return map;
+  }
+
+  public Map accepted(Object objek){
+    Map map = new HashMap();
+    map.put("data", objek);
+    map.put("message", HttpStatus.ACCEPTED);
+    map.put("code", HttpStatus.ACCEPTED.value());
+    return map;
+  }
+
+  public Map created(Object objek){
+    Map map = new HashMap();
+    map.put("data", objek);
+    map.put("message", HttpStatus.CREATED);
+    map.put("code", HttpStatus.CREATED.value());
+    return map;
+  }
+
+  public Map paging(Page<?> paging){
+    Map map = new HashMap();
+    map.put("data", paging.getContent());
+    map.put("count", paging.getContent().size());
+    map.put("total", paging.getTotalElements());
+    map.put("pages", paging.getTotalPages());
+    map.put("page", paging.getPageable().getPageNumber() + 1);
+    map.put("message", HttpStatus.OK);
+    map.put("code", HttpStatus.OK.value());
     return map;
   }
 }
