@@ -86,12 +86,12 @@ public class KostWishlistController {
   @DeleteMapping("/destroy")
   public ResponseEntity<?> deleteWishlistAuth(@RequestParam("kostId") String kostId,
                                                              Authentication authentication) {
+    Users user = iUserAuthService.findByUsername(authentication.getName());
+    Long userId = user.getId();
+    Kost kosts = kostService.getKostById(UUID.fromString(kostId));
     try {
-      Users user = iUserAuthService.findByUsername(authentication.getName());
-      Long userId = user.getId();
-      Kost kosts = kostService.getKostById(UUID.fromString(kostId));
       kostWishlistService.deleteWishlistByKostIdAndUserId(UUID.fromString(kostId), userId);
-      WishlistResponse wishlistResponse = new WishlistResponse(kostId, userId, "Deleted '" + kosts.getName() + "' from " + user + "'s Wishlist.");
+      WishlistResponse wishlistResponse = new WishlistResponse(kostId, userId, "Deleted '" + kosts.getName() + "' from " + user.getUsername() + "'s Wishlist.");
       return new ResponseEntity<>(response.created(wishlistResponse), HttpStatus.ACCEPTED);
     } catch (Exception e) {
       return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
