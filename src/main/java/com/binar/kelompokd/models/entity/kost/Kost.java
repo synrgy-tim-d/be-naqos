@@ -93,6 +93,7 @@ public class Kost extends DateModel implements Serializable {
       cascade = javax.persistence.CascadeType.MERGE,
       orphanRemoval = true)
   @JsonManagedReference
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private List<Room> rooms = new ArrayList<>();
 
   @OneToMany(
