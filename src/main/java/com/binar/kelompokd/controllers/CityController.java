@@ -2,6 +2,7 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.interfaces.CityService;
+import com.binar.kelompokd.models.request.CityRequest;
 import com.binar.kelompokd.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,8 +37,8 @@ public class CityController {
 
     @Operation(summary = "Add City", tags = {"City Management"})
     @PostMapping()
-    public ResponseEntity<?> saveCity(@RequestBody City city){
-        return new ResponseEntity<>(response.templateSukses(cityService.save(city)), HttpStatus.OK);
+    public ResponseEntity<?> saveCity(@RequestBody CityRequest cityRequest){
+        return new ResponseEntity<>(response.templateSukses(cityService.save(cityRequest)), HttpStatus.OK);
     }
 
     @Operation(summary = "Update City by Id", tags = {"City Management"})
