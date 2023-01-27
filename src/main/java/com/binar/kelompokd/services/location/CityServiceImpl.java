@@ -46,17 +46,20 @@ public class CityServiceImpl implements CityService {
 
     @Override
     @Transactional
-    public City update(Integer id, City city) {
-        City city1 = cityRepository.findById(id).get();
+    public City update(Integer id, CityRequest cityRequest) {
+        Province province = provinceRepository.findById(cityRequest.getProvinceId()).get();
 
-        city1.setCity(city.getCity());
+        City city = cityRepository.findById(id).get();
 
-        return cityRepository.save(city1);
+        city.setProvince(province);
+        city.setCity(cityRequest.getCity());
+
+        return cityRepository.save(city);
     }
 
     @Override
     @Transactional
     public void delete(Integer id) {
-        cityRepository.deleteById(id);
+        cityRepository.deleteCityById(id);
     }
 }

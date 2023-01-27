@@ -43,8 +43,8 @@ public class CityController {
 
     @Operation(summary = "Update City by Id", tags = {"City Management"})
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateCity(@PathVariable("id") @Schema(example = "1") Integer id, @RequestBody City city){
-        return new ResponseEntity<>(response.templateSukses(cityService.update(id, city)), HttpStatus.OK);
+    public ResponseEntity<?> updateCity(@PathVariable("id") @Schema(example = "1") Integer id, @RequestBody CityRequest cityRequest){
+        return new ResponseEntity<>(response.templateSukses(cityService.update(id, cityRequest)), HttpStatus.OK);
     }
 
     @Operation(summary = "Delete City", tags = {"City Management"})
