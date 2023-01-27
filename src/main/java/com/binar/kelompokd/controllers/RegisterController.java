@@ -100,21 +100,28 @@ public class RegisterController {
     if (objModel.getPassword().length() <= 6 ){
       return new ResponseEntity<Map>(templateCRUD.badRequest("password must have 6 characters or more"), HttpStatus.BAD_REQUEST);
     }
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
-    try {
-      InternetAddress internetAddress = new InternetAddress(objModel.getUsername());
-      internetAddress.validate();
+    if(objModel.getUsername().matches(emailRegex)) {
       // Email is valid
       String result = serviceReq.registerManual(objModel);
       SendOTPDTO username = new SendOTPDTO();
       username.setUsername(objModel.getUsername());
       Map sendOTP = sendEmailRegister(username);
-      logger.info("add user", result);
       return new ResponseEntity<Map>(templateCRUD.templateSukses(result), HttpStatus.OK);
-    } catch (AddressException e) {
-      logger.error("email error", e);
+    } else {
+      // Email is invalid
       return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your email address correctly"), HttpStatus.BAD_REQUEST);
     }
+
+//    try {
+//      InternetAddress internetAddress = new InternetAddress(objModel.getUsername());
+//      internetAddress.validate();
+//      // Email is valid
+//     ;
+//    } catch (AddressException e) {
+//
+//    }
   }
 public boolean checkEmpty(Object req){
   return req == null || req.toString().isEmpty();

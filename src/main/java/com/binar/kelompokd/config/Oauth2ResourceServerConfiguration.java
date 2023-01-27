@@ -34,15 +34,16 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
         .antMatchers("/user-login/*",
             "/user-register/**",
             "/swagger-ui/**",
-            "/forget-password/*",
+            "/forget-password/**",
             "/naqos-swagger.html",
             "/kost",
             "/provinces/*",
             "/cities/*",
             "/v3/api-docs/**").permitAll()
-        .antMatchers("/kost/**","/images/*", "/wishlists/*").hasAnyAuthority("ROLE_READ")
-        .antMatchers("/kost/add","/images/*","/wishlists/*").hasAnyAuthority("ROLE_WRITE")
-        .antMatchers("/kost/**","/images/*","/wishlists/*").hasAnyAuthority("ROLE_USER")
+        .antMatchers("/kost/**","/images/*", "/wishlists/*","/users/*").hasAnyAuthority("ROLE_READ")
+        .antMatchers("/kost/add","/images/*","/wishlists/*","/users/*").hasAnyAuthority("ROLE_WRITE")
+        .antMatchers("/kost/**","/images/*","/wishlists/*","/users/*").hasAnyAuthority("ROLE_PEMILIK")
+        .antMatchers("/kost/**","/images/*","/wishlists/*","/users/*").hasAnyAuthority("ROLE_PENYEWA")
 //        .antMatchers("/v1/role-test-global/post-barang-admin").hasAnyAuthority("ROLE_ADMIN")
         .and()
         .authorizeRequests()

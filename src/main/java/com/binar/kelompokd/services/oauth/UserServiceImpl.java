@@ -127,6 +127,16 @@ public class UserServiceImpl implements IUserAuthService {
   }
 
   @Override
+  public void updateUser(Long id, String fullname, String phoneNumber) {
+    userRepository.updateUser(id, fullname, phoneNumber);
+  }
+
+  @Override
+  public void updatePassword(Long id, String password) {
+    userRepository.updatePassword(id, encoder.encode(password));
+  }
+
+  @Override
   public String registerManual(RegisterDTO registerModel) {
     Map map = new HashMap();
     try {

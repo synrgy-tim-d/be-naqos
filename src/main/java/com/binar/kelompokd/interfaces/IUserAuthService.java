@@ -9,8 +9,9 @@ import java.util.Map;
 public interface IUserAuthService {
   String registerManual(RegisterDTO objModel) ;
   Map login(LoginDTO loginModel);
-
   Users findUsersById(Long id);
-
   Users findByUsername(String email);
+  void updateUser(Long id, String fullname, String phoneNumber);
+  void updatePassword(Long id, String password);
+
 }
