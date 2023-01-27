@@ -3,6 +3,7 @@ package com.binar.kelompokd.controllers;
 import com.binar.kelompokd.interfaces.RoomService;
 import com.binar.kelompokd.models.entity.kost.Room;
 import com.binar.kelompokd.models.response.KostRoomResponse;
+import com.binar.kelompokd.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,19 +25,22 @@ public class RoomController {
     @Autowired
     RoomService roomService;
 
+    @Autowired
+    private Response response;
+
     @Operation(summary = "Add Kost Room", tags = {"Kost Room Management"})
     @PostMapping()
     public ResponseEntity<?> addRoom(@RequestBody Room room){
-        return new ResponseEntity<>(roomService.addRoom(room), HttpStatus.OK);
+        return new ResponseEntity<>(response.templateSukses(roomService.addRoom(room)), HttpStatus.OK);
     }
 
     @Operation(summary = "Update Kost Room by Id", tags = {"Kost Room Management"})
     @PatchMapping("{id}")
     public ResponseEntity<?> editRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody Room room){
         try {
-            return new ResponseEntity<>(roomService.updateRoom(id, room), HttpStatus.OK);        }
+            return new ResponseEntity<>(response.templateSukses(roomService.updateRoom(id, room)), HttpStatus.OK);        }
         catch (NoSuchElementException noSuchElementException){
-            return new ResponseEntity<>("error : \"Room doesn't exist\"", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response.notFound("Room doesn't exist"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -48,7 +52,7 @@ public class RoomController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         catch (EmptyResultDataAccessException emptyResultDataAccessException){
-            return new ResponseEntity<>("error : \"Room doesn't exist\"", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response.notFound("Room doesn't exist"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -60,7 +64,7 @@ public class RoomController {
             return new ResponseEntity<>(roomService.softDeleteRoom(id), HttpStatus.NO_CONTENT);
         }
         catch (EmptyResultDataAccessException emptyResultDataAccessException){
-            return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -69,17 +73,17 @@ public class RoomController {
     public ResponseEntity<?> getAllRooms(){
         List<Room> room = roomService.getAllRooms();
         KostRoomResponse kostRoomResponse = KostRoomResponse.builder().room(room).build();
-        return new ResponseEntity<>(kostRoomResponse, HttpStatus.OK);
+        return new ResponseEntity<>(response.templateSukses(room), HttpStatus.OK);
     }
 
     @Operation(summary = "Get Kost Room by Id", tags = {"Kost Room Management"})
     @GetMapping("/{id}")
     public ResponseEntity<?> getRoomById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
         try {
-            return new ResponseEntity<>(roomService.getRoomById(id), HttpStatus.OK);
+            return new ResponseEntity<>(response.templateSukses(roomService.getRoomById(id)), HttpStatus.OK);
         }
         catch (NoSuchElementException noSuchElementException){
-            return new ResponseEntity<>("error : \"Room doesn't exist\"", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response.notFound("Room doesn't exist"), HttpStatus.NOT_FOUND);
         }
     }
 }

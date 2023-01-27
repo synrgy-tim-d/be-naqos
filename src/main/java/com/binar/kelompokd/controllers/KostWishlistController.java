@@ -10,9 +10,11 @@ import com.binar.kelompokd.models.request.WishlistAuthRequest;
 import com.binar.kelompokd.models.response.MessageResponse;
 import com.binar.kelompokd.models.response.WishlistResponse;
 import com.binar.kelompokd.models.response.WishlistStatusResponse;
+import com.binar.kelompokd.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,9 @@ public class KostWishlistController {
   private IUserAuthService iUserAuthService;
   private KostService kostService;
 
+  @Autowired
+  private Response response;
+
   @Operation(summary = "Get all wishlist by user.", description = "Get all wishlist by user.", tags ={"Wishlist Managment"})
   @GetMapping("/get")
   public ResponseEntity<MessageResponse> getAllWishlistUser(Authentication authentication,
@@ -51,7 +56,7 @@ public class KostWishlistController {
 
   @Operation(summary = "Get status wishlist kost by user.", description = "Get status wishlist kost by user.", tags ={"Wishlist Managment"})
   @GetMapping("/status")
-  public ResponseEntity<WishlistStatusResponse> getAWishlistAuth(@RequestParam("kostId") String kostId,
+  public ResponseEntity<?> getAWishlistAuth(@RequestParam("kostId") String kostId,
                                                                  Authentication authentication) {
     Users user = iUserAuthService.findByUsername(authentication.getName());
     Long userId = user.getId();
@@ -60,12 +65,12 @@ public class KostWishlistController {
     Boolean hasil = !wishlist.isEmpty();
 
     WishlistStatusResponse wishlistStatusResponse = new WishlistStatusResponse(kostId, userId, hasil);
-    return new ResponseEntity<>(wishlistStatusResponse, HttpStatus.OK);
+    return new ResponseEntity<>(response.templateSukses(wishlistStatusResponse), HttpStatus.OK);
   }
 
   @Operation(summary = "Add Kost to user wishlist.", description = "Add Kost to user wishlist.", tags ={"Wishlist Managment"})
   @PostMapping("/add")
-  public ResponseEntity<WishlistResponse> addWishListAuth(@RequestBody WishlistAuthRequest request,
+  public ResponseEntity<?> addWishListAuth(@RequestBody WishlistAuthRequest request,
                                                           Authentication authentication) {
     Users user = iUserAuthService.findByUsername(authentication.getName());
     Long userId = user.getId();
@@ -74,18 +79,22 @@ public class KostWishlistController {
     KostWishlist wishlist = new KostWishlist(users, kosts);
     kostWishlistService.createWishList(wishlist);
     WishlistResponse wishlistResponse = new WishlistResponse(request.getKostId(), userId, "Add '" + kosts.getName() + "' to " + users.getUsername() + "'s Wishlist.");
-    return new ResponseEntity<>(wishlistResponse, HttpStatus.CREATED);
+    return new ResponseEntity<>(response.created(wishlistResponse), HttpStatus.CREATED);
   }
 
   @Operation(summary = "delete Kost from user wishlist.", description = "delete Kost from user wishlist.", tags ={"Wishlist Managment"})
-  @DeleteMapping("/delete")
-  public ResponseEntity<WishlistResponse> deleteWishlistAuth(@RequestParam("kostId") String kostId,
+  @DeleteMapping("/destroy")
+  public ResponseEntity<?> deleteWishlistAuth(@RequestParam("kostId") String kostId,
                                                              Authentication authentication) {
-    Users user = iUserAuthService.findByUsername(authentication.getName());
-    Long userId = user.getId();
-    Kost kosts = kostService.getKostById(UUID.fromString(kostId));
-    kostWishlistService.deleteWishlistByKostIdAndUserId(UUID.fromString(kostId), userId);
-    WishlistResponse wishlistResponse = new WishlistResponse(kostId, userId, "Deleted '" + kosts.getName() + "' from " + user + "'s Wishlist.");
-    return new ResponseEntity<>(wishlistResponse, HttpStatus.ACCEPTED);
+    try {
+      Users user = iUserAuthService.findByUsername(authentication.getName());
+      Long userId = user.getId();
+      Kost kosts = kostService.getKostById(UUID.fromString(kostId));
+      kostWishlistService.deleteWishlistByKostIdAndUserId(UUID.fromString(kostId), userId);
+      WishlistResponse wishlistResponse = new WishlistResponse(kostId, userId, "Deleted '" + kosts.getName() + "' from " + user + "'s Wishlist.");
+      return new ResponseEntity<>(response.created(wishlistResponse), HttpStatus.ACCEPTED);
+    } catch (Exception e) {
+      return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

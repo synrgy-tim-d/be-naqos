@@ -38,7 +38,7 @@ public class ProvinceController {
             List<Province> get = provinceService.getAllProvinces();
             ProvinceResponse res = new ProvinceResponse(get);
             logger.info("Get all Province",res);
-            return new ResponseEntity<>(templateCRUD.templateSukses(res), HttpStatus.OK);
+            return new ResponseEntity<>(templateCRUD.templateSukses(get), HttpStatus.OK);
         } catch (Exception e){
             logger.error("get all province error",e);
             return new ResponseEntity<>(templateCRUD.notFound(e), HttpStatus.NOT_FOUND);
@@ -60,13 +60,13 @@ public class ProvinceController {
     @Operation(summary = "Add Province", tags = {"Province Management"})
     @PostMapping()
     public ResponseEntity<?> saveProvince(@RequestBody Province province){
-        return new ResponseEntity<>(provinceService.save(province), HttpStatus.OK);
+        return new ResponseEntity<>(templateCRUD.templateSukses(provinceService.save(province)), HttpStatus.OK);
     }
 
     @Operation(summary = "Update Province by id", tags = {"Province Management"})
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateProvince(@PathVariable("id") @Schema(example = "1") Integer id, @RequestBody Province province){
-        return new ResponseEntity<>(provinceService.update(id, province), HttpStatus.OK);
+        return new ResponseEntity<>(templateCRUD.templateSukses(provinceService.update(id, province)), HttpStatus.OK);
     }
 
     @Operation(summary = "Delete Province by id", tags = {"Province Management"})

@@ -8,8 +8,10 @@ import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.models.response.NewKostResponse;
+import com.binar.kelompokd.utils.PageResponse;
 import com.binar.kelompokd.utils.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,13 +46,15 @@ public class KostController {
   private ImageService imageService;
   private CityService cityService;
 
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
   @Autowired
-  public Response templateCRUD;
+  public Response Response;
 
   @Operation(summary = "Get All List Kosts", tags = {"Kost Management"})
   @GetMapping()
-  public ResponseEntity<?> getAllKosts(){
-    return new ResponseEntity<>(templateCRUD.templateSukses(kostService.getAllKost()), HttpStatus.OK);
+  public ResponseEntity<?> getAllKosts() {
+    return new ResponseEntity<>(Response.templateSukses(kostService.getAllKost()), HttpStatus.OK);
   }
 
   @Operation(summary = "Get List Kosts By City Id", tags = {"Kost Management"})
@@ -60,11 +64,19 @@ public class KostController {
           @RequestParam() @Schema(example = "10") int size,
           @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy,
           @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType,
-          @PathVariable("cityId") @Schema(example = "1") Integer cityId){
-    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
+          @PathVariable("cityId") @Schema(example = "1") Integer cityId) {
+    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page - 1, size);
     Page<Kost> kosts = kostService.getKostsByCityId(cityId, pageable);
-    logger.info("list Kosts",kosts);
-    return new ResponseEntity<>(templateCRUD.templateSukses(kosts.getContent()), HttpStatus.OK);
+    logger.info("list Kosts", kosts);
+    PageResponse response = new PageResponse(
+            kosts.getTotalPages(),
+            kosts.getTotalElements(),
+            page,
+            kosts.isFirst(),
+            kosts.isLast(),
+            size,
+            OBJECT_MAPPER.convertValue(kosts.getContent(), List.class));
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @Operation(summary = "Get List Kosts by City Name", tags = {"Kost Management"})
@@ -74,20 +86,36 @@ public class KostController {
           @RequestParam() @Schema(example = "10") int size,
           @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy,
           @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType,
-          @PathVariable("cityName") @Schema(example = "Kabupaten Lebak") String cityName){
-    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
+          @PathVariable("cityName") @Schema(example = "Kabupaten Lebak") String cityName) {
+    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page - 1, size);
     Page<Kost> kosts = kostService.getKostsByCity(cityName, pageable);
-    logger.info("list Kosts By City",kosts);
-    return new ResponseEntity<>(templateCRUD.templateSukses(kosts.getContent()), HttpStatus.OK);
+    logger.info("list Kosts By City", kosts);
+    PageResponse response = new PageResponse(
+            kosts.getTotalPages(),
+            kosts.getTotalElements(),
+            page,
+            kosts.isFirst(),
+            kosts.isLast(),
+            size,
+            OBJECT_MAPPER.convertValue(kosts.getContent(), List.class));
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @Operation(summary = "Get All List Kosts with Pagination", tags = {"Kost Management"})
   @GetMapping("/page")
-  public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() @Schema(example = "1") int page, @RequestParam() @Schema(example = "10") int size, @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType){
-    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
+  public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() @Schema(example = "1") int page, @RequestParam() @Schema(example = "10") int size, @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType) {
+    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page - 1, size);
     Page<Kost> kosts = kostService.getListData(pageable);
-    logger.info("list Kosts page",kosts);
-    return new ResponseEntity<>(kosts.getContent(), HttpStatus.OK);
+    logger.info("list Kosts page", kosts);
+    PageResponse response = new PageResponse(
+            kosts.getTotalPages(),
+            kosts.getTotalElements(),
+            page,
+            kosts.isFirst(),
+            kosts.isLast(),
+            size,
+            OBJECT_MAPPER.convertValue(kosts.getContent(), List.class));
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @Operation(summary = "Get List Kosts by Kost Typee", tags = {"Kost Management"})
@@ -97,11 +125,18 @@ public class KostController {
           @RequestParam() @Schema(example = "10") int size,
           @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy,
           @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType,
-          @RequestParam() @Schema(example = "KOS_PUTRA") String kostType){
-    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page-1, size);
+          @RequestParam() @Schema(example = "KOS_PUTRA") String kostType) {
+    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page - 1, size);
     Page<Kost> kosts = kostService.getKostsByKostType(kostType, pageable);
-    logger.info("getKostsByKostType",kosts);
-    return new ResponseEntity<>(kosts.getContent(), HttpStatus.OK);
+    logger.info("getKostsByKostType", kosts);
+    PageResponse response = new PageResponse(
+            kosts.getTotalPages(),
+            kosts.getTotalElements(),
+            page, kosts.isFirst(),
+            kosts.isLast(),
+            size,
+            OBJECT_MAPPER.convertValue(kosts.getContent(), List.class));
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @Operation(summary = "Get Kost by Id", tags = {"Kost Management"})
@@ -110,11 +145,11 @@ public class KostController {
 
     try {
       Kost kost = kostService.getKostById(id);
-      return new ResponseEntity<>(kost, HttpStatus.OK);
+      return new ResponseEntity<>(Response.templateSukses(kost), HttpStatus.OK);
     }
     catch (NoSuchElementException noSuchElementException){
       logger.error("Kost tidak ada", noSuchElementException);
-      return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
 
@@ -140,7 +175,7 @@ public class KostController {
 
     if (imageFiles.length > 4){
       logger.error("Image lebih dari 4");
-      return new ResponseEntity<>(templateCRUD.badRequest("Max Files Upload are 4 files"),HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(Response.badRequest("Max Files Upload are 4 files"), HttpStatus.BAD_REQUEST);
     }
 
     try {
@@ -153,7 +188,7 @@ public class KostController {
       Kost currentKost = kostService.getKostById(uuid);
       if (currentKost == null){
         logger.error("Kost tidak ada");
-        return new ResponseEntity<>(templateCRUD.notFound("Kost Not Found"),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(Response.notFound("Kost Not Found"), HttpStatus.NOT_FOUND);
       } else {
         for (String url : urls) {
           imageService.saveImageKostToDb(url, currentKost);
@@ -161,10 +196,10 @@ public class KostController {
       }
       NewKostResponse kostResponse = new NewKostResponse(currentKost, currentKost.getOwnerId());
       logger.info("add kost", kostResponse);
-      return new ResponseEntity<>(templateCRUD.templateSukses(kostResponse), HttpStatus.CREATED);
+      return new ResponseEntity<>(Response.templateSukses(kostResponse), HttpStatus.CREATED);
     } catch (Exception e){
       logger.error("Gagal Add Kost",e);
-      return new ResponseEntity<>(templateCRUD.badRequest(e), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(Response.badRequest(e), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -185,18 +220,18 @@ public class KostController {
     try {
         Kost currentKost = kostService.getKostById(id);
         if (currentKost == null) {
-          return new ResponseEntity<>(templateCRUD.notFound("Kost Not Found"),HttpStatus.NOT_FOUND);
+          return new ResponseEntity<>(Response.notFound("Kost Not Found"), HttpStatus.NOT_FOUND);
         }
         kostService.updateKost(id,name,description,kostType,isAvailable,latitude,longitude,address,subdistrict,district,postalCode,cityId);
 
       Kost updatedKost = kostService.getKostById(id);
       NewKostResponse updateKostRes = new NewKostResponse(updatedKost, updatedKost.getOwnerId());
 
-      return new ResponseEntity<>(templateCRUD.templateSukses(updateKostRes), HttpStatus.OK);
+      return new ResponseEntity<>(Response.templateSukses(updateKostRes), HttpStatus.OK);
     }
     catch (NoSuchElementException noSuchElementException){
       logger.error("Gagal update kost",noSuchElementException);
-      return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
 
@@ -205,11 +240,11 @@ public class KostController {
   public ResponseEntity<?> deleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
 
     try {
-      return new ResponseEntity<>(kostService.deleteKost(id), HttpStatus.ACCEPTED);
+      return new ResponseEntity<>(Response.accepted(kostService.deleteKost(id)), HttpStatus.ACCEPTED);
     }
     catch (EmptyResultDataAccessException emptyResultDataAccessException){
       logger.error(String.valueOf(emptyResultDataAccessException));
-      return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
 
@@ -222,7 +257,7 @@ public class KostController {
     }
     catch (EmptyResultDataAccessException emptyResultDataAccessException){
       logger.error(String.valueOf(emptyResultDataAccessException));
-      return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
 }

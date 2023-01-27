@@ -2,6 +2,7 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.models.request.RoomFacilityRequest;
 import com.binar.kelompokd.interfaces.FacilityService;
+import com.binar.kelompokd.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,28 +23,31 @@ public class FacilityController {
     @Autowired
     FacilityService facilityService;
 
+    @Autowired
+    private Response response;
+
     @Operation(summary = "Add Facility", tags = {"Facility Management"})
     @PostMapping()
     public ResponseEntity<?> addFacility(@RequestBody RoomFacilityRequest roomFacilityRequest){
-        return new ResponseEntity<>(facilityService.addFacility(roomFacilityRequest), HttpStatus.OK);
+        return new ResponseEntity<>(response.templateSukses(facilityService.addFacility(roomFacilityRequest)), HttpStatus.OK);
     }
 
     @Operation(summary = "Get All List Facility", tags = {"Facility Management"})
     @GetMapping()
     public ResponseEntity<?> getAllFacilities(){
-        return new ResponseEntity<>(facilityService.getAllFacilities(), HttpStatus.OK);
+        return new ResponseEntity<>(response.templateSukses(facilityService.getAllFacilities()), HttpStatus.OK);
     }
 
     @Operation(summary = "Get Facility by Id", tags = {"Facility Management"})
     @GetMapping("/{id}")
     public ResponseEntity<?> getFacilityById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
-        return new ResponseEntity<>(facilityService.getFacilityById(id), HttpStatus.OK);
+        return new ResponseEntity<>(response.templateSukses(facilityService.getFacilityById(id)), HttpStatus.OK);
     }
 
     @Operation(summary = "Update Facility by Id", tags = {"Facility Management"})
     @PatchMapping("{id}")
     public ResponseEntity<?> editFacility(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody RoomFacilityRequest roomFacilityRequest){
-        return new ResponseEntity<>(facilityService.editFacility(id, roomFacilityRequest), HttpStatus.OK);
+        return new ResponseEntity<>(response.templateSukses(facilityService.editFacility(id, roomFacilityRequest)), HttpStatus.OK);
     }
 
     @Operation(summary = "Delete Facility by Id", tags = {"Facility Management"})

@@ -13,6 +13,7 @@ import com.binar.kelompokd.models.response.WishlistKostPageResponse;
 import com.binar.kelompokd.repos.ImageRepository;
 import com.binar.kelompokd.repos.kost.KostRepository;
 import com.binar.kelompokd.repos.location.CityRepository;
+import com.binar.kelompokd.utils.PageResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -109,7 +110,7 @@ public class KostServiceImpl implements KostService {
             .map(product -> new NewKostResponse(product, product.getOwnerId()))
             .collect(Collectors.toList());
         if (kosts.hasContent()) {
-            WishlistKostPageResponse wishlistResponsePage = new WishlistKostPageResponse(kosts.getTotalPages(),
+            PageResponse wishlistResponsePage = new PageResponse(kosts.getTotalPages(),
                 kosts.getTotalElements(), page, kosts.isFirst(), kosts.isLast(),
                 size, productResponses);
             return new ResponseEntity(wishlistResponsePage, HttpStatus.OK);

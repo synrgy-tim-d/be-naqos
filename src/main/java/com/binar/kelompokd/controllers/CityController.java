@@ -2,6 +2,7 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.interfaces.CityService;
+import com.binar.kelompokd.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,28 +19,31 @@ public class CityController {
     @Autowired
     CityService cityService;
 
+    @Autowired
+    private Response response;
+
     @Operation(summary = "Get All List City", tags = {"City Management"})
     @GetMapping()
     public ResponseEntity<?> getAllCities(){
-        return new ResponseEntity<>(cityService.getAllCities(), HttpStatus.OK);
+        return new ResponseEntity<>(response.templateSukses(cityService.getAllCities()), HttpStatus.OK);
     }
 
     @Operation(summary = "Get City by Id", tags = {"City Management"})
     @GetMapping("/{id}")
     public ResponseEntity<?> getCityById(@PathVariable("id") @Schema(example = "1") Integer id){
-        return new ResponseEntity<>(cityService.getCityById(id), HttpStatus.OK);
+        return new ResponseEntity<>(response.templateSukses(cityService.getCityById(id)), HttpStatus.OK);
     }
 
     @Operation(summary = "Add City", tags = {"City Management"})
     @PostMapping()
     public ResponseEntity<?> saveCity(@RequestBody City city){
-        return new ResponseEntity<>(cityService.save(city), HttpStatus.OK);
+        return new ResponseEntity<>(response.templateSukses(cityService.save(city)), HttpStatus.OK);
     }
 
     @Operation(summary = "Update City by Id", tags = {"City Management"})
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCity(@PathVariable("id") @Schema(example = "1") Integer id, @RequestBody City city){
-        return new ResponseEntity<>(cityService.update(id, city), HttpStatus.OK);
+        return new ResponseEntity<>(response.templateSukses(cityService.update(id, city)), HttpStatus.OK);
     }
 
     @Operation(summary = "Delete City", tags = {"City Management"})
