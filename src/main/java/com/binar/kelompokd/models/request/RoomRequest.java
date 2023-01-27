@@ -1,6 +1,5 @@
 package com.binar.kelompokd.models.request;
 
-import com.binar.kelompokd.enums.Condition;
 import com.binar.kelompokd.enums.RoomType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class KostRoomRequest {
+public class RoomRequest {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Schema(example = "FULL_FURNISHED")
@@ -31,11 +30,9 @@ public class KostRoomRequest {
     @Schema(example = "Jangan berisik di atas jam 10 malam")
     private String rules;
 
-    @NotNull
     @Schema(example = "150000")
     private BigDecimal price_per_daily;
 
-    @NotNull
     @Schema(example = "650000")
     private BigDecimal price_per_weekly;
 
@@ -47,13 +44,12 @@ public class KostRoomRequest {
     @Schema(example = "true")
     private Boolean is_available;
 
+    @NotNull
+    @Schema(example = "123e4567-e89b-12d3-a456-426614174000")
+    private UUID kostId;
+
     // facility_id array[]
     @NotNull
     @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
     private UUID[] facility_id; // untuk membuat room kita perlu membuat facility dulu agar mendapatkan uuid nya
-
-    // image_id array[]
-    @NotNull
-    @Schema(example = "[\"1\"]")
-    private Integer[] image_id; // untuk membuat room kita perlu membuat image dulu agar mendapatkan uuid nya
 }

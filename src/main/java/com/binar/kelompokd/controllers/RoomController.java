@@ -2,6 +2,7 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.interfaces.RoomService;
 import com.binar.kelompokd.models.entity.kost.Room;
+import com.binar.kelompokd.models.request.RoomRequest;
 import com.binar.kelompokd.models.response.KostRoomResponse;
 import com.binar.kelompokd.utils.Response;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,8 +31,8 @@ public class RoomController {
 
     @Operation(summary = "Add Kost Room", tags = {"Kost Room Management"})
     @PostMapping()
-    public ResponseEntity<?> addRoom(@RequestBody Room room){
-        return new ResponseEntity<>(response.templateSukses(roomService.addRoom(room)), HttpStatus.OK);
+    public ResponseEntity<?> addRoom(@RequestBody RoomRequest roomRequest){
+        return new ResponseEntity<>(response.templateSukses(roomService.addRoom(roomRequest)), HttpStatus.OK);
     }
 
     @Operation(summary = "Update Kost Room by Id", tags = {"Kost Room Management"})
