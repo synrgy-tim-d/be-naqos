@@ -39,8 +39,13 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
             "/provinces/**",
             "/cities/**",
             "/public/**",
+            "/facilities/**",
             "/v3/api-docs/**").permitAll()
-        .antMatchers("/kost/**","/images/*","/wishlists/*","/users/**","/notifications/**","/rooms/**","/facilities/**").hasAnyAuthority("ROLE_PEMILIK")
+        .antMatchers("/kost/**","/images/*","/wishlists/*","/users/**","/notifications/**"
+//                ,
+//                "/rooms/**",
+//                "/facilities/**"
+        ).hasAnyAuthority("ROLE_PEMILIK")
         .antMatchers("/wishlists/*","/users/**","/notifications/**").hasAnyAuthority("ROLE_PENYEWA")
         .and()
         .authorizeRequests()
