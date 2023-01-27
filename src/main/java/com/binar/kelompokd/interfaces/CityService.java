@@ -9,6 +9,6 @@ public interface CityService {
     City save(CityRequest cityRequest);
     City getCityById(Integer id);
     List<City> getAllCities();
-    City update(Integer id, City city);
+    City update(Integer id, CityRequest cityRequest);
     void delete(Integer id);
 }
