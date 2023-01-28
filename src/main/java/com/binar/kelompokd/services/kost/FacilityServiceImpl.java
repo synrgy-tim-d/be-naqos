@@ -68,7 +68,7 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public Facility addFacilityToRoom(UUID roomId, Facility facilityRequest) {
-        Facility facility = (Facility) roomRepository.findById(roomId).map(room -> {
+        Facility facility = roomRepository.findById(roomId).map(room -> {
             UUID facilityId = facilityRequest.getId();
 
             // facility exist
@@ -77,7 +77,7 @@ public class FacilityServiceImpl implements FacilityService {
                 if(facility2.isPresent()){
                     room.addFacility(facility2.get());
                     roomRepository.save(room);
-                    return facility2;
+                    return facility2.get();
                 }
             }
 
