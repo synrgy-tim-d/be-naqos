@@ -23,6 +23,12 @@ public interface RoomRepository extends JpaRepository<Room, UUID> {
 
     @Query(
             nativeQuery = true,
+            value = "select * from t_kost_rooms where kost_id = :kostId and is_available = true"
+    )
+    List<Room> getAllAvailableRoomsByKostId(@Param("kostId") UUID kostId);
+
+    @Query(
+            nativeQuery = true,
             value = "select * from t_kost_rooms where is_available = true"
     )
     List<Room> getAllRoomsWhereIsAvailableTrue();

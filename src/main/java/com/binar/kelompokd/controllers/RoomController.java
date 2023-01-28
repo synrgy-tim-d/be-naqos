@@ -77,6 +77,13 @@ public class RoomController {
         return new ResponseEntity<>(response.templateSukses(room), HttpStatus.OK);
     }
 
+    @GetMapping("/kost/{kostId}")
+    public ResponseEntity<?> getAllAvailableRoomsByKostId(@PathVariable("kostId") UUID kostId){
+        List<Room> rooms = roomService.getAllAvailableRoomsByKostId(kostId);
+        KostRoomResponse kostRoomResponse = KostRoomResponse.builder().room(rooms).build();
+        return new ResponseEntity<>(response.templateSukses(rooms), HttpStatus.OK);
+    }
+
     @Operation(summary = "Get Kost Room by Id", tags = {"Kost Room Management"})
     @GetMapping("/{id}")
     public ResponseEntity<?> getRoomById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){

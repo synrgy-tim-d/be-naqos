@@ -13,6 +13,8 @@ public interface RoomService {
 
     List<Room> getAllRooms();
 
+    List<Room> getAllAvailableRoomsByKostId(UUID kostId);
+
     Room getRoomById(UUID id);
 
     String softDeleteRoom(UUID id);

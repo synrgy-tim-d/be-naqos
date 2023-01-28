@@ -112,6 +112,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public List<Room> getAllAvailableRoomsByKostId(UUID kostId) {
+        return roomRepository.getAllAvailableRoomsByKostId(kostId);
+    }
+
+    @Override
     public Room getRoomById(UUID id) {
         return roomRepository.getRoomByIdWhereIsAvailableTrue(id).get();
     }
