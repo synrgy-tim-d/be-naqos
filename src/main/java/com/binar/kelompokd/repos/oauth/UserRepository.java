@@ -25,8 +25,12 @@ public interface UserRepository extends PagingAndSortingRepository<Users, Long> 
   Users findByUsername(String email);
 
   @Modifying
-  @Query(value = "update oauth_user set fullname=?2, phone_number=?3, img_url=?4 where id=?1", nativeQuery = true)
-  Integer updateUser(Long id, String fullname, String phoneNumber, String imgUrl);
+  @Query(value = "update oauth_user set fullname=?2, phone_number=?3 where id=?1", nativeQuery = true)
+  Integer updateUser(Long id, String fullname, String phoneNumber);
+
+  @Modifying
+  @Query(value = "update oauth_user set img_url=?2 where id=?1", nativeQuery = true)
+  Integer uploadAvatar(Long id, String imgUrl);
 
   @Modifying
   @Query(value = "update oauth_user set password=?2 where id=?1", nativeQuery = true)

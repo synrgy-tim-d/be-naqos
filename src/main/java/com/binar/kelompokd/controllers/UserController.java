@@ -52,16 +52,11 @@ public class UserController {
   @Operation(summary = "Update Data User with fullname and phoneNumber", tags = {"User Management"})
   @PutMapping(value = "/update_data")
   public ResponseEntity<?> updateUsersAuth(Authentication authentication,
-                                           @RequestParam("imageFile") MultipartFile imageFile,
-                                           @Valid UpdateUserRequest request) throws IOException {
+                                           @Valid UpdateUserRequest request) {
     try {
-      if (imageFile.getSize() > 1048576){
-        return new ResponseEntity<>(res.badRequest("File size should be less than 1MB"), HttpStatus.BAD_REQUEST);
-      }
-
       Users user = userAuthService.findByUsername(authentication.getName());
-      String url = imageService.uploadFileAvatar(imageFile);
-      userAuthService.updateUser(user.getId(), request.getFullname(), request.getPhoneNumber(), url);
+
+      userAuthService.updateUser(user.getId(), request.getFullname(), request.getPhoneNumber());
       notificationService.saveNotification("Update User", "Update User Success", user.getId());
       MessageResponse response = new MessageResponse("User " + user.getUsername() + " Updated!");
 
@@ -93,6 +88,27 @@ public class UserController {
 
     } catch (NullPointerException e){
      return new ResponseEntity<>(res.templateEror(e), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Operation(summary = "Upload Avatar User", tags = {"User Management"})
+  @PutMapping(value = "/avatar")
+  public ResponseEntity<?> updateUsersAuth(Authentication authentication,
+                                           @RequestParam("imageFile") MultipartFile imageFile) {
+    try {
+      if (imageFile.getSize() > 1048576) {
+        return new ResponseEntity<>(res.badRequest("File size should be less than 1MB"), HttpStatus.BAD_REQUEST);
+      }
+
+      Users user = userAuthService.findByUsername(authentication.getName());
+      String url = imageService.uploadFileAvatar(imageFile);
+      userAuthService.uploadAvatarUser(user.getId(), url);
+      notificationService.saveNotification("Upload Avatar User", "Upload Avatar User Success", user.getId());
+      MessageResponse response = new MessageResponse("Avatar " + user.getUsername() + " Updated!");
+
+      return new ResponseEntity<>(res.templateSukses(response), HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(res.badRequest("File upload failed"), HttpStatus.BAD_REQUEST);
     }
   }
 }

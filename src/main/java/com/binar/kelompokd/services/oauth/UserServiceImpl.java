@@ -133,13 +133,18 @@ public class UserServiceImpl implements IUserAuthService {
   }
 
   @Override
-  public void updateUser(Long id, String fullname, String phoneNumber, String imgUrl) {
-    userRepository.updateUser(id, fullname, phoneNumber, imgUrl);
+  public void updateUser(Long id, String fullname, String phoneNumber) {
+    userRepository.updateUser(id, fullname, phoneNumber);
   }
 
   @Override
   public void updatePassword(Long id, String password) {
     userRepository.updatePassword(id, encoder.encode(password));
+  }
+
+  @Override
+  public void uploadAvatarUser(Long id, String url) {
+    userRepository.uploadAvatar(id, url);
   }
 
   @Override
