@@ -47,9 +47,4 @@ public class RoomRequest {
     @NotNull
     @Schema(example = "123e4567-e89b-12d3-a456-426614174000")
     private UUID kostId;
-
-    // facility_id array[]
-    @NotNull
-    @Schema(example = "[\"123e4567-e89b-12d3-a456-426614174000\"]")
-    private UUID[] facility_id; // untuk membuat room kita perlu membuat facility dulu agar mendapatkan uuid nya
 }

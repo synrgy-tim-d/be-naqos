@@ -53,13 +53,13 @@ public class KostController {
                                       @RequestParam("description") @Schema(example = "Description Binar Academy") String description,
                                       @RequestParam("kostType") @Schema(example = "KOS_CAMPURAN") String kostType,
                                       @RequestParam("isAvailable") Boolean isAvailable,
-                                      @RequestParam("latitude") Double latitude,
-                                      @RequestParam("longitude") Double longitude,
+                                      @RequestParam("latitude") @Schema(example = "163") Double latitude,
+                                      @RequestParam("longitude") @Schema(example = "-12") Double longitude,
                                       @RequestParam("address") @Schema(example = "Jl Medan Merdeka No 69") String address,
                                       @RequestParam("subdistrict") @Schema(example = "Pengasinan") String subdistrict,
                                       @RequestParam("district") @Schema(example = "Rawalumbu") String district,
                                       @RequestParam("postalCode") @Schema(example = "18116") String postalCode,
-                                      @RequestParam("cityId") Integer cityId,
+                                      @RequestParam("cityId") @Schema(example = "44") Integer cityId,
                                       Authentication authentication){
     List<String> urls = new ArrayList<>();
     UUID uuid = UUID.randomUUID();

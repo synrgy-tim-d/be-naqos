@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoomFacilityRequest {
+public class FacilityRequest {
     @NotNull
     @Column(length = 50)
     @Schema(example = "AC")
