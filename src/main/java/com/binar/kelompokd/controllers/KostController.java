@@ -98,35 +98,46 @@ public class KostController {
 
   @Operation(summary = "Update Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Update Kost", tags = {"Kost Management"})
   @PatchMapping("/{id}")
-  public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id,
-                                      @RequestParam("name") @Schema(example = "Kost Binar Academy") String name,
-                                      @RequestParam("description") @Schema(example = "Description Binar Academy") String description,
-                                      @RequestParam("kostType") @Schema(example = "KOS_CAMPURAN") String kostType,
-                                      @RequestParam("isAvailable") Boolean isAvailable,
-                                      @RequestParam("latitude") Double latitude,
-                                      @RequestParam("longitude") Double longitude,
-                                      @RequestParam("address") @Schema(example = "Jl Medan Merdeka No 69") String address,
-                                      @RequestParam("subdistrict") @Schema(example = "Pengasinan") String subdistrict,
-                                      @RequestParam("district") @Schema(example = "Rawalumbu") String district,
-                                      @RequestParam("postalCode") @Schema(example = "18116") String postalCode,
-                                      @RequestParam("cityId") Integer cityId){
+  public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id, @RequestBody Kost kost){
     try {
-        Kost currentKost = kostService.getKostById(id);
-        if (currentKost == null) {
-          return new ResponseEntity<>(Response.notFound("Kost Not Found"), HttpStatus.NOT_FOUND);
-        }
-        kostService.updateKost(id,name,description,kostType,isAvailable,latitude,longitude,address,subdistrict,district,postalCode,cityId);
-
-      Kost updatedKost = kostService.getKostById(id);
-      NewKostResponse updateKostRes = new NewKostResponse(updatedKost, updatedKost.getOwnerId());
-
-      return new ResponseEntity<>(Response.templateSukses(updateKostRes), HttpStatus.OK);
+      return new ResponseEntity<>(kostService.updateKost(id, kost), HttpStatus.OK);
     }
     catch (NoSuchElementException noSuchElementException){
-      logger.error("Gagal update kost",noSuchElementException);
-      return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("error : \"Kos doesn't exist\"", HttpStatus.NOT_FOUND);
     }
   }
+
+//  @Operation(summary = "Update Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Update Kost", tags = {"Kost Management"})
+//  @PatchMapping("/{id}")
+//  public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id,
+//                                      @RequestParam("name") @Schema(example = "Kost Binar Academy") String name,
+//                                      @RequestParam("description") @Schema(example = "Description Binar Academy") String description,
+//                                      @RequestParam("kostType") @Schema(example = "KOS_CAMPURAN") String kostType,
+//                                      @RequestParam("isAvailable") Boolean isAvailable,
+//                                      @RequestParam("latitude") Double latitude,
+//                                      @RequestParam("longitude") Double longitude,
+//                                      @RequestParam("address") @Schema(example = "Jl Medan Merdeka No 69") String address,
+//                                      @RequestParam("subdistrict") @Schema(example = "Pengasinan") String subdistrict,
+//                                      @RequestParam("district") @Schema(example = "Rawalumbu") String district,
+//                                      @RequestParam("postalCode") @Schema(example = "18116") String postalCode,
+//                                      @RequestParam("cityId") Integer cityId){
+//    try {
+//        Kost currentKost = kostService.getKostById(id);
+//        if (currentKost == null) {
+//          return new ResponseEntity<>(Response.notFound("Kost Not Found"), HttpStatus.NOT_FOUND);
+//        }
+//        kostService.updateKost(id,name,description,kostType,isAvailable,latitude,longitude,address,subdistrict,district,postalCode,cityId);
+//
+//      Kost updatedKost = kostService.getKostById(id);
+//      NewKostResponse updateKostRes = new NewKostResponse(updatedKost, updatedKost.getOwnerId());
+//
+//      return new ResponseEntity<>(Response.templateSukses(updateKostRes), HttpStatus.OK);
+//    }
+//    catch (NoSuchElementException noSuchElementException){
+//      logger.error("Gagal update kost",noSuchElementException);
+//      return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
+//    }
+//  }
 
   @Operation(summary = "Hard Delete Kost by Id", tags = {"Kost Management"})
   @DeleteMapping("/{id}")

@@ -27,6 +27,8 @@ public interface KostService {
     Page<Kost> getKostsByCityId(Integer cityId, Pageable pageable);
     Page<Kost> getKostsByCity(String cityName, Pageable pageable);
 
-    void updateKost(UUID uuid, String name, String description, String kostType,Boolean isAvailable,Double latitude,Double longitude,
-                    String address, String subdistrict, String district, String postalCode, Integer city);
+//    void updateKost(UUID uuid, String name, String description, String kostType,Boolean isAvailable,Double latitude,Double longitude,
+//                    String address, String subdistrict, String district, String postalCode, Integer city);
+
+    Kost updateKost(UUID id, Kost kost);
 }

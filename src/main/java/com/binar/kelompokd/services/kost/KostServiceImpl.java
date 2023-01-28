@@ -136,13 +136,31 @@ public class KostServiceImpl implements KostService {
         return kostRepository.getKostsByCityId(cityId, pageable);
     }
 
+    // ini ga ngeuddate field updatedAt
+//    @Override
+//    public void updateKost(UUID uuid, String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address, String subdistrict, String district, String postalCode, Integer city) {
+//        kostRepository.updateKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode, city);
+//    }
+
     @Override
-    public void updateKost(UUID uuid, String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address, String subdistrict, String district, String postalCode, Integer city) {
-        kostRepository.updateKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode, city);
-        Kost kost = kostRepository.findById(uuid).get();
-        kost.setUpdatedAt(new Date());
-        kostRepository.save(kost);
+    @Transactional
+    public Kost updateKost(UUID id, Kost kost) {
+
+        Kost kostUpdated = kostRepository.findById(id).get();
+
+        kostUpdated.setUpdatedAt(new Date());
+        kostUpdated.setName(kost.getName());
+        kostUpdated.setDescription(kost.getDescription());
+        kostUpdated.setKostType(kost.getKostType());
+        kostUpdated.setIsAvailable(kost.getIsAvailable());
+        kostUpdated.setLatitude(kost.getLatitude());
+        kostUpdated.setLongitude(kost.getLongitude());
+        kostUpdated.setAddress(kost.getAddress());
+        kostUpdated.setDistrict(kost.getDistrict());
+        kostUpdated.setSubdistrict(kost.getSubdistrict());
+        kostUpdated.setPostalCode(kost.getPostalCode());
+        kostUpdated.setCity(kost.getCity());
+
+        return kostRepository.save(kostUpdated);
     }
-
-
 }
