@@ -137,8 +137,12 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
+    @Transaction
     public void updateKost(UUID uuid, String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address, String subdistrict, String district, String postalCode, Integer city) {
         kostRepository.updateKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode, city);
+        Kost kost = kostRepository.findById(uuid).get();
+        kost.setUpdatedAt(new Date());
+        kostRepository.save(kost);
     }
 
 
