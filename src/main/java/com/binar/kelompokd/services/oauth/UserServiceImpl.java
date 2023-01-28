@@ -1,6 +1,7 @@
 package com.binar.kelompokd.services.oauth;
 
 
+import com.binar.kelompokd.interfaces.ICloudinaryService;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.models.dto.user.LoginDTO;
 import com.binar.kelompokd.models.dto.user.RegisterDTO;
@@ -22,7 +23,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +51,8 @@ public class UserServiceImpl implements IUserAuthService {
   private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
   @Autowired
   public Response templateResponse;
+
+  private ICloudinaryService iCloudinaryService;
 
   @Override
   public Map login(LoginDTO loginModel) {
@@ -127,8 +133,8 @@ public class UserServiceImpl implements IUserAuthService {
   }
 
   @Override
-  public void updateUser(Long id, String fullname, String phoneNumber) {
-    userRepository.updateUser(id, fullname, phoneNumber);
+  public void updateUser(Long id, String fullname, String phoneNumber, String imgUrl) {
+    userRepository.updateUser(id, fullname, phoneNumber, imgUrl);
   }
 
   @Override
@@ -179,4 +185,11 @@ public class UserServiceImpl implements IUserAuthService {
       return ("eror:"+e);
     }
   }
+
+  @PostMapping("/avatar")
+  public ResponseEntity<?> uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
+    String url = iCloudinaryService.uploadFile(imageFile);
+    return new ResponseEntity<>(templateResponse.templateSukses(url), HttpStatus.CREATED);
+  }
+
 }

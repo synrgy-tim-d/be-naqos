@@ -1,6 +1,8 @@
 package com.binar.kelompokd.controllers;
 
+import com.binar.kelompokd.interfaces.INotificationService;
 import com.binar.kelompokd.interfaces.IUserAuthService;
+import com.binar.kelompokd.interfaces.ImageService;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.models.request.ChangePasswordRequest;
 import com.binar.kelompokd.models.request.UpdateUserRequest;
@@ -18,8 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @AllArgsConstructor
@@ -29,6 +33,8 @@ public class UserController {
   private final static Logger logger = LoggerFactory.getLogger(UserController.class);
   private IUserAuthService userAuthService;
   private PasswordEncoder passwordEncoder;
+  private ImageService imageService;
+  private INotificationService notificationService;
 
   @Autowired
   Response res;
@@ -44,13 +50,25 @@ public class UserController {
   }
 
   @Operation(summary = "Update Data User with fullname and phoneNumber", tags = {"User Management"})
-  @PutMapping("/update_data")
+  @PutMapping(value = "/update_data")
   public ResponseEntity<?> updateUsersAuth(Authentication authentication,
-                                           @Valid @RequestBody UpdateUserRequest request) {
-    Users user = userAuthService.findByUsername(authentication.getName());
-    userAuthService.updateUser(user.getId(), request.getFullname(), request.getPhoneNumber());
-    MessageResponse response = new MessageResponse("User " + user.getUsername() + " Updated!");
-    return new ResponseEntity<>(res.templateSukses(response), HttpStatus.OK);
+                                           @RequestParam("imageFile") MultipartFile imageFile,
+                                           @Valid UpdateUserRequest request) throws IOException {
+    try {
+      if (imageFile.getSize() > 1048576){
+        return new ResponseEntity<>(res.badRequest("File size should be less than 1MB"), HttpStatus.BAD_REQUEST);
+      }
+
+      Users user = userAuthService.findByUsername(authentication.getName());
+      String url = imageService.uploadFileAvatar(imageFile);
+      userAuthService.updateUser(user.getId(), request.getFullname(), request.getPhoneNumber(), url);
+      notificationService.saveNotification("Update User", "Update User Success", user.getId());
+      MessageResponse response = new MessageResponse("User " + user.getUsername() + " Updated!");
+
+      return new ResponseEntity<>(res.templateSukses(response), HttpStatus.OK);
+    }catch (Exception e){
+      return new ResponseEntity<>(res.badRequest("File upload failed"), HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Operation(summary = "Change Password User", tags = {"User Management"})
@@ -70,6 +88,7 @@ public class UserController {
       }
 
       userAuthService.updatePassword(user.getId(), request.getNewPassword());
+      notificationService.saveNotification("Change Password", "Change Password Successfully", user.getId());
       return new ResponseEntity<>(res.templateSukses("Password Changed Successfully."), HttpStatus.OK);
 
     } catch (NullPointerException e){

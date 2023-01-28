@@ -16,14 +16,13 @@ public interface NotificationRepo extends JpaRepository<Notification, Integer> {
   Optional<Notification> findById(Integer id);
 
   @Modifying
-  @Query(value = "select * from notification where sent_to=?1 order by created_on DESC", nativeQuery = true)
+  @Query(value = "select * from t_user_notification where sent_to=?1 order by created_at DESC", nativeQuery = true)
   List<Notification> findNotifications(Long userId);
 
-  @Modifying
-  @Query(value = "select count(1) from notification where sent_to=?1 and is_read=false", nativeQuery = true)
+  @Query(value = "select count(1) from t_user_notification where sent_to=?1 and is_read=false", nativeQuery = true)
   Integer unreadNotifications(Long userId);
 
   @Modifying
-  @Query(value = "select * from notification where sent_to=?1 and is_read=false", nativeQuery = true)
+  @Query(value = "select * from t_user_notification where sent_to=?1 and is_read=false", nativeQuery = true)
   List<Notification> getAllNotificationsWhereIsReadFalse(Long userId);
 }

@@ -45,6 +45,24 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public String uploadFileAvatar(MultipartFile image) {
+        try {
+            File uploadedFile = convertMultiPartToFile(image);
+            Map params = ObjectUtils.asMap(
+                "folder", "naqos/avatar/");
+            Map uploadResult = cloudinary.uploader().upload(uploadedFile, params);
+            boolean isDeleted = uploadedFile.delete();
+            if (isDeleted) {
+                System.out.println("File is successfully deleted");
+            } else
+                System.out.println("File doesn't exist");
+            return uploadResult.get("url").toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public File convertMultiPartToFile(MultipartFile file) throws IOException {
         File convFile = new File(file.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);

@@ -2,20 +2,17 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.interfaces.INotificationService;
 import com.binar.kelompokd.interfaces.IUserAuthService;
-import com.binar.kelompokd.models.dto.notification.NotificationUnreadCountDTO;
-import com.binar.kelompokd.models.dto.notification.ReadNotificationDTO;
 import com.binar.kelompokd.models.entity.Notification;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.models.response.MessageResponse;
 import com.binar.kelompokd.models.response.NotificationPageResponse;
 import com.binar.kelompokd.models.response.NotificationResponse;
+import com.binar.kelompokd.models.response.NotificationUnreadCountResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -36,26 +33,17 @@ import java.util.stream.Collectors;
 public class NotificationController {
   @Autowired
   private INotificationService iNotificationService;
-
   @Autowired
   private IUserAuthService iUserService;
 
   @Operation(summary = "Update unread notification when notification has been read by user", tags = {"Notification Management"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "update to read notification!",
-          content = {@Content(schema = @Schema(example = "Notification viewed!"))})
-  })
   @PutMapping("/read")
-  public ResponseEntity<MessageResponse> readNotification(@RequestBody ReadNotificationDTO request) {
-    iNotificationService.updateIsRead(request.getId());
+  public ResponseEntity<MessageResponse> readNotification(@RequestParam Integer id) {
+    iNotificationService.updateIsRead(id);
     return ResponseEntity.ok(new MessageResponse("Notification Read."));
   }
 
   @Operation(summary = "Update all unread notification when notification has been read by user", tags = {"Notification Management"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "update to read notification!",
-          content = {@Content(schema = @Schema(example = "Notification viewed!"))})
-  })
   @PutMapping("/all-read")
   public ResponseEntity<MessageResponse> markAllAsRead(Authentication authentication) {
     Users user = iUserService.findByUsername(authentication.getName());
@@ -64,31 +52,24 @@ public class NotificationController {
   }
 
   @Operation(summary = "Count all unread notification", tags = {"Notification Management"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Summary Notification!",
-          content = {@Content(schema = @Schema(example = "Summary Notification!"))})
-  })
   @GetMapping("/unread")
-  public ResponseEntity<NotificationUnreadCountDTO> countNotifications(Authentication authentication) {
+  public ResponseEntity<NotificationUnreadCountResponse> countNotifications(Authentication authentication) {
     Users user = iUserService.findByUsername(authentication.getName());
     Integer unread = iNotificationService.unreadNotifications(user.getId());
 
-    NotificationUnreadCountDTO response = new NotificationUnreadCountDTO(user, unread);
+    NotificationUnreadCountResponse response = new NotificationUnreadCountResponse(user, unread);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @Operation(summary = "List notification", tags = {"Notification Management"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "List Notification!",
-          content = {@Content(schema = @Schema(example = "List Notification!"))})
-  })
   @GetMapping("/get")
-  public ResponseEntity<NotificationPageResponse> getNotificationAuth(Authentication authentication,
-                                                                      @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
-                                                                      @RequestParam(value = "size", defaultValue = "10", required = false) Integer size) {
+  public ResponseEntity<?> getNotificationAuth(Authentication authentication,
+                                               @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+                                               @RequestParam(value = "size", defaultValue = "10", required = false) Integer size) {
 
     Users user = iUserService.findByUsername(authentication.getName());
     List<Notification> notification = iNotificationService.getNotification(user.getId());
+
     List<NotificationResponse> notificationResponses =
         notification.stream()
             .map(notification1 -> {

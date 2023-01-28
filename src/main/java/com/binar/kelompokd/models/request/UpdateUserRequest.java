@@ -1,9 +1,11 @@
 package com.binar.kelompokd.models.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class UpdateUserRequest {
   private String fullname;

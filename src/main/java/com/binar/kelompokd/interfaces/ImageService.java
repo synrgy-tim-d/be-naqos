@@ -22,4 +22,6 @@ public interface ImageService {
     void saveImageKostToDb(String url, Kost currentKost);
 
     Image getImageById(Integer id);
+
+    String uploadFileAvatar(MultipartFile image);
 }

@@ -11,7 +11,7 @@ public interface IUserAuthService {
   Map login(LoginDTO loginModel);
   Users findUsersById(Long id);
   Users findByUsername(String email);
-  void updateUser(Long id, String fullname, String phoneNumber);
+  void updateUser(Long id, String fullname, String phoneNumber,String imgUrl);
   void updatePassword(Long id, String password);
 
 }
