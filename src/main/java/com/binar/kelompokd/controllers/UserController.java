@@ -62,7 +62,7 @@ public class UserController {
 
       return new ResponseEntity<>(res.templateSukses(response), HttpStatus.OK);
     }catch (Exception e){
-      return new ResponseEntity<>(res.badRequest("File upload failed"), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(res.badRequest("Update User failed"), HttpStatus.BAD_REQUEST);
     }
   }
 

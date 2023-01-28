@@ -164,7 +164,7 @@ public boolean checkEmpty(Object req){
       template = template.replaceAll("\\{\\{USERNAME}}", (found.getFullname() == null ? found.getUsername() : found.getFullname()));
       template = template.replaceAll("\\{\\{VERIFY_TOKEN}}",  found.getOtp());
     }
-    emailSender.sendAsync(found.getUsername(), "Register", template);
+    emailSender.sendAsync(found.getUsername(), "Naqos - Register", template);
     return templateCRUD.templateSukses(message);
   }
 

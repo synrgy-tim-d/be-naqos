@@ -91,20 +91,14 @@ public class ForgetPasswordController {
       found.setOtp(otp);
       found.setOtpExpiredDate(expirationDate);
       template = template.replaceAll("\\{\\{PASS_TOKEN}}", otp);
-      template = template.replaceAll("\\{\\{USERNAME}}", (found.getUsername() == null ? "" +
-          "@UserName"
-          :
-          "@" + found.getUsername()));
+      template = template.replaceAll("\\{\\{USERNAME}}", (found.getUsername() == null ? found.getFullname() : found.getUsername()));
 
       userRepository.save(found);
     } else {
-      template = template.replaceAll("\\{\\{USERNAME}}", (found.getUsername() == null ? "" +
-          "@UserName"
-          :
-          "@" + found.getUsername()));
+      template = template.replaceAll("\\{\\{USERNAME}}", (found.getUsername() == null ? found.getFullname() : found.getUsername()));
       template = template.replaceAll("\\{\\{PASS_TOKEN}}", found.getOtp());
     }
-    emailSender.sendAsync(found.getUsername(), "Chute - Forget Password", template);
+    emailSender.sendAsync(found.getUsername(), "Naqos - Forget Password", template);
     logger.info("forget password success");
     return new ResponseEntity<>(templateCRUD.templateSukses("success"), HttpStatus.OK);
   }
