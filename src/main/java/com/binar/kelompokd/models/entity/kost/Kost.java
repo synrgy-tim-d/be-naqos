@@ -9,10 +9,7 @@ import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.fasterxml.jackson.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Parameter;
@@ -28,7 +25,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "t_kost")
@@ -90,8 +88,7 @@ public class Kost extends DateModel implements Serializable {
 
   @OneToMany(
       mappedBy = "kost",
-      cascade = javax.persistence.CascadeType.MERGE,
-      orphanRemoval = true)
+      cascade = javax.persistence.CascadeType.MERGE)
   @JsonManagedReference
   @OnDelete(action = OnDeleteAction.CASCADE)
   private List<Room> rooms = new ArrayList<>();
@@ -117,4 +114,22 @@ public class Kost extends DateModel implements Serializable {
     imageKost.setKosts(null);
   }
 
+  @Override
+  public String toString() {
+    return "Kost{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", kostType=" + kostType +
+            ", isAvailable=" + isAvailable +
+            ", latitude=" + latitude +
+            ", longitude=" + longitude +
+            ", address='" + address + '\'' +
+            ", district='" + district + '\'' +
+            ", subdistrict='" + subdistrict + '\'' +
+            ", postalCode='" + postalCode + '\'' +
+            ", ownerId=" + ownerId +
+            ", city=" + city +
+            '}';
+  }
 }

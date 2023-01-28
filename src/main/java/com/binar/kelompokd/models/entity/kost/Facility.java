@@ -2,19 +2,18 @@ package com.binar.kelompokd.models.entity.kost;
 
 
 import com.binar.kelompokd.enums.Condition;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -47,4 +46,23 @@ public class Facility {
     @Schema(example = "true")
     @Column(nullable = false)
     private Boolean isActive = false;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "facilities")
+    @JsonIgnore
+    private Set<Room> rooms = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Facility{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", condition=" + condition +
+                ", isActive=" + isActive +
+                '}';
+    }
 }

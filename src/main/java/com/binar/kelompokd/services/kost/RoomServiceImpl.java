@@ -44,13 +44,6 @@ public class RoomServiceImpl implements RoomService {
 
         Kost kost = kostRepository.findById(roomRequest.getKostId()).get();
 
-        Set<Facility> facilities = new HashSet<>();
-
-        for(UUID facilityIds: roomRequest.getFacility_id()){
-            Facility facility = facilityRepository.findById(facilityIds).get();
-            facilities.add(facility);
-        }
-
         Room room = Room.builder()
                 .roomType(roomRequest.getRoom_type())
                 .rules(roomRequest.getRules())
@@ -59,7 +52,6 @@ public class RoomServiceImpl implements RoomService {
                 .pricePerMonthly(roomRequest.getPrice_per_monthly())
                 .isAvailable(roomRequest.getIs_available())
                 .kost(kost)
-                .facility(facilities)
                 .build();
 
         return roomRepository.save(room);
@@ -86,11 +78,6 @@ public class RoomServiceImpl implements RoomService {
 
         Set<Facility> facilities = new HashSet<>();
 
-        for(UUID facilityIds: roomRequest.getFacility_id()){
-            Facility facility = facilityRepository.findById(facilityIds).get();
-            facilities.add(facility);
-        }
-
         room.setRoomType(roomRequest.getRoom_type());
         room.setRules(roomRequest.getRules());
         room.setPricePerDaily(pricePerDaily);
@@ -98,7 +85,7 @@ public class RoomServiceImpl implements RoomService {
         room.setPricePerMonthly(roomRequest.getPrice_per_monthly());
         room.setIsAvailable(roomRequest.getIs_available());
         room.setKost(kost);
-        room.setFacility(facilities);
+        room.setFacilities(facilities);
         room.setUpdatedAt(new Date());
 
         return roomRepository.save(room);
@@ -107,6 +94,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public String deleteRoom(UUID id) {
+        Room room = roomRepository.findById(id).get();
         roomRepository.deleteById(id);
         return "Kost room deleted successfully";
     }
