@@ -57,6 +57,18 @@ public class RoomController {
         }
     }
 
+    // delete a row from room and room-facility joined table
+    @DeleteMapping("new/{id}")
+    public ResponseEntity<?> newDeleteRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
+        try {
+            roomService.newDeleteRoom(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch (EmptyResultDataAccessException emptyResultDataAccessException){
+            return new ResponseEntity<>(response.notFound("Room doesn't exist"), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @Operation(summary = "Soft Delete Kost Room by Id", tags = {"Kost Room Management"})
     @DeleteMapping("/soft-delete/{id}")
     public ResponseEntity<?> softDeleteRoom(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
