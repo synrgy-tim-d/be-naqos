@@ -18,4 +18,7 @@ public interface RoomService {
     Room getRoomById(UUID id);
 
     String softDeleteRoom(UUID id);
+
+    // delete a room and a roomfacility row
+    void newDeleteRoom(UUID id);
 }

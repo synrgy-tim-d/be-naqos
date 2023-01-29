@@ -64,7 +64,7 @@ public class Room extends DateModel implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="kost_id", referencedColumnName = "id")
-    @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
     @JsonBackReference
     private Kost kost;
 

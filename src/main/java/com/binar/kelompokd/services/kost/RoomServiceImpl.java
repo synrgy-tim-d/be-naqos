@@ -8,6 +8,7 @@ import com.binar.kelompokd.models.request.RoomRequest;
 import com.binar.kelompokd.repos.kost.FacilityRepository;
 import com.binar.kelompokd.repos.kost.KostRepository;
 import com.binar.kelompokd.repos.kost.RoomRepository;
+import com.binar.kelompokd.repos.mapper.RoomAndFacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class RoomServiceImpl implements RoomService {
     KostRepository kostRepository;
 
     @Autowired
-    FacilityRepository facilityRepository;
+    RoomAndFacilityRepository roomAndFacilityRepository;
 
     @Transactional
     @Override
@@ -104,6 +105,13 @@ public class RoomServiceImpl implements RoomService {
     public String softDeleteRoom(UUID id) {
         roomRepository.softDeleteRoom(id);
         return "Kost room deleted successfully";
+    }
+
+    @Override
+    @Transactional
+    public void newDeleteRoom(UUID id) {
+        roomAndFacilityRepository.deleteByRoomId(id);
+        roomRepository.deleteById(id);
     }
 
     @Override
