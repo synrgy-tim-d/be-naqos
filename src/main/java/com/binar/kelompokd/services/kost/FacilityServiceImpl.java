@@ -1,10 +1,10 @@
 package com.binar.kelompokd.services.kost;
 
-import com.binar.kelompokd.exception.ResourceNotFoundException;
+import com.binar.kelompokd.utils.exception.ResourceNotFoundException;
 import com.binar.kelompokd.interfaces.FacilityService;
 import com.binar.kelompokd.models.entity.kost.Facility;
 import com.binar.kelompokd.models.entity.kost.Room;
-import com.binar.kelompokd.models.request.FacilityRequest;
+import com.binar.kelompokd.models.request.kost.FacilityRequest;
 import com.binar.kelompokd.repos.kost.FacilityRepository;
 import com.binar.kelompokd.repos.kost.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;

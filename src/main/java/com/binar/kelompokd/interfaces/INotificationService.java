@@ -8,12 +8,8 @@ import java.util.List;
 @Service
 public interface INotificationService {
   void saveNotification(String title, String content, Long userId);
-
   void updateIsRead(Integer id);
-
   void markAllAsRead(Long sentTo);
-
   List<Notification> getNotification(Long sentTo);
-
   Integer unreadNotifications(Long sentTo);
 }

@@ -10,18 +10,11 @@ import java.util.LinkedHashMap;
 
 public interface ImageService {
     String uploadFileKost(MultipartFile image);
-
     File convertMultiPartToFile(MultipartFile file) throws IOException;
-
     LinkedHashMap<String, Object> modifyJsonResponse(String requestType, String url);
-
     void deleteImageKost(Image imageKost, Kost currentKost);
-
     Image findImageKostByUrl(String fileLocation);
-
     void saveImageKostToDb(String url, Kost currentKost);
-
     Image getImageById(Integer id);
-
     String uploadFileAvatar(MultipartFile image);
 }

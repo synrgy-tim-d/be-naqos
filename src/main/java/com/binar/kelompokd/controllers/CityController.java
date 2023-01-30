@@ -1,13 +1,11 @@
 package com.binar.kelompokd.controllers;
 
-import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.interfaces.CityService;
-import com.binar.kelompokd.models.request.CityRequest;
-import com.binar.kelompokd.utils.Response;
+import com.binar.kelompokd.models.request.location.CityRequest;
+import com.binar.kelompokd.utils.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,8 +2,8 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.models.entity.kost.Kost;
-import com.binar.kelompokd.utils.PageResponse;
-import com.binar.kelompokd.utils.Response;
+import com.binar.kelompokd.utils.response.PageResponse;
+import com.binar.kelompokd.utils.response.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,9 +34,7 @@ public class PublicController {
   KostService kostService;
   @Autowired
   SimpleStringUtils simpleStringUtils;
-
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
   @Autowired
   Response Response;
 

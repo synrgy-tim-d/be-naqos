@@ -3,7 +3,7 @@ package com.binar.kelompokd.services.location;
 import com.binar.kelompokd.interfaces.CityService;
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.location.Province;
-import com.binar.kelompokd.models.request.CityRequest;
+import com.binar.kelompokd.models.request.location.CityRequest;
 import com.binar.kelompokd.repos.location.CityRepository;
 import com.binar.kelompokd.repos.location.ProvinceRepository;
 import org.springframework.beans.factory.annotation.Autowired;

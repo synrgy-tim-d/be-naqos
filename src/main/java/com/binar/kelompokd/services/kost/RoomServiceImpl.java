@@ -4,11 +4,10 @@ import com.binar.kelompokd.interfaces.RoomService;
 import com.binar.kelompokd.models.entity.kost.Facility;
 import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.entity.kost.Room;
-import com.binar.kelompokd.models.request.RoomRequest;
-import com.binar.kelompokd.repos.kost.FacilityRepository;
+import com.binar.kelompokd.models.request.kost.RoomRequest;
 import com.binar.kelompokd.repos.kost.KostRepository;
 import com.binar.kelompokd.repos.kost.RoomRepository;
-import com.binar.kelompokd.repos.mapper.RoomAndFacilityRepository;
+import com.binar.kelompokd.repos.kost.RoomAndFacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

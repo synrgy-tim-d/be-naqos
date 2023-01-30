@@ -2,9 +2,9 @@ package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.interfaces.RoomService;
 import com.binar.kelompokd.models.entity.kost.Room;
-import com.binar.kelompokd.models.request.RoomRequest;
-import com.binar.kelompokd.models.response.KostRoomResponse;
-import com.binar.kelompokd.utils.Response;
+import com.binar.kelompokd.models.request.kost.RoomRequest;
+import com.binar.kelompokd.models.response.kost.KostRoomResponse;
+import com.binar.kelompokd.utils.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;

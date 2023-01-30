@@ -22,6 +22,4 @@ public interface KostWishlistRepository extends JpaRepository<KostWishlist, Inte
   @Modifying
   @Query(value = "delete from t_user_wishlist where kost_id=?1 and user_id=?2", nativeQuery = true)
   void deleteWishlistByKostIdAndUserId(UUID kostId, Long userId);
-
-
 }

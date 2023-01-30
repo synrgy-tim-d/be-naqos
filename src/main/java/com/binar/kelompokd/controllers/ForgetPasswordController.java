@@ -8,7 +8,7 @@ import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.UserRepository;
 import com.binar.kelompokd.services.oauth.EmailSender;
 import com.binar.kelompokd.utils.EmailTemplate;
-import com.binar.kelompokd.utils.Response;
+import com.binar.kelompokd.utils.response.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/forget-password/")

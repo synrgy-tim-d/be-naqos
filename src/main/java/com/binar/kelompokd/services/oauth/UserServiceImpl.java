@@ -9,7 +9,7 @@ import com.binar.kelompokd.models.entity.oauth.Roles;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.RoleRepository;
 import com.binar.kelompokd.repos.oauth.UserRepository;
-import com.binar.kelompokd.utils.Response;
+import com.binar.kelompokd.utils.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

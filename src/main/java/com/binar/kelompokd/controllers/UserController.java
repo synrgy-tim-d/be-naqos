@@ -4,11 +4,11 @@ import com.binar.kelompokd.interfaces.INotificationService;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.interfaces.ImageService;
 import com.binar.kelompokd.models.entity.oauth.Users;
-import com.binar.kelompokd.models.request.ChangePasswordRequest;
-import com.binar.kelompokd.models.request.UpdateUserRequest;
+import com.binar.kelompokd.models.request.user.ChangePasswordRequest;
+import com.binar.kelompokd.models.request.user.UpdateUserRequest;
 import com.binar.kelompokd.models.response.MessageResponse;
-import com.binar.kelompokd.models.response.UserResponse;
-import com.binar.kelompokd.utils.Response;
+import com.binar.kelompokd.models.response.user.UserResponse;
+import com.binar.kelompokd.utils.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 @RestController
 @AllArgsConstructor

@@ -7,10 +7,9 @@ import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.interfaces.KostService;
-import com.binar.kelompokd.models.response.NewKostResponse;
-import com.binar.kelompokd.utils.Response;
+import com.binar.kelompokd.models.response.kost.NewKostResponse;
+import com.binar.kelompokd.utils.response.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -90,9 +88,9 @@ public class KostController {
       NewKostResponse kostResponse = new NewKostResponse(currentKost, currentKost.getOwnerId());
       logger.info("add kost", kostResponse);
       return new ResponseEntity<>(Response.templateSukses(kostResponse), HttpStatus.CREATED);
-    } catch (Exception e){
+    } catch (IllegalStateException e){
       logger.error("Gagal Add Kost",e);
-      return new ResponseEntity<>(Response.badRequest(e), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(Response.badRequest("Add Kost Failed"), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -131,7 +129,6 @@ public class KostController {
   @Operation(summary = "Hard Delete Kost by Id", tags = {"Kost Management"})
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
-
     try {
       kostService.deleteKostById(id);
       return new ResponseEntity<>(Response.accepted("Kost deleted"), HttpStatus.ACCEPTED);

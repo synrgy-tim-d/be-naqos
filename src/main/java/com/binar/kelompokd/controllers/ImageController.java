@@ -4,7 +4,7 @@ import com.binar.kelompokd.interfaces.ImageService;
 import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.models.entity.Image;
 import com.binar.kelompokd.models.entity.kost.Kost;
-import com.binar.kelompokd.utils.Response;
+import com.binar.kelompokd.utils.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
