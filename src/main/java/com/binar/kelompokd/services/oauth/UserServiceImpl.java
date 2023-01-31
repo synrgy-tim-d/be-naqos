@@ -5,6 +5,7 @@ import com.binar.kelompokd.interfaces.ICloudinaryService;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.models.dto.user.LoginDTO;
 import com.binar.kelompokd.models.dto.user.RegisterDTO;
+import com.binar.kelompokd.models.dto.user.RegisterGoogleDTO;
 import com.binar.kelompokd.models.entity.oauth.Roles;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.RoleRepository;
@@ -53,6 +54,8 @@ public class UserServiceImpl implements IUserAuthService {
   public Response templateResponse;
 
   private ICloudinaryService iCloudinaryService;
+
+
 
   @Override
   public Map login(LoginDTO loginModel) {
@@ -167,30 +170,60 @@ public class UserServiceImpl implements IUserAuthService {
         String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ"}; // default
         r = repoRole.findByNameIn(roleNames);
       }
-
-
       Users user = new Users();
       user.setUsername(registerModel.getUsername().toLowerCase());
       user.setFullname(registerModel.getFullname());
       user.setPhoneNumber(registerModel.getPhoneNumber());
-
       //step 1 :
       user.setEnabled(false); // matikan user
-
       String password = encoder.encode(registerModel.getPassword().replaceAll("\\s+", ""));
-
-
       user.setRoles(r);
       user.setPassword(password);
       Users obj = userRepository.save(user);
       return "Register User Success";
-
     } catch (Exception e) {
       logger.error("Eror registerManual=", e);
       return ("eror:"+e);
     }
   }
 
+  @Override
+  public String registerGoogle(RegisterGoogleDTO registerModel) {
+    Map map = new HashMap();
+    try {
+      List<Roles> r;
+      if (registerModel.getRole() != null){
+        if (registerModel.getRole().equals("PENYEWA")){
+          String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ", "ROLE_PENYEWA"}; // penyewa
+          r = repoRole.findByNameIn(roleNames);
+        }else if (registerModel.getRole().equals("PEMILIK")){
+          String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ", "ROLE_PEMILIK"}; // pemilik
+          r = repoRole.findByNameIn(roleNames);
+        }else {
+          String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ"}; // default
+          r = repoRole.findByNameIn(roleNames);
+        }
+      }else{
+        String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ"}; // default
+        r = repoRole.findByNameIn(roleNames);
+      }
+      Users user = new Users();
+      user.setUsername(registerModel.getUsername().toLowerCase());
+      user.setFullname(registerModel.getFullname());
+      user.setPhoneNumber(registerModel.getPhoneNumber());
+      user.setImgUrl(registerModel.getImageUrl());
+      //step 1 :
+      user.setEnabled(true); // enable user
+      String password = encoder.encode(registerModel.getPassword().replaceAll("\\s+", ""));
+      user.setRoles(r);
+      user.setPassword(password);
+      Users obj = userRepository.save(user);
+      return "Register User Success";
+    } catch (Exception e) {
+      logger.error("Eror registerManual=", e);
+      return ("eror:"+e);
+    }
+  }
   @PostMapping("/avatar")
   public ResponseEntity<?> uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
     String url = iCloudinaryService.uploadFile(imageFile);
