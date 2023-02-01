@@ -40,7 +40,8 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
             "/cities/**",
             "/public/**",
             "/facilities/**",
-            "/v3/api-docs/**").permitAll()
+            "/v3/api-docs/**",
+                "/users/google-sign").permitAll()
         .antMatchers("/kost/**","/images/**","/users/**","/notifications/**","/rooms/**").hasAuthority("ROLE_PEMILIK")
         .antMatchers("/wishlists/**","/users/**","/notifications/**","/payment/**").hasAuthority("ROLE_PENYEWA")
         .and()
