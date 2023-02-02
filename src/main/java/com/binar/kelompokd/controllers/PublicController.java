@@ -1,6 +1,7 @@
 package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.interfaces.KostService;
+import com.binar.kelompokd.models.QueryParams;
 import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.utils.response.PageResponse;
 import com.binar.kelompokd.utils.response.Response;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -42,6 +44,11 @@ public class PublicController {
   @GetMapping("/get")
   public ResponseEntity<?> getAllKosts() {
     return new ResponseEntity<>(Response.templateSukses(kostService.getAllKost()), HttpStatus.OK);
+  }
+
+  @GetMapping("/kost")
+  public ResponseEntity<?> getKost(QueryParams params) throws Exception {
+    return new ResponseEntity<>(kostService.getKost(params), HttpStatus.OK);
   }
 
   @Operation(summary = "Get List Kosts By City Id", tags = {"Public Management"})
