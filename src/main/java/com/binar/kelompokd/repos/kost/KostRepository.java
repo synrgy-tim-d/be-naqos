@@ -54,7 +54,7 @@ public interface KostRepository extends JpaRepository<Kost, UUID> {
 
     @Query(
             nativeQuery = true,
-            value = "select * from t_kost where city_id=:cityId"
+            value = "select * from t_kost where city_id=:cityId and is_available = true"
     )
     Page<Kost> getKostsByCityId(@Param("cityId") Integer cityId, Pageable pageable);
 
