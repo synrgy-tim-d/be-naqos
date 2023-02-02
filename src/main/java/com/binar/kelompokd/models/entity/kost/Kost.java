@@ -2,9 +2,7 @@ package com.binar.kelompokd.models.entity.kost;
 
 import com.binar.kelompokd.enums.KostType;
 import com.binar.kelompokd.models.DateModel;
-//import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.models.entity.Image;
-import com.binar.kelompokd.models.entity.KostWishlist;
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.fasterxml.jackson.annotation.*;
@@ -12,16 +10,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity

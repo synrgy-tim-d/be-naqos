@@ -66,6 +66,7 @@ public class Users implements UserDetails, Serializable {
     @Column(name = "credential_not_expired")
     private boolean credentialsNonExpired = true;
 
+    @JsonIgnore
     @ManyToMany(targetEntity = Roles.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "oauth_user_role",
@@ -94,6 +95,7 @@ public class Users implements UserDetails, Serializable {
         this.roles = roles;
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;

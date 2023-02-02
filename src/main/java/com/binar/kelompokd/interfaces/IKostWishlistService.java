@@ -1,6 +1,6 @@
 package com.binar.kelompokd.interfaces;
 
-import com.binar.kelompokd.models.entity.KostWishlist;
+import com.binar.kelompokd.models.entity.kost.KostWishlist;
 
 import java.util.List;
 import java.util.UUID;

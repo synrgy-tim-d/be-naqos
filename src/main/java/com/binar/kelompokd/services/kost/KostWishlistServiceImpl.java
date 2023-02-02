@@ -1,8 +1,8 @@
-package com.binar.kelompokd.services;
+package com.binar.kelompokd.services.kost;
 
 import com.binar.kelompokd.interfaces.IKostWishlistService;
-import com.binar.kelompokd.models.entity.KostWishlist;
-import com.binar.kelompokd.repos.KostWishlistRepository;
+import com.binar.kelompokd.models.entity.kost.KostWishlist;
+import com.binar.kelompokd.repos.kost.KostWishlistRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package com.binar.kelompokd.repos;
+package com.binar.kelompokd.repos.kost;
 
-import com.binar.kelompokd.models.entity.KostWishlist;
+import com.binar.kelompokd.models.entity.kost.KostWishlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

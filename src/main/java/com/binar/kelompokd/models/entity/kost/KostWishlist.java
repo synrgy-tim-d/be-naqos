@@ -1,7 +1,6 @@
-package com.binar.kelompokd.models.entity;
+package com.binar.kelompokd.models.entity.kost;
 
 import com.binar.kelompokd.models.DateModel;
-import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import lombok.Data;
 import lombok.NoArgsConstructor;

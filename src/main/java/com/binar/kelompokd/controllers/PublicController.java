@@ -1,7 +1,10 @@
 package com.binar.kelompokd.controllers;
 
+import com.binar.kelompokd.interfaces.IKostReviewService;
+import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.models.entity.kost.Kost;
+import com.binar.kelompokd.models.entity.kost.KostReview;
 import com.binar.kelompokd.utils.response.PageResponse;
 import com.binar.kelompokd.utils.response.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
@@ -32,6 +35,10 @@ public class PublicController {
   private final static Logger logger = LoggerFactory.getLogger(PublicController.class);
   @Autowired
   KostService kostService;
+  @Autowired
+  IKostReviewService kostReviewService;
+  @Autowired
+  IUserAuthService userAuthService;
   @Autowired
   SimpleStringUtils simpleStringUtils;
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -137,6 +144,18 @@ public class PublicController {
     catch (NoSuchElementException noSuchElementException){
       logger.error("Kost tidak ada", noSuchElementException);
       return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Operation(summary = "Get Kost by Id", tags = {"Public Management"})
+  @GetMapping("/kost_review/{id}")
+  public ResponseEntity<?> getKostReviewByKostId(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
+    try {
+      return new ResponseEntity<>(Response.templateSukses(kostReviewService.getReviewByKostId(id)), HttpStatus.OK);
+    }
+    catch (NoSuchElementException noSuchElementException){
+      logger.error("Kost tidak ada", noSuchElementException);
+      return new ResponseEntity<>(Response.notFound("Review doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
 }

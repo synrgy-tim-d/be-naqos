@@ -3,7 +3,7 @@ package com.binar.kelompokd.controllers;
 import com.binar.kelompokd.interfaces.IKostWishlistService;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.interfaces.KostService;
-import com.binar.kelompokd.models.entity.KostWishlist;
+import com.binar.kelompokd.models.entity.kost.KostWishlist;
 import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.models.request.wishlist.WishlistAuthRequest;
