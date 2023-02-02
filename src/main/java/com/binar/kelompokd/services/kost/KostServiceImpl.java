@@ -16,12 +16,14 @@ import com.binar.kelompokd.utils.response.PageResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -132,6 +134,17 @@ public class KostServiceImpl implements KostService {
         City city = cityRepository.getCityByName(cityName);
         Integer cityId = city.getId();
         return kostRepository.getKostsByCityId(cityId, pageable);
+    }
+
+    @Override
+    public Page<Kost> getKostsByCity2(String cityName, Pageable pageable) {
+        List<City> cities = cityRepository.getCitiesByName(cityName);
+        List<Kost> kosts = new ArrayList<>();
+        for(City c:cities){
+            Integer cityId = c.getId();
+            kosts.addAll(kostRepository.getKostsByCityId(cityId, pageable).getContent());
+        }
+        return new PageImpl<>(kosts);
     }
 
     @Override
