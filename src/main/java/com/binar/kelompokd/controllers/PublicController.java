@@ -88,6 +88,28 @@ public class PublicController {
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
+  @Operation(summary = "Get List Kosts by City Name Revision", tags = {"Public Management"})
+  @GetMapping("/by-city-2/{cityName}")
+  public ResponseEntity<?> getKostsByCityName2(
+          @RequestParam() @Schema(example = "1") int page,
+          @RequestParam() @Schema(example = "10") int size,
+          @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy,
+          @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType,
+          @PathVariable("cityName") @Schema(example = "Kabupaten Lebak") String cityName) {
+    Pageable pageable = simpleStringUtils.getShort(orderBy, orderType, page - 1, size);
+    Page<Kost> kosts = kostService.getKostsByCity2(cityName, pageable);
+    logger.info("list Kosts By City 2", kosts);
+    PageResponse response = new PageResponse(
+            kosts.getTotalPages(),
+            kosts.getTotalElements(),
+            page,
+            kosts.isFirst(),
+            kosts.isLast(),
+            size,
+            OBJECT_MAPPER.convertValue(kosts.getContent(), List.class));
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
+
   @Operation(summary = "Get All List Kosts with Pagination", tags = {"Public Management"})
   @GetMapping("/page")
   public ResponseEntity<?> getAllKostsWithPaginationAndFilter(@RequestParam() @Schema(example = "1") int page, @RequestParam() @Schema(example = "10") int size, @RequestParam(required = false, defaultValue = "id") @Schema(example = "id") String orderBy, @RequestParam(required = false, defaultValue = "desc") @Schema(example = "desc") String orderType) {
