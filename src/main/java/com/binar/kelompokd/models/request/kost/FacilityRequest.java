@@ -1,6 +1,7 @@
 package com.binar.kelompokd.models.request.kost;
 
 import com.binar.kelompokd.enums.Condition;
+import com.binar.kelompokd.enums.FacilityType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,4 +30,8 @@ public class FacilityRequest {
     @NotNull
     @Schema(example = "true")
     private Boolean isActive;
+
+    @Schema(example = "FASILITAS_BERSAMA")
+    @Enumerated(EnumType.STRING)
+    private FacilityType facilityType;
 }
