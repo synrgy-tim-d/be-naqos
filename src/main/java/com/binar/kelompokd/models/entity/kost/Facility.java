@@ -2,6 +2,7 @@ package com.binar.kelompokd.models.entity.kost;
 
 
 import com.binar.kelompokd.enums.Condition;
+import com.binar.kelompokd.enums.FacilityType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -43,6 +44,10 @@ public class Facility {
     @Enumerated(EnumType.STRING)
     private Condition condition;
 
+    @Schema(example = "FASILITAS_BERSAMA")
+    @Enumerated(EnumType.STRING)
+    private FacilityType facilityType;
+
     @Schema(example = "true")
     @Column(nullable = false)
     private Boolean isActive = false;
@@ -55,6 +60,15 @@ public class Facility {
             mappedBy = "facilities")
     @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "facilities")
+    @JsonIgnore
+    private Set<Kost> kosts = new HashSet<>();
 
     @Override
     public String toString() {

@@ -15,9 +15,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -97,6 +95,16 @@ public class Kost extends DateModel implements Serializable {
   @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "kostId")
   private List<KostWishlist> wishlists;
+
+  @ManyToMany(fetch = FetchType.LAZY,
+          cascade = {
+                  javax.persistence.CascadeType.PERSIST,
+                  javax.persistence.CascadeType.MERGE
+          })
+  @JoinTable(name = "t_kost_facility",
+          joinColumns = { @JoinColumn(name = "kost_id") },
+          inverseJoinColumns = { @JoinColumn(name = "facility_id") })
+  private Set<Facility> facilities = new HashSet<>();
 
   public void add(Image imageKost) {
     imageKosts.add(imageKost);
