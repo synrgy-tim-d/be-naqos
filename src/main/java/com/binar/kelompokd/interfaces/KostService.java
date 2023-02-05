@@ -23,7 +23,8 @@ public interface KostService {
     String softDeleteKost(UUID id);
     Kost getKostByName(String kost);
     void saveKost(UUID uuid, String name, String description,String kostType,Boolean isAvailable,Double latitude,Double longitude,
-                  String address, String subdistrict, String district, String postalCode, Long ownerId, Integer city);
+                  String address, String subdistrict, String district, String postalCode,
+                  String fQuestion1, String fAnswer1, String fQuestion2, String fAnswer2, String fQuestion3, String fAnswer3, Long ownerId, Integer city);
     ResponseEntity<MessageResponse> getMessageResponse(Integer page, Integer size, Page<Kost> kosts);
     Page<Kost> getKostsByKostType(String kostType, Pageable pageable);
     Page<Kost> getKostsByCityId(Integer cityId, Pageable pageable);

@@ -58,6 +58,12 @@ public class KostController {
                                       @RequestParam("district") @Schema(example = "Rawalumbu") String district,
                                       @RequestParam("postalCode") @Schema(example = "18116") String postalCode,
                                       @RequestParam("cityId") @Schema(example = "44") Integer cityId,
+                                      @RequestParam(value = "fQuestion1", required = false) @Schema(example = "Apakah Kost ini bersih?", nullable = true) String fQuestion1,
+                                      @RequestParam(value = "fAnswer1", required = false) @Schema(example = "Iya", nullable = true) String fAnswer1,
+                                      @RequestParam(value = "fQuestion2", required = false) @Schema(example = "Apakah Kost ini bersih?", nullable = true) String fQuestion2,
+                                      @RequestParam(value = "fAnswer2", required = false) @Schema(example = "Iya", nullable = true) String fAnswer2,
+                                      @RequestParam(value = "fQuestion3", required = false) @Schema(example = "Apakah Kost ini bersih?", nullable = true) String fQuestion3,
+                                      @RequestParam(value = "fAnswer3", required = false) @Schema(example = "Iya", nullable = true) String fAnswer3,
                                       Authentication authentication){
     List<String> urls = new ArrayList<>();
     UUID uuid = UUID.randomUUID();
@@ -75,7 +81,8 @@ public class KostController {
             urls.add(imageService.uploadFileKost(imageFile));
           });
 
-      kostService.saveKost(uuid, name, description, kostType, isAvailable, latitude, longitude,address, subdistrict, district, postalCode, user.getId(), cityKost.getId());
+      kostService.saveKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode,
+              fQuestion1, fAnswer1, fQuestion2, fAnswer2, fQuestion3, fAnswer3, user.getId(), cityKost.getId());
       Kost currentKost = kostService.getKostById(uuid);
       if (currentKost == null){
         logger.error("Kost tidak ada");

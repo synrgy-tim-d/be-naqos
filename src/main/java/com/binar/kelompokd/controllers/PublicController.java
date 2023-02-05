@@ -47,17 +47,19 @@ public class PublicController {
   @Autowired
   Response Response;
 
-  @Operation(summary = "Get All List Kosts", tags = {"Public Management"})
-  @GetMapping("/get")
-  public ResponseEntity<?> getAllKosts() {
-    return new ResponseEntity<>(Response.templateSukses(kostService.getAllKost()), HttpStatus.OK);
-  }
+//  @Operation(summary = "Get All List Kosts", tags = {"Public Management"})
+//  @GetMapping("/get")
+//  public ResponseEntity<?> getAllKosts() {
+//    return new ResponseEntity<>(Response.templateSukses(kostService.getAllKost()), HttpStatus.OK);
+//  }
 
+  @Operation(summary = "Get All List Kosts", tags = {"Public Management"})
   @GetMapping("/kost")
   public ResponseEntity<?> getKost(QueryParams params) throws Exception {
     return new ResponseEntity<>(kostService.getKost(params), HttpStatus.OK);
   }
 
+  /*
   @Operation(summary = "Get List Kosts By City Id", tags = {"Public Management"})
   @GetMapping("/city-id/{cityId}")
   public ResponseEntity<?> getKostsByCityId(
@@ -187,4 +189,5 @@ public class PublicController {
       return new ResponseEntity<>(Response.notFound("Review doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
+   */
 }

@@ -87,7 +87,9 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
-    public void saveKost(UUID uuid,String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address, String subdistrict, String district, String postalCode, Long ownerId, Integer city) {
+    public void saveKost(UUID uuid, String name, String description,String kostType,Boolean isAvailable,Double latitude,Double longitude,
+                         String address, String subdistrict, String district, String postalCode,
+                         String fQuestion1, String fAnswer1, String fQuestion2, String fAnswer2, String fQuestion3, String fAnswer3, Long ownerId, Integer city) {
         Kost kost = new Kost();
         kost.setId(uuid);
         kost.setName(name);
@@ -100,6 +102,12 @@ public class KostServiceImpl implements KostService {
         kost.setDistrict(district);
         kost.setSubdistrict(subdistrict);
         kost.setPostalCode(postalCode);
+        kost.setQuestion1(fQuestion1);
+        kost.setAnswer1(fAnswer1);
+        kost.setQuestion2(fQuestion2);
+        kost.setAnswer2(fAnswer2);
+        kost.setQuestion3(fQuestion3);
+        kost.setAnswer3(fAnswer3);
         City cityKost = cityService.getCityById(city);
         kost.setCity(cityKost);
         Users user = userAuthService.findUsersById(ownerId);

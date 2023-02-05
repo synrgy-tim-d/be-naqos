@@ -69,6 +69,24 @@ public class Kost extends DateModel implements Serializable {
   @Column(nullable = false, length = 10, name = "postal_code")
   private String postalCode;
 
+  @Column(name = "f_question_1")
+  private String question1;
+
+  @Column(name = "f_answer_1")
+  private String answer1;
+
+  @Column(name = "f_question_2")
+  private String question2;
+
+  @Column(name = "f_answer_2")
+  private String answer2;
+
+  @Column(name = "f_question_3")
+  private String question3;
+
+  @Column(name = "f_answer_3")
+  private String answer3;
+
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "owner_id", referencedColumnName = "id")
   @OnDelete(action = OnDeleteAction.CASCADE)
