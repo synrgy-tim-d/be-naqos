@@ -163,21 +163,23 @@ public class PublicController {
         OBJECT_MAPPER.convertValue(kosts.getContent(), List.class));
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
+  */
 
-  @Operation(summary = "Get Kost by Id", tags = {"Public Management"})
-  @GetMapping("/{id}")
-  public ResponseEntity<?> getKostById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
+//  @Operation(summary = "Get Kost by Id", tags = {"Public Management"})
+//  @GetMapping("/{id}")
+//  public ResponseEntity<?> getKostById(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
+//
+//    try {
+//      Kost kost = kostService.getKostById(id);
+//      return new ResponseEntity<>(Response.templateSukses(kost), HttpStatus.OK);
+//    }
+//    catch (NoSuchElementException noSuchElementException){
+//      logger.error("Kost tidak ada", noSuchElementException);
+//      return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
+//    }
+//  }
 
-    try {
-      Kost kost = kostService.getKostById(id);
-      return new ResponseEntity<>(Response.templateSukses(kost), HttpStatus.OK);
-    }
-    catch (NoSuchElementException noSuchElementException){
-      logger.error("Kost tidak ada", noSuchElementException);
-      return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
-    }
-  }
-
+  /*
   @Operation(summary = "Get Kost by Id", tags = {"Public Management"})
   @GetMapping("/kost_review/{id}")
   public ResponseEntity<?> getKostReviewByKostId(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){

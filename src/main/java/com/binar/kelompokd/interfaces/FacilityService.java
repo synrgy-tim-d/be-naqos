@@ -14,4 +14,8 @@ public interface FacilityService {
     void deleteFacility(UUID id);
     Facility addFacilityToRoom(UUID roomId, Facility facility);
     String deleteFacilityFromRoom(UUID facilityId, UUID roomId);
+
+    Object addFacilityToKost(UUID kostId, Facility facility);
+
+    Object deleteFacilityFromKost(UUID kostId, UUID facilityId);
 }

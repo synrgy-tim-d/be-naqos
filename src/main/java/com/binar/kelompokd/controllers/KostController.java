@@ -1,12 +1,10 @@
 package com.binar.kelompokd.controllers;
 
-import com.binar.kelompokd.interfaces.CityService;
-import com.binar.kelompokd.interfaces.IUserAuthService;
-import com.binar.kelompokd.interfaces.ImageService;
+import com.binar.kelompokd.interfaces.*;
+import com.binar.kelompokd.models.entity.kost.Facility;
 import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.oauth.Users;
-import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.models.response.kost.NewKostResponse;
 import com.binar.kelompokd.utils.response.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
@@ -43,6 +41,9 @@ public class KostController {
 
   @Autowired
   public Response Response;
+
+  @Autowired
+  FacilityService facilityService;
 
   @Operation(summary = "Add Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Add Kost", tags = {"Kost Management"})
   @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -99,6 +100,18 @@ public class KostController {
       logger.error("Gagal Add Kost",e);
       return new ResponseEntity<>(Response.badRequest("Add Kost Failed"), HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @Operation(summary = "Add kost facility", description = "Add kost facility", tags = {"Kost Management"})
+  @PostMapping("/{kostId}/add-facility")
+  public ResponseEntity<?> addFacilityToKost(@PathVariable("kostId") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID kostId, @RequestBody Facility facility){
+    return new ResponseEntity<>(Response.templateSukses(facilityService.addFacilityToKost(kostId, facility)), HttpStatus.OK);
+  }
+
+  @Operation(summary = "Delete kost facility", description = "Delete kost facility", tags = {"Kost Management"})
+  @DeleteMapping("/{kostId}/facility/{facilityId}")
+  public ResponseEntity<?> deleteFacilityFromKost(@PathVariable(value = "kostId") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID kostId, @PathVariable(value = "facilityId") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID facilityId) {
+    return new ResponseEntity<>(facilityService.deleteFacilityFromKost(kostId, facilityId), HttpStatus.NO_CONTENT);
   }
 
   @Operation(summary = "Update Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Update Kost", tags = {"Kost Management"})
