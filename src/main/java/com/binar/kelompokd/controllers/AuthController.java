@@ -222,9 +222,7 @@ public class AuthController {
               "&grant_type=password" +
               "&client_id=my-client-web" +
               "&client_secret=password";
-      ResponseEntity<Map> response123 = restTemplateBuilder.build().exchange(url, HttpMethod.POST, null, new
-              ParameterizedTypeReference<Map>() {
-              });
+      ResponseEntity<Map> response123 = restTemplateBuilder.build().exchange(url, HttpMethod.POST, null, new ParameterizedTypeReference<Map>() {});
 
       if (response123.getStatusCode() == HttpStatus.OK) {
         map123.put("access_token", response123.getBody().get("access_token"));

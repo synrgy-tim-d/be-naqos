@@ -65,7 +65,6 @@ public class UserServiceImpl implements IUserAuthService {
   public Response templateResponse;
   private ICloudinaryService iCloudinaryService;
   private static final String APPLICATION_NAME = "Naqos App";
-  private static FileDataStoreFactory dataStoreFactory;
   private static HttpTransport httpTransport;
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
   private static final List<String> SCOPES = Arrays.asList(
@@ -276,7 +275,7 @@ public class UserServiceImpl implements IUserAuthService {
     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
             httpTransport, JSON_FACTORY, clientSecrets, SCOPES).build();
     // authorize
-    return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver(), new RedirectBrowser()).authorize("user");
+    return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
   }
 
   private static void tokenInfo(String accessToken) throws IOException {

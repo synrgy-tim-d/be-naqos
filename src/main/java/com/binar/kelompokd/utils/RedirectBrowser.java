@@ -18,6 +18,7 @@ public class RedirectBrowser implements AuthorizationCodeInstalledApp.Browser{
     System.setProperty("java.awt.headless", "false");
     Desktop desktop = Desktop.getDesktop();
     try{
+      logger.info(s);
       desktop.browse(new URI(s));
     }catch(Exception e){
       logger.error("redirect error", e);
