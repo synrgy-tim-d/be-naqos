@@ -1,7 +1,7 @@
 #
 # Build stage
 #
-FROM openjdk:8-jdk AS build
+FROM maven:3.6.3-jdk-8 AS build
 ARG BASE_URL
 ENV BASE_URL=$BASE_URL
 
