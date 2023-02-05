@@ -2,7 +2,6 @@
 # Build stage
 #
 FROM maven:3.6.3-jdk-8 AS build
-RUN apt-get install libxext6
 ARG BASE_URL
 ENV BASE_URL=$BASE_URL
 
