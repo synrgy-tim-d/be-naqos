@@ -4,15 +4,18 @@ import com.binar.kelompokd.enums.KostType;
 import com.binar.kelompokd.interfaces.CityService;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.interfaces.KostService;
+import com.binar.kelompokd.models.QueryParams;
 import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.models.response.MessageResponse;
 import com.binar.kelompokd.models.response.kost.NewKostResponse;
+import com.binar.kelompokd.models.specifications.KostsSpecificationBuilder;
 import com.binar.kelompokd.repos.ImageRepository;
 import com.binar.kelompokd.repos.kost.KostRepository;
 import com.binar.kelompokd.repos.location.CityRepository;
 import com.binar.kelompokd.utils.response.PageResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +34,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class KostServiceImpl implements KostService {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Autowired
     KostRepository kostRepository;
@@ -152,5 +156,20 @@ public class KostServiceImpl implements KostService {
         kostRepository.updateKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode, city);
     }
 
+    @Override
+    public PageResponse getKost (QueryParams params) throws Exception {
+        Page<Kost> paged = kostRepository.findAll(
+                new KostsSpecificationBuilder().build(params),
+                params.getPagination());
+
+        return new PageResponse(
+                paged.getTotalPages(),
+                paged.getTotalElements(),
+                paged.getPageable().getPageNumber() + 1,
+                paged.isFirst(),
+                paged.isLast(),
+                paged.getSize(),
+                OBJECT_MAPPER.convertValue(paged.getContent(), List.class));
+    }
 
 }
