@@ -275,7 +275,7 @@ public class UserServiceImpl implements IUserAuthService {
     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
             httpTransport, JSON_FACTORY, clientSecrets, SCOPES).build();
     // authorize
-    return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+    return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver(), new RedirectBrowser()).authorize("user");
   }
 
   private static void tokenInfo(String accessToken) throws IOException {
