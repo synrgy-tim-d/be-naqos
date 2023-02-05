@@ -5,7 +5,6 @@ import com.binar.kelompokd.models.DateModel;
 import com.binar.kelompokd.models.entity.kost.Kost;
 import com.binar.kelompokd.models.entity.kost.Room;
 import com.binar.kelompokd.models.entity.oauth.Users;
-import com.google.api.client.util.DateTime;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,9 +32,8 @@ public class Booking extends DateModel implements Serializable {
     @Cascade(CascadeType.ALL)
     private UUID id;
 
-
     @Schema(example = "150000")
-    private BigDecimal grandTotal;
+    private BigDecimal price;
 
     @Schema(example = "false")
     @Column(nullable = false)
@@ -49,20 +47,24 @@ public class Booking extends DateModel implements Serializable {
     @Column(nullable = false)
     private String note;
 
-    @Schema(example = "PENDING")
+    @Schema(example = "HARI")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private BookingOption bookingOption;
 
-    @Schema(example = "")
-    private String[] amount;
+    @Schema(example = "1")
+    private BigDecimal amount;
+
+    @Schema(example = "yyyy-MM-dd")
+    private LocalDate bookingDate;
 
     @Schema(example = "yyyy-MM-dd")
     @Column(nullable = false)
-    private LocalDate start_date;
+    private LocalDate startDate;
 
     @Schema(example = "yyyy-MM-dd")
     @Column(nullable = false)
-    private LocalDate end_Date;
-
+    private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
