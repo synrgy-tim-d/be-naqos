@@ -19,10 +19,6 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Userinfoplus;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import org.slf4j.Logger;
@@ -35,14 +31,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import java.io.IOException;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @RestController
@@ -52,29 +47,25 @@ public class AuthController {
   private final static Logger logger = LoggerFactory.getLogger(AuthController.class);
   @Autowired
   private UserRepository userRepository;
-
   Config config = new Config();
-
   @Autowired
   public IUserAuthService serviceReq;
   @Autowired
   public EmailTemplate emailTemplate;
-
   @Autowired
   public EmailSender emailSender;
-
   @Autowired
   private PasswordEncoder passwordEncoder;
-
   @Autowired
   private RestTemplateBuilder restTemplateBuilder;
-
   @Autowired
   public Response templateCRUD;
-
   @Value("${BASEURL:}")//FILE_SHOW_RUL
   private String BASEURL;
 
+  public boolean checkEmpty(Object req){
+    return req == null || req.toString().isEmpty();
+  }
 
   @Operation(summary = "User Login with username/email and password", tags = {"User Management"})
   @PostMapping("/login")
@@ -89,7 +80,6 @@ public class AuthController {
     Users user = userRepository.checkExistingEmail(objModel.getUsername());
     if (null != user) {
       return new ResponseEntity<Map>(templateCRUD.templateSukses("Username sudah ada"), HttpStatus.OK);
-
     }
 
     if(checkEmpty(objModel.getUsername())){
@@ -121,25 +111,16 @@ public class AuthController {
       return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your email address correctly"), HttpStatus.BAD_REQUEST);
     }
   }
-  public boolean checkEmpty(Object req){
-    return req == null || req.toString().isEmpty();
-  }
   @Operation(summary = "Register Google Testing", tags = {"User Management"})
   @PostMapping("/register-google")
   @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<Map> saveRegisterManualGoogle(@Valid
-                                                      @RequestBody RegisterGoogleDTO objModel) throws RuntimeException {
-
+  public ResponseEntity<Map> saveRegisterManualGoogle(@Valid @RequestBody RegisterGoogleDTO objModel) throws RuntimeException {
 
     Users user = userRepository.checkExistingEmail(objModel.getUsername());
     if (null != user) {
       return new ResponseEntity<Map>(templateCRUD.templateSukses("Username is already exist"), HttpStatus.OK);
-
     }
     String result = serviceReq.registerGoogle(objModel);
-//    SendOTPDTO username = new SendOTPDTO();
-//    username.setUsername(objModel.getUsername());
-//    Map sendOTP = sendEmailRegister(username);
     return new ResponseEntity<Map>(templateCRUD.templateSukses(result), HttpStatus.OK);
   }
 
@@ -148,8 +129,7 @@ public class AuthController {
 
   @Operation(summary = "Send Email OTP to User", tags = {"User Management"})
   @PostMapping("/send-otp")
-  public Map sendEmailRegister(
-          @NonNull @RequestBody SendOTPDTO user) {
+  public Map sendEmailRegister(@NonNull @RequestBody SendOTPDTO user) {
     String message = "Thanks, please check your email for activation.";
 
     if (user.getUsername() == null) return templateCRUD.badRequest("No email provided");
@@ -209,18 +189,15 @@ public class AuthController {
     userRepository.save(user);
     return new ResponseEntity<Map>(templateCRUD.templateSukses("Verification success. Please login!"), HttpStatus.OK);
   }
-  @PostMapping("/signin-google/{role}")
+  @PostMapping("/google")
+  @Operation(summary = "Login - Register Google Account roleUser must = 'PEMILIK' or 'PENYEWA' ", tags = {"User Management"})
   @ResponseBody
-  public ResponseEntity<Map> repairGoogleSigninAction(@RequestParam MultiValueMap<String, String> parameters, @PathVariable(value = "role") String roleUser ) throws IOException {
-
+  public ResponseEntity<Map> repairGoogleSigninAction(@NotNull @RequestParam String roleUser ) throws Exception {
     Map<String, Object> map123 = new HashMap<>();
-    Map<String, String> map = parameters.toSingleValueMap();
-    String accessToken = map.get("accessToken");
-
+    String accessToken = serviceReq.googleAuthorize();
     GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
     System.out.println("access_token user=" + accessToken);
-    Oauth2 oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName(
-            "Oauth2").build();
+    Oauth2 oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName("Oauth2").build();
     Userinfoplus profile= null;
     try {
       profile = oauth2.userinfo().get().execute();
@@ -232,39 +209,16 @@ public class AuthController {
     Users user = userRepository.findOneByUsername(profile.getEmail());
     if (user != null) {
       if(!user.isEnabled()){
-//        SendOTPDTO obk = new SendOTPDTO();
-//        obk.setUsername(user.getUsername());
-//        sendEmailegister(obk);
-//        map123.put(config.getCode(), "401");
-//        map123.put(config.getMessage(), "Your Account is disable. Please chek your email for activation.");
-//        map123.put("type", "register");
-//        System.out.println("masuk 2");
-//        return new ResponseEntity<Map>(map123, HttpStatus.OK);
         user.setEnabled(true); // matikan user
-
-      }
-      for (Map.Entry<String, String> req : map.entrySet()) {
-        logger.info(req.getKey());
-        logger.info(req.getValue());
       }
 
-      RegisterDTO register = new RegisterDTO();
-      register.setUsername(profile.getEmail());
-      register.setPassword(profile.getId());
-      register.setFullname(profile.getName());
+      LoginDTO login = new LoginDTO();
+      login.setUsername(profile.getEmail());
+      login.setPassword(profile.getId());
+      ResponseEntity<Map> mapLogin = login(login);
 
-
-      String oldPassword = user.getPassword();
-      Boolean isPasswordMatches = true;
-      if (!passwordEncoder.matches(register.getPassword(), oldPassword)) {
-        user.setPassword(passwordEncoder.encode(passwordEncoder.encode(register.getPassword())));
-
-//        userRepository.updatePassword(user.getId(), passwordEncoder.encode(register.getPassword()));
-        isPasswordMatches = false;
-      }
-
-      String url = BASEURL + "/api/oauth/token?username=" + register.getUsername() +
-              "&password=" + register.getPassword() +
+      String url = BASEURL + "/api/oauth/token?username=" + login.getUsername() +
+              "&password=" + login.getPassword() +
               "&grant_type=password" +
               "&client_id=my-client-web" +
               "&client_secret=password";
@@ -273,8 +227,6 @@ public class AuthController {
               });
 
       if (response123.getStatusCode() == HttpStatus.OK) {
-//        userRepository.save(user);
-
         map123.put("access_token", response123.getBody().get("access_token"));
         map123.put("token_type", response123.getBody().get("token_type"));
         map123.put("refresh_token", response123.getBody().get("refresh_token"));
@@ -287,33 +239,25 @@ public class AuthController {
         }
         map123.put("status", response123.getStatusCode());
         map123.put("code", response123.getStatusCodeValue());
-        //update old password : wajib
-        user.setPassword(oldPassword);
-
         userRepository.save(user);
-//        userRepository.updatePassword(user.getId(), passwordEncoder.encode(oldPassword));
-        return new ResponseEntity<Map>(map123, HttpStatus.OK);
-
+        return new ResponseEntity<Map>(templateCRUD.templateSukses(mapLogin.getBody().get("data")), HttpStatus.OK);
       }
     } else {
-//            register
       RegisterGoogleDTO registerModel = new RegisterGoogleDTO();
       registerModel.setUsername(profile.getEmail());
-      registerModel.setFullname(profile.getName());
+      registerModel.setFullname(profile.getName()+profile.getFamilyName());
       registerModel.setPassword(profile.getId());
       registerModel.setRole(roleUser);
       registerModel.setImageUrl(profile.getPicture());
+      saveRegisterManualGoogle(registerModel);
 
-      ResponseEntity<Map> mapRegister = saveRegisterManualGoogle(registerModel);
-//      map123.put("code", mapRegister.getBody().get("status"));
-//      map123.put(config.getMessage(), mapRegister.getBody().get("message"));
-//      map123.put("data", mapRegister.getBody().get("data"));
+      LoginDTO login = new LoginDTO();
+      login.setUsername(profile.getEmail());
+      login.setPassword(profile.getId());
+      ResponseEntity<Map> mapLogin = login(login);
 
-      return new ResponseEntity<Map>(templateCRUD.templateSukses(mapRegister.getBody().get("data")), HttpStatus.OK);
+      return new ResponseEntity<Map>(templateCRUD.templateSukses(mapLogin.getBody().get("data")), HttpStatus.OK);
     }
-    System.out.println("masuk 1 luar ");
     return new ResponseEntity<Map>(map123, HttpStatus.OK);
   }
-
-
 }

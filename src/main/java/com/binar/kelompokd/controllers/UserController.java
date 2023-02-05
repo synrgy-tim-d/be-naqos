@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -111,11 +110,4 @@ public class UserController {
       return new ResponseEntity<>(res.badRequest("File upload failed"), HttpStatus.BAD_REQUEST);
     }
   }
-
-  @GetMapping("/google-sign")
-  public ResponseEntity<?> googleSigning() throws Exception {
-    Map res = userAuthService.googleSigning();
-    return new ResponseEntity<>(res, HttpStatus.OK);
-  }
-
 }

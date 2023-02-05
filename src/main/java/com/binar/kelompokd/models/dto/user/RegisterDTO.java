@@ -16,4 +16,5 @@ public class RegisterDTO {
     private String phoneNumber;
     @NotEmpty(message = "role is required.")
     private String role;
+    private String imgUrl;
 }

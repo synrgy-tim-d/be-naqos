@@ -10,7 +10,7 @@ import com.binar.kelompokd.models.entity.oauth.Roles;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.RoleRepository;
 import com.binar.kelompokd.repos.oauth.UserRepository;
-import com.binar.kelompokd.utils.OAuth2Sample;
+import com.binar.kelompokd.utils.RedirectBrowser;
 import com.binar.kelompokd.utils.response.Response;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -21,7 +21,6 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.store.DataStoreFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Tokeninfo;
@@ -47,30 +46,33 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserAuthService {
   @Value("${BASEURL}")
   private String baseUrl;
-
   @Autowired
   private RestTemplateBuilder restTemplateBuilder;
-
   @Autowired
   private UserRepository userRepository;
-
   @Autowired
   RoleRepository repoRole;
-
   @Autowired
   private PasswordEncoder encoder;
   private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
   @Autowired
   public Response templateResponse;
-
   private ICloudinaryService iCloudinaryService;
-
-
+  private static final String APPLICATION_NAME = "Naqos App";
+  private static FileDataStoreFactory dataStoreFactory;
+  private static HttpTransport httpTransport;
+  private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+  private static final List<String> SCOPES = Arrays.asList(
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email");
+  private static Oauth2 oauth2;
+  private static GoogleClientSecrets clientSecrets;
 
   @Override
   public Map login(LoginDTO loginModel) {
@@ -107,10 +109,6 @@ public class UserServiceImpl implements IUserAuthService {
         for (Roles role : user.getRoles()) {
           roles.add(role.getName());
         }
-        //save token
-//                checkUser.setAccessToken(response.getBody().get("access_token").toString());
-//                checkUser.setRefreshToken(response.getBody().get("refresh_token").toString());
-//                userRepository.save(checkUser);
 
         map.put("access_token", response.getBody().get("access_token"));
         map.put("token_type", response.getBody().get("token_type"));
@@ -245,66 +243,29 @@ public class UserServiceImpl implements IUserAuthService {
     return new ResponseEntity<>(templateResponse.templateSukses(url), HttpStatus.CREATED);
   }
 
-  /**
-   * Be sure to specify the name of your application. If the application name is {@code null} or
-   * blank, the application will log a warning. Suggested format is "MyCompany-ProductName/1.0".
-   */
-  private static final String APPLICATION_NAME = "";
-
-  /** Directory to store user credentials. */
-//  private static final java.io.File DATA_STORE_DIR =
-//          new java.io.File(System.getProperty("user.home"), ".store/oauth2_sample10");
-
-  /**
-   * Global instance of the {@link DataStoreFactory}. The best practice is to make it a single
-   * globally shared instance across your application.
-   */
-  private static FileDataStoreFactory dataStoreFactory;
-
-  /** Global instance of the HTTP transport. */
-  private static HttpTransport httpTransport;
-
-  /** Global instance of the JSON factory. */
-  private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-
-  /** OAuth 2.0 scopes. */
-  private static final List<String> SCOPES = Arrays.asList(
-          "https://www.googleapis.com/auth/userinfo.profile",
-          "https://www.googleapis.com/auth/userinfo.email");
-
-  private static Oauth2 oauth2;
-  private static GoogleClientSecrets clientSecrets;
-
-  /** Authorizes the installed application to access user's protected data. */
   @Override
-  public Map googleSigning() throws Exception {
+  public String googleAuthorize() throws Exception {
     try {
       httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-//      dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
-      // authorization
       Credential credential = authorize();
-      // set up global Oauth2 instance
       oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
-              APPLICATION_NAME).build();
+          APPLICATION_NAME).build();
       System.out.println("token saya = "+credential.getAccessToken());
-      // run commands
       tokenInfo(credential.getAccessToken());
       userInfo();
-      // success!
-      return new HashMap();
+      return credential.getAccessToken();
     } catch (IOException e) {
       System.err.println(e.getMessage());
     } catch (Throwable t) {
       t.printStackTrace();
     }
-    System.exit(1);
     return null;
   }
 
   private static Credential authorize() throws Exception {
     // load client secrets
     clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-            new InputStreamReader(OAuth2Sample.class.getResourceAsStream("/client_secret.json")));
+            new InputStreamReader(Objects.requireNonNull(UserServiceImpl.class.getResourceAsStream("/client_secret.json"))));
     if (clientSecrets.getDetails().getClientId().startsWith("Enter")
             || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
       System.out.println("Enter Client ID and Secret from https://code.google.com/apis/console/ "
@@ -313,12 +274,9 @@ public class UserServiceImpl implements IUserAuthService {
     }
     // set up authorization code flow
     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-            httpTransport, JSON_FACTORY, clientSecrets, SCOPES)
-//            .setDataStoreFactory(
-//            dataStoreFactory)
-    .build();
+            httpTransport, JSON_FACTORY, clientSecrets, SCOPES).build();
     // authorize
-    return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+    return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver(), new RedirectBrowser()).authorize("user");
   }
 
   private static void tokenInfo(String accessToken) throws IOException {
