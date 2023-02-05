@@ -41,7 +41,9 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
             "/public/**",
             "/facilities/**",
             "/v3/api-docs/**",
-                "/users/google-sign").permitAll()
+            "/users/google-sign",
+            "/v3/api-docs/**", 
+                "/transaction/**").permitAll()
         .antMatchers("/kost/**","/images/**","/users/**","/notifications/**","/rooms/**").hasAuthority("ROLE_PEMILIK")
         .antMatchers("/wishlists/**","/users/**","/notifications/**","/payment/**").hasAuthority("ROLE_PENYEWA")
         .and()
