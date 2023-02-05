@@ -3,10 +3,13 @@
 #
 FROM maven:3.6.3-jdk-8 AS build
 WORKDIR /tmp
+
 # Download the libxext6 package
-RUN wget http://mirror.ibcp.fr/pub/debian/pool/main/libx/libxext/libxext6_2.3.3-2_amd64.deb
+RUN wget http://kr.archive.ubuntu.com/ubuntu/pool/main/libx/libxext/libxext6_1.3.4-0ubuntu1_amd64.deb
+
 # Install the libxext6 package
-RUN dpkg -i libxext6_2.3.3-2_amd64.deb && rm libxext6_2.3.3-2_amd64.deb
+RUN dpkg -i libxext6_1.3.4-0ubuntu1_amd64.deb && rm libxext6_1.3.4-0ubuntu1_amd64.deb
+
 ARG BASE_URL
 ENV BASE_URL=$BASE_URL
 
