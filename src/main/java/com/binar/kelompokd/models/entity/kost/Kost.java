@@ -134,6 +134,19 @@ public class Kost extends DateModel implements Serializable {
     imageKost.setKosts(null);
   }
 
+  public void addFacility(Facility facility) {
+    this.facilities.add(facility);
+    facility.getKosts().add(this);
+  }
+
+  public void removeFacility(UUID facilityId) {
+    Facility facility = this.facilities.stream().filter(f -> f.getId().toString().equals(facilityId.toString())).findFirst().orElse(null);
+    if (facility != null) {
+      this.facilities.remove(facility);
+      facility.getRooms().remove(this);
+    }
+  }
+
   @Override
   public String toString() {
     return "Kost{" +
