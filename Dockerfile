@@ -2,6 +2,7 @@
 # Build stage
 #
 FROM maven:3.6.3-jdk-8-slim AS build
+ENV DISPLAY=$DISPLAY
 ARG BASE_URL
 ENV BASE_URL=$BASE_URL
 
