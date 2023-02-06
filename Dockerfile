@@ -2,7 +2,7 @@
 # Build stage
 #
 FROM maven:3.6.3-jdk-8-slim AS build
-RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 libxrender1 libxtst6 libxi6 && apt-get clean && rm -rf /var/lib/apt/lists/*
 ARG BASE_URL
 ENV BASE_URL=$BASE_URL
 
