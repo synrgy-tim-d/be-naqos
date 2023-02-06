@@ -2,7 +2,6 @@
 # Build stage
 #
 FROM maven:3.6.3-jdk-8-slim AS build
-ENV DISPLAY=$DISPLAY
 ARG BASE_URL
 ENV BASE_URL=$BASE_URL
 
@@ -41,6 +40,5 @@ RUN mvn -f /home/app/pom.xml clean package
 # Package stage
 #
 FROM openjdk:8-jre-slim
-RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 libxrender1 libxtst6 libxi6 && apt-get clean && rm -rf /var/lib/apt/lists/*
 COPY --from=build /home/app/target/*.jar /usr/local/lib/backend.jar
 ENTRYPOINT ["java","-jar","/usr/local/lib/backend.jar"]

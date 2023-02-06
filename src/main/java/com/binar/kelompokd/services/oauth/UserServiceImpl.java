@@ -45,6 +45,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 
@@ -245,20 +248,47 @@ public class UserServiceImpl implements IUserAuthService {
   @Override
   public String googleAuthorize() throws Exception {
     try {
-      httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-      Credential credential = authorize();
-      oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
-          APPLICATION_NAME).build();
-      System.out.println("token saya = "+credential.getAccessToken());
-      tokenInfo(credential.getAccessToken());
-      userInfo();
-      return credential.getAccessToken();
-    } catch (IOException e) {
-      System.err.println(e.getMessage());
-    } catch (Throwable t) {
-      t.printStackTrace();
+      String jsonResponse;
+      URL url = new URL("https://oauth2-google.up.railway.app");
+      HttpURLConnection con = (HttpURLConnection) url.openConnection();
+      con.setUseCaches(false);
+      con.setDoOutput(true);
+
+      con.setRequestMethod("GET");
+
+      int httpResponse = con.getResponseCode();
+      System.out.println("httpResponse: " + httpResponse);
+
+      jsonResponse = mountResponseRequest(con, httpResponse);
+      System.out.println("jsonResponse:\n" + jsonResponse);
+      return jsonResponse;
+    } catch (Throwable t){
+      logger.error("error", t);
     }
     return null;
+  }
+
+  public void getAccessToken(){
+    try {
+
+    } catch (Exception e){
+
+    }
+  }
+
+  private static String mountResponseRequest(HttpURLConnection con, int httpResponse) throws IOException {
+    String jsonResponse;
+    if (httpResponse >= HttpURLConnection.HTTP_OK
+        && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
+      Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
+      jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+      scanner.close();
+    } else {
+      Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
+      jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+      scanner.close();
+    }
+    return jsonResponse;
   }
 
   private static Credential authorize() throws Exception {
@@ -274,8 +304,9 @@ public class UserServiceImpl implements IUserAuthService {
     // set up authorization code flow
     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
             httpTransport, JSON_FACTORY, clientSecrets, SCOPES).build();
+    Credential app = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     // authorize
-    return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver(), new RedirectBrowser()).authorize("user");
+    return app;
   }
 
   private static void tokenInfo(String accessToken) throws IOException {

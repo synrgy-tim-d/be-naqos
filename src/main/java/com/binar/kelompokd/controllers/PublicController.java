@@ -178,9 +178,7 @@ public class PublicController {
 //      return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
 //    }
 //  }
-
-  /*
-  @Operation(summary = "Get Kost by Id", tags = {"Public Management"})
+  @Operation(summary = "Get Review Kost By Kost Id", tags = {"Public Management"})
   @GetMapping("/kost_review/{id}")
   public ResponseEntity<?> getKostReviewByKostId(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
     try {
@@ -191,5 +189,4 @@ public class PublicController {
       return new ResponseEntity<>(Response.notFound("Review doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
-   */
 }
