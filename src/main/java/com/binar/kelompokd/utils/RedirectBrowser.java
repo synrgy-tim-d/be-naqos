@@ -15,7 +15,7 @@ public class RedirectBrowser implements AuthorizationCodeInstalledApp.Browser{
 
   @Override
   public void browse(String s) throws IOException {
-    System.setProperty("java.awt.headless", "false");
+    System.setProperty("java.awt.headless", "true");
     Desktop desktop = Desktop.getDesktop();
     try{
       logger.info(s);
