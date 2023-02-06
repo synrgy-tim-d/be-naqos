@@ -100,12 +100,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public List<TransactionTenantPayment> getTransactionTenantPaymentById(Long tenantId) throws NotFound {
-        List<Invoice> invoices = invoiceRepository.getAllInvoice();
+//        List<Invoice> invoices = invoiceRepository.getAllInvoice();
+        List<Invoice> invoices = invoiceRepository.getAllTransactionByTenantId(tenantId);
 
         List<TransactionTenantPayment> response = new ArrayList<>();
         for (Invoice invoice : invoices) {
-            if (Objects.equals(invoice.getBookingId().getOccupantId().getId(), tenantId)) {
-
                 TransactionTenantPayment invoiceItem = new TransactionTenantPayment(
                         invoice.getBookingId().getKostId().getId(),
                         invoice.getBookingId().getKostId().getName(),
@@ -117,7 +116,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                         invoice.getPaymentId().getPaymentStatus()
                 );
                 response.add(invoiceItem);
-            }
+
         }
         if (response.isEmpty()) {
             throw new NotFound("payment is not found");
@@ -179,7 +178,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public List<TransactionTenantHistory> getAllTransactionTenantById(Long tenantId) throws NotFound {
-        List<Invoice> invoices = invoiceRepository.getAllTransactionByTenantId(tenantId);
+        List<Invoice> invoices = invoiceRepository.getAllHistoryTransactionByTenantId(tenantId);
 
         List<TransactionTenantHistory> response = new ArrayList<>();
         for (Invoice invoice : invoices) {

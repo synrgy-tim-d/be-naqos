@@ -37,7 +37,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, UUID> {
                     " join t_payments on (t_invoice.payment_id=t_payments.id)" +
                     " where t_bookings.occupant_id=:occupant_id and booking_option!='CANCELLED' order by created_at asc;"
     )
-    List<Invoice> getAllTransactionByTenantId(@Param("occupant_id") Long tenantId);
+    List<Invoice> getAllHistoryTransactionByTenantId(@Param("occupant_id") Long tenantId);
 
     @Query(
             nativeQuery = true,
@@ -58,4 +58,14 @@ public interface InvoiceRepository extends JpaRepository<Invoice, UUID> {
                     " where t_bookings.occupant_id=:occupant_id and booking_option='PENDING' order by created_at asc;"
     )
     List<Invoice> getBookingPendingByTenantId(@Param("occupant_id") Long tenantId);
+
+    @Query(
+            nativeQuery = true,
+            value = "select *" +
+                    " from t_bookings" +
+                    " join t_invoice on (t_invoice.booking_id=t_bookings.id)" +
+                    " join t_payments on (t_invoice.payment_id=t_payments.id)" +
+                    " where t_bookings.occupant_id=:occupant_id order by created_at asc;"
+    )
+    List<Invoice> getAllTransactionByTenantId(@Param("occupant_id") Long tenantId);
 }
