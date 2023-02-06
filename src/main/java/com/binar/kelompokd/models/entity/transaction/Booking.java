@@ -26,7 +26,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="t_bookings")
+@Table(name = "t_bookings")
 public class Booking extends DateModel implements Serializable {
     @Id
     @Cascade(CascadeType.ALL)
@@ -47,10 +47,10 @@ public class Booking extends DateModel implements Serializable {
     @Column(nullable = false)
     private String note;
 
-    @Schema(example = "HARI")
+    @Schema(example = "PENDING")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private BookingOption bookingOption;
+    private BookingOption bookingOption = BookingOption.PENDING;
 
     @Schema(example = "1")
     private BigDecimal amount;

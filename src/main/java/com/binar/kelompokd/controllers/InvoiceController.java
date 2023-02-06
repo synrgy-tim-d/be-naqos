@@ -1,8 +1,8 @@
 package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.interfaces.InvoiceService;
-import com.binar.kelompokd.models.response.transaction.TransactionOwnerBookingList;
-import com.binar.kelompokd.models.response.transaction.TransactionOwnerDetail;
+import com.binar.kelompokd.models.entity.transaction.Invoice;
+import com.binar.kelompokd.models.response.transaction.*;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import com.binar.kelompokd.utils.response.Response;
 import com.cloudinary.api.exceptions.NotFound;
@@ -33,17 +33,17 @@ public class InvoiceController {
     SimpleStringUtils simpleStringUtils;
     @Autowired
     Response Response;
-//
-//    @Operation(summary = "Get All Transaction Invoice", tags = {"Transaction Management"})
-//    @GetMapping("/invoice")
-//    public ResponseEntity<?> getAllTransaction() {
-//        try {
-//            List<Invoice> invoices = invoiceService.getAllInvoice();
-//            return new ResponseEntity<>(Response.templateSukses(invoices), HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+
+    @Operation(summary = "Get All Transaction Invoice", tags = {"Transaction Management"})
+    @GetMapping("/invoice")
+    public ResponseEntity<?> getAllTransaction() {
+        try {
+            List<Invoice> invoices = invoiceService.getAllInvoice();
+            return new ResponseEntity<>(Response.templateSukses(invoices), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
     @Operation(summary = "Get Owner History Transaction Confirmation", tags = {"Transaction Management"})
@@ -52,7 +52,7 @@ public class InvoiceController {
         try {
             List<TransactionOwnerBookingList> invoices = invoiceService.getTransactionOwnerById(ownerId);
             return new ResponseEntity<>(Response.templateSukses(invoices), HttpStatus.OK);
-        } catch (NotFound nf){
+        } catch (NotFound nf) {
             return new ResponseEntity<>(Response.notFound(nf.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             log.error("History Owner Transaction error : ", e);
@@ -66,12 +66,67 @@ public class InvoiceController {
         try {
             TransactionOwnerDetail response = invoiceService.getOwnerKosById(transactionId);
             return new ResponseEntity<>(Response.templateSukses(response), HttpStatus.OK);
-        } catch (NoSuchElementException nee){
+        } catch (NoSuchElementException nee) {
             return new ResponseEntity<>(Response.notFound(nee.getMessage()), HttpStatus.NOT_FOUND);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("History Transaction error", e);
             return new ResponseEntity<>(Response.templateEror(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @Operation(summary = "Get Tenant History Transaction Payment", tags = {"Transaction Management"})
+    @GetMapping("/tenant/payment/{tenantId}")
+    public ResponseEntity<?> getTenantPaymentById(@PathVariable("tenantId") @Schema(example = "12") Long tenantId) {
+        try {
+            List<TransactionTenantPayment> invoices = invoiceService.getTransactionTenantPaymentById(tenantId);
+            return new ResponseEntity<>(Response.templateSukses(invoices), HttpStatus.OK);
+        } catch (NotFound nf) {
+            return new ResponseEntity<>(Response.notFound(nf.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            log.error("History Owner Transaction error : ", e);
+            return new ResponseEntity<>(Response.templateEror(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Operation(summary = "Get Tenant History Transaction Cancelled", tags = {"Transaction Management"})
+    @GetMapping("/tenant/cancel/{tenantId}")
+    public ResponseEntity<?> getTenantCancelById(@PathVariable("tenantId") @Schema(example = "12") Long tenantId) {
+        try {
+            List<TransactionTenantCancelled> invoices = invoiceService.getTransactionTenantCancelById(tenantId);
+            return new ResponseEntity<>(Response.templateSukses(invoices), HttpStatus.OK);
+        } catch (NotFound nf) {
+            return new ResponseEntity<>(Response.notFound(nf.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            log.error("History Owner Transaction error : ", e);
+            return new ResponseEntity<>(Response.templateEror(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Operation(summary = "Get Tenant All History Transaction", tags = {"Transaction Management"})
+    @GetMapping("/tenant/history/{tenantId}")
+    public ResponseEntity<?> getTenantTransactionById(@PathVariable("tenantId") @Schema(example = "12") Long tenantId) {
+        try {
+            List<TransactionTenantHistory> invoices = invoiceService.getAllTransactionTenantById(tenantId);
+            return new ResponseEntity<>(Response.templateSukses(invoices), HttpStatus.OK);
+        } catch (NotFound nf) {
+            return new ResponseEntity<>(Response.notFound(nf.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            log.error("History Owner Transaction error : ", e);
+            return new ResponseEntity<>(Response.templateEror(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Operation(summary = "Get Tenant All History Transaction", tags = {"Transaction Management"})
+    @GetMapping("/tenant/pending/{tenantId}")
+    public ResponseEntity<?> getTenantTransactionPendingById(@PathVariable("tenantId") @Schema(example = "12") Long tenantId) {
+        try {
+            List<TransactionTenantHistory> invoices = invoiceService.getTransactionTenantPendingById(tenantId);
+            return new ResponseEntity<>(Response.templateSukses(invoices), HttpStatus.OK);
+        } catch (NotFound nf) {
+            return new ResponseEntity<>(Response.notFound(nf.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            log.error("History Owner Transaction error : ", e);
+            return new ResponseEntity<>(Response.templateEror(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
 }

@@ -13,43 +13,43 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableGlobalMethodSecurity(securedEnabled = true) //secure definition
 public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-  /**
-   * Manage resource server.
-   */
-  @Override
-  public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-    super.configure(resources);
-  }
+    /**
+     * Manage resource server.
+     */
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        super.configure(resources);
+    }
 //    private static final String SECURED_PATTERN = "/api/**";
-  /**
-   * Manage endpoints.
-   */
-  @Override
-  public void configure(HttpSecurity http) throws Exception {
-    http.cors()
-        .and()
-        .csrf()
-        .disable()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        .authorizeRequests()
-        .antMatchers("/auth/**",
-            "/swagger-ui/**",
-            "/forget-password/**",
-            "/naqos-swagger.html",
-            "/provinces/**",
-            "/cities/**",
-            "/public/**",
-            "/facilities/**",
-//            "/v3/api-docs/**").permitAll()
-            "/v3/api-docs/**", "/transaction/**").permitAll()
-        .antMatchers("/kost/**","/images/**","/users/**","/notifications/**","/rooms/**").hasAuthority("ROLE_PEMILIK")
-        .antMatchers("/wishlists/**","/users/**","/notifications/**","/payment/**").hasAuthority("ROLE_PENYEWA")
-        .and()
-        .authorizeRequests()
-        .anyRequest()
-        .authenticated()
-        .and()
-        .formLogin()
-        .permitAll();
-  }
+
+    /**
+     * Manage endpoints.
+     */
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.cors()
+                .and()
+                .csrf()
+                .disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests()
+                .antMatchers("/auth/**",
+                        "/swagger-ui/**",
+                        "/forget-password/**",
+                        "/naqos-swagger.html",
+                        "/provinces/**",
+                        "/cities/**",
+                        "/public/**",
+                        "/facilities/**",
+                        "/v3/api-docs/**").permitAll()
+                .antMatchers("/kost/**", "/images/**", "/users/**", "/notifications/**", "/rooms/**", "/transaction/owner/**").hasAuthority("ROLE_PEMILIK")
+                .antMatchers("/wishlists/**", "/users/**", "/notifications/**", "/payment/**", "/transaction/tenant/**").hasAuthority("ROLE_PENYEWA")
+                .and()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin()
+                .permitAll();
+    }
 }
