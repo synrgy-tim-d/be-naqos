@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/forget-password/")
@@ -126,25 +127,46 @@ public class ForgetPasswordController {
       @ApiResponse(responseCode = "200", description = "Reset Password Login Naqos!",
           content = {@Content(schema = @Schema(example = "Reset Password Login Naqos!"))})
   })
+  public boolean checkEmpty(Object req){
+    return req == null || req.toString().isEmpty();
+  }
   @PostMapping("/forgot-password-reset")
   public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO model) {
     if (model.getOtp() == null) return new ResponseEntity<>(templateCRUD.badRequest("Token " + config.isRequired), HttpStatus.BAD_REQUEST);
     if (model.getNewPassword() == null) return new ResponseEntity<>(templateCRUD.badRequest("New Password " + config.isRequired), HttpStatus.BAD_REQUEST);
-    Users user = userRepository.findOneByOTP(model.getOtp());
-    String success;
-    if (user == null) return new ResponseEntity<>(templateCRUD.notFound("Token not valid"), HttpStatus.NOT_FOUND);
-
-    user.setPassword(passwordEncoder.encode(model.getNewPassword().replaceAll("\\s+", "")));
-    user.setOtpExpiredDate(null);
-    user.setOtp(null);
-
-    try {
-      userRepository.save(user);
-      success = "success";
-    } catch (Exception e) {
-      logger.error("gagal reset password", e);
-      return new ResponseEntity<>( templateCRUD.templateEror("Gagal simpan user"), HttpStatus.INTERNAL_SERVER_ERROR);
+    if(checkEmpty(model.getUsername())){
+      return new ResponseEntity<Map>(templateCRUD.badRequest("username is required."), HttpStatus.BAD_REQUEST);
+    } else if (checkEmpty(model.getNewPassword())) {
+      return new ResponseEntity<Map>(templateCRUD.badRequest("New password is required."), HttpStatus.BAD_REQUEST);
+    } else if (checkEmpty(model.getOtp())) {
+      return new ResponseEntity<Map>(templateCRUD.badRequest("OTP is required."), HttpStatus.BAD_REQUEST);
     }
-    return new ResponseEntity<>(templateCRUD.templateSukses(success), HttpStatus.OK);
+    if (model.getNewPassword().length() <= 6 ){
+      return new ResponseEntity<Map>(templateCRUD.badRequest("password must have 6 characters or more"), HttpStatus.BAD_REQUEST);
+    }
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    if (model.getUsername().matches(emailRegex)){
+      Users user = userRepository.findOneByOTP(model.getOtp());
+      String success;
+      if (user == null) return new ResponseEntity<>(templateCRUD.notFound("Token not valid"), HttpStatus.NOT_FOUND);
+
+      user.setPassword(passwordEncoder.encode(model.getNewPassword().replaceAll("\\s+", "")));
+      user.setOtpExpiredDate(null);
+      user.setOtp(null);
+
+      try {
+        userRepository.save(user);
+        success = "success";
+      } catch (Exception e) {
+        logger.error("gagal reset password", e);
+        return new ResponseEntity<>( templateCRUD.templateEror("Gagal simpan user"), HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return new ResponseEntity<>(templateCRUD.templateSukses(success), HttpStatus.OK);
+    }else {
+      return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your email address correctly"), HttpStatus.BAD_REQUEST);
+    }
+
+
+
   }
 }
