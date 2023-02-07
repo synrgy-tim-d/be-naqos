@@ -69,6 +69,9 @@ public class Kost extends DateModel implements Serializable {
   @Column(nullable = false, length = 10, name = "postal_code")
   private String postalCode;
 
+  @Column(name = "kost_rating", length = 2, precision = 1)
+  private double kostRating = 0;
+
   @Column(name = "f_question_1")
   private String question1;
 

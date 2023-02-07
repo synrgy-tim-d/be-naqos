@@ -35,10 +35,10 @@ public class KostReview implements Serializable {
   @JsonManagedReference
   private Users userId;
 
-  @Column(nullable = false, length = 1)
-  @Min(0)
+  @Column(nullable = false, length = 1, precision = 1)
+  @Min(1)
   @Max(5)
-  private Integer rating;
+  private double rating;
 
   @Column(nullable = false, name = "review_text")
   private String reviewText;

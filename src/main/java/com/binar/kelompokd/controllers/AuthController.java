@@ -194,7 +194,6 @@ public class AuthController {
   @ResponseBody
   public ResponseEntity<Map> repairGoogleSigninAction(@NotNull @RequestParam String token,@NotNull @RequestParam String roleUser ) throws Exception {
     Map<String, Object> map123 = new HashMap<>();
-//    String accessToken = serviceReq.googleAuthorize();
     GoogleCredential credential = new GoogleCredential().setAccessToken(token);
     System.out.println("access_token user=" + token);
     Oauth2 oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName("Oauth2").build();

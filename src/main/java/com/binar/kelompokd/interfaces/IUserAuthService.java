@@ -16,5 +16,4 @@ public interface IUserAuthService {
   void updateUser(Long id, String fullname, String phoneNumber);
   void updatePassword(Long id, String password);
   void uploadAvatarUser(Long id, String url);
-  String googleAuthorize() throws Exception;
 }
