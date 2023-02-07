@@ -84,10 +84,10 @@ public class UserController {
       }
 
       if (!request.getNewPassword().equals(request.getConfirmPassword())) {
-        if (request.getNewPassword().length() <= 6 ){
-          return new ResponseEntity<Map>(res.notAccepted("password must have 6 characters or more"), HttpStatus.NOT_ACCEPTABLE);
-        }
         return new ResponseEntity<>(res.notAccepted("Password Confirmation Mismatched."), HttpStatus.NOT_ACCEPTABLE);
+      }
+      if (request.getNewPassword().length() <= 6 ){
+        return new ResponseEntity<Map>(res.notAccepted("password must have 6 characters or more"), HttpStatus.NOT_ACCEPTABLE);
       }
 
 
