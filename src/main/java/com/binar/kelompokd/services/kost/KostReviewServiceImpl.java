@@ -23,7 +23,7 @@ public class KostReviewServiceImpl implements IKostReviewService {
   private KostReviewRepository kostReviewRepository;
   private KostRepository kostRepository;
   @Override
-  public void addReviewKost(UUID kostId, Long userId, Integer rating, String reviewText) {
+  public void addReviewKost(UUID kostId, Long userId, double rating, String reviewText) {
     KostReview kostReview = new KostReview();
     Kost kost = kostService.getKostById(kostId);
     Users user = userAuthService.findUsersById(userId);

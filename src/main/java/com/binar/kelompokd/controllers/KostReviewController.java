@@ -28,7 +28,7 @@ public class KostReviewController {
   @Operation(summary = "Add Kost Review by User.", description = "Add Kost Review by User.", tags ={"Kost Review Management"})
   @PostMapping("/add")
   public ResponseEntity<?> addKostReview(@RequestParam("kostId") UUID kostId,
-                                         @RequestParam("rating") Integer rating,
+                                         @RequestParam("rating") double rating,
                                          @RequestParam("ratingText") String reviewText,
                                          Authentication authentication) {
     Users user = iUserAuthService.findByUsername(authentication.getName());
