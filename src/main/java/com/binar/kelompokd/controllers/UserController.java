@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -64,6 +65,10 @@ public class UserController {
       return new ResponseEntity<>(res.badRequest("Update User failed"), HttpStatus.BAD_REQUEST);
     }
   }
+  public boolean checkEmpty(Object req){
+    return req == null || req.toString().isEmpty();
+  }
+
 
   @Operation(summary = "Change Password User", tags = {"User Management"})
   @PutMapping("/password")
@@ -73,13 +78,18 @@ public class UserController {
     Users user = userAuthService.findByUsername(authentication.getName());
 
     try {
+
       if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
         return new ResponseEntity<>(res.notAccepted("Wrong Password."), HttpStatus.NOT_ACCEPTABLE);
       }
 
       if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+        if (request.getNewPassword().length() <= 6 ){
+          return new ResponseEntity<Map>(res.notAccepted("password must have 6 characters or more"), HttpStatus.NOT_ACCEPTABLE);
+        }
         return new ResponseEntity<>(res.notAccepted("Password Confirmation Mismatched."), HttpStatus.NOT_ACCEPTABLE);
       }
+
 
       userAuthService.updatePassword(user.getId(), request.getNewPassword());
       notificationService.saveNotification("Change Password", "Change Password Successfully", user.getId());
