@@ -53,10 +53,9 @@ public class UserController {
 
   @Operation(summary = "Update Data User with fullname and phoneNumber", tags = {"User Management"})
   @PutMapping(value = "/update_data")
-  public ResponseEntity<?> updateUsersAuth(Authentication authentication,
-                                           @Valid UpdateUserRequest request) {
+  public ResponseEntity<?> updateUsersAuth(@Valid UpdateUserRequest request) {
     try {
-      Users user = userAuthService.findByUsername(authentication.getName());
+      Users user = userAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
       String phoneNumberRegex = "^8\\d{8,11}$";
       if (!request.getPhoneNumber().matches(phoneNumberRegex)){
         return new ResponseEntity<Map>(res.badRequest("Please input your phone number correctly (start with '8' and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
