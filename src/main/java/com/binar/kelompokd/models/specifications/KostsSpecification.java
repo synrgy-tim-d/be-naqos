@@ -20,6 +20,7 @@ public class KostsSpecification implements Specification<Kost> {
 
     @Override
     public Predicate toPredicate(Root<Kost> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        query.distinct(true);
         return new SpecificationBuilder().getPredicate(root, criteriaBuilder, filter);
     }
 }
