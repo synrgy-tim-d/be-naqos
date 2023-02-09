@@ -31,9 +31,13 @@ public class KostReviewController {
                                          @RequestParam("rating") double rating,
                                          @RequestParam("ratingText") String reviewText,
                                          Authentication authentication) {
-    Users user = iUserAuthService.findByUsername(authentication.getName());
-    Long userId = user.getId();
-    kostReviewService.addReviewKost(kostId,userId,rating,reviewText);
-    return new ResponseEntity<>(response.templateSukses("Add Review Kost Success"), HttpStatus.OK);
+    try {
+      Users user = iUserAuthService.findByUsername(authentication.getName());
+      Long userId = user.getId();
+      kostReviewService.addReviewKost(kostId,userId,rating,reviewText);
+      return new ResponseEntity<>(response.templateSukses("Add Review Kost Success"), HttpStatus.OK);
+    } catch (Exception e){
+      return new ResponseEntity<>(response.unauthorized("Please Login to Add Kost Review"), HttpStatus.UNAUTHORIZED);
+    }
   }
 }

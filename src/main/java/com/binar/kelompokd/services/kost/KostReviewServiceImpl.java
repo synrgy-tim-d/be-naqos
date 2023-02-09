@@ -41,8 +41,7 @@ public class KostReviewServiceImpl implements IKostReviewService {
     return kostReviewRepository.findReviewByKostId(kostId);
   }
 
-  @Override
-  public void calculateMeanKostRating(UUID kostId){
+  private void calculateMeanKostRating(UUID kostId){
     Kost kost = kostService.getKostById(kostId);
     List<KostReview> reviews = kostReviewRepository.findReviewByKostId(kostId);
     double totalRating=0;

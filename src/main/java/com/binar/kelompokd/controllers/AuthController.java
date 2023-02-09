@@ -97,6 +97,15 @@ public class AuthController {
     if (objModel.getPassword().length() <= 6 ){
       return new ResponseEntity<Map>(templateCRUD.badRequest("password must have 6 characters or more"), HttpStatus.BAD_REQUEST);
     }
+    String phoneNumberRegex = "^8\\d{8,11}$";
+    if (!objModel.getPhoneNumber().matches(phoneNumberRegex)){
+      return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your phone number correctly (start with '8' and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
+    }
+    String fullNameRegex = "^[a-zA-Z]+([ ]+[a-zA-Z]+)*$";
+    if (!objModel.getFullname().matches(fullNameRegex)){
+      return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your full name correctly without any number or special character"), HttpStatus.BAD_REQUEST);
+
+    }
     String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
     if(objModel.getUsername().matches(emailRegex)) {
@@ -194,6 +203,7 @@ public class AuthController {
   @ResponseBody
   public ResponseEntity<Map> repairGoogleSigninAction(@NotNull @RequestParam String token,@NotNull @RequestParam String roleUser ) throws Exception {
     Map<String, Object> map123 = new HashMap<>();
+    LoginDTO loginDTO = new LoginDTO();
     GoogleCredential credential = new GoogleCredential().setAccessToken(token);
     System.out.println("access_token user=" + token);
     Oauth2 oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName("Oauth2").build();
@@ -211,13 +221,12 @@ public class AuthController {
         user.setEnabled(true); // matikan user
       }
 
-      LoginDTO login = new LoginDTO();
-      login.setUsername(profile.getEmail());
-      login.setPassword(profile.getId());
-      ResponseEntity<Map> mapLogin = login(login);
+      loginDTO.setUsername(profile.getEmail());
+      loginDTO.setPassword(profile.getId());
+      ResponseEntity<Map> mapLogin = login(loginDTO);
 
-      String url = BASEURL + "/api/oauth/token?username=" + login.getUsername() +
-              "&password=" + login.getPassword() +
+      String url = BASEURL + "/api/oauth/token?username=" + loginDTO.getUsername() +
+              "&password=" + loginDTO.getPassword() +
               "&grant_type=password" +
               "&client_id=my-client-web" +
               "&client_secret=password";
@@ -242,16 +251,15 @@ public class AuthController {
     } else {
       RegisterGoogleDTO registerModel = new RegisterGoogleDTO();
       registerModel.setUsername(profile.getEmail());
-      registerModel.setFullname(profile.getName()+profile.getFamilyName());
+      registerModel.setFullname(profile.getName());
       registerModel.setPassword(profile.getId());
       registerModel.setRole(roleUser);
       registerModel.setImageUrl(profile.getPicture());
       saveRegisterManualGoogle(registerModel);
 
-      LoginDTO login = new LoginDTO();
-      login.setUsername(profile.getEmail());
-      login.setPassword(profile.getId());
-      ResponseEntity<Map> mapLogin = login(login);
+      loginDTO.setUsername(profile.getEmail());
+      loginDTO.setPassword(profile.getId());
+      ResponseEntity<Map> mapLogin = login(loginDTO);
 
       return new ResponseEntity<Map>(templateCRUD.templateSukses(mapLogin.getBody().get("data")), HttpStatus.OK);
     }

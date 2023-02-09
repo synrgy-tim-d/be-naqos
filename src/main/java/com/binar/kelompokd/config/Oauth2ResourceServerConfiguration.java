@@ -20,7 +20,6 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
   public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
     super.configure(resources);
   }
-//    private static final String SECURED_PATTERN = "/api/**";
   /**
    * Manage endpoints.
    */
@@ -43,8 +42,8 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
             "/v3/api-docs/**",
             "/review/**",
             "/transaction/**").permitAll()
-        .antMatchers("/kost/**","/images/**","/users/**","/notifications/**","/rooms/**").hasAuthority("ROLE_PEMILIK")
-        .antMatchers("/wishlists/**","/users/**","/notifications/**","/payment/**").hasAuthority("ROLE_PENYEWA")
+        .antMatchers("/kost/**","/images/**","/users/**","/notifications/**","/rooms/**").hasAnyAuthority("ROLE_PEMILIK", "ROLE_USER")
+        .antMatchers("/wishlists/**","/users/**","/notifications/**","/payment/**").hasAnyAuthority("ROLE_PENYEWA", "ROLE_USER")
         .and()
         .authorizeRequests()
         .anyRequest()
