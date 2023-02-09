@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,7 @@ public class NotificationServiceImpl implements INotificationService {
     Optional<Notification> notification = notificationRepo.findById(id);
     notification.ifPresent(notification1 -> {
       notification1.setIsRead(true);
+      notification1.setUpdatedAt(new Date());
       notificationRepo.save(notification1);
     });
   }
@@ -47,6 +49,7 @@ public class NotificationServiceImpl implements INotificationService {
 
     for (Notification notification : notificationList) {
       notification.setIsRead(true);
+      notification.setUpdatedAt(new Date());
       notificationRepo.save(notification);
     }
   }

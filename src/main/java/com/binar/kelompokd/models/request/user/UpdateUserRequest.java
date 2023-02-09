@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UpdateUserRequest {
-  private String fullname;
-  private String phoneNumber;
+  String fullname;
+  String phoneNumber;
 }

@@ -54,22 +54,20 @@ public class UserController {
   @Operation(summary = "Update Data User with fullname and phoneNumber", tags = {"User Management"})
   @PutMapping(value = "/update_data")
   @PreAuthorize("hasRole('ROLE_USER')")
-  public ResponseEntity<?> updateUsersAuth(@Valid UpdateUserRequest request) {
+  public ResponseEntity<?> updateUsersAuth(@Valid @RequestBody UpdateUserRequest request) {
+    Users user = userAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    String phoneNumberRegex = "^8\\d{8,11}$";
+    if (!request.getPhoneNumber().matches(phoneNumberRegex)){
+      return new ResponseEntity<Map>(res.badRequest("Please input your phone number correctly (start with '8' and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
+    }
+    String fullNameRegex = "^[a-zA-Z]+([ ]+[a-zA-Z]+)*$";
+    if (!request.getFullname().matches(fullNameRegex)){
+      return new ResponseEntity<Map>(res.badRequest("Please input your full name correctly without any number or special character"), HttpStatus.BAD_REQUEST);
+    }
     try {
-      Users user = userAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-      String phoneNumberRegex = "^8\\d{8,11}$";
-      if (!request.getPhoneNumber().matches(phoneNumberRegex)){
-        return new ResponseEntity<Map>(res.badRequest("Please input your phone number correctly (start with '8' and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
-      }
-      String fullNameRegex = "^[a-zA-Z]+([ ]+[a-zA-Z]+)*$";
-      if (!request.getFullname().matches(fullNameRegex)){
-        return new ResponseEntity<Map>(res.badRequest("Please input your full name correctly without any number or special character"), HttpStatus.BAD_REQUEST);
-
-      }
       userAuthService.updateUser(user.getId(), request.getFullname(), request.getPhoneNumber());
       notificationService.saveNotification("Update User", "Update User Success", user.getId());
       MessageResponse response = new MessageResponse("User " + user.getUsername() + " Updated!");
-
       return new ResponseEntity<>(res.templateSukses(response), HttpStatus.OK);
     }catch (Exception e){
       return new ResponseEntity<>(res.badRequest("Update User failed"), HttpStatus.BAD_REQUEST);
