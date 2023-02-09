@@ -17,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,30 +82,25 @@ public class UserController {
 
   @Operation(summary = "Change Password User", tags = {"User Management"})
   @PutMapping("/password")
-  public ResponseEntity<?> changePassword(Authentication authentication,
-                                          @RequestBody ChangePasswordRequest request){
+  @PreAuthorize("hasRole('ROLE_USER')")
+  public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request){
 
-    Users user = userAuthService.findByUsername(authentication.getName());
+    Users user = userAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+      return new ResponseEntity<>(res.notAccepted("Wrong Password."), HttpStatus.NOT_ACCEPTABLE);
+    }
+    if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+      return new ResponseEntity<>(res.notAccepted("Password Confirmation Mismatched."), HttpStatus.NOT_ACCEPTABLE);
+    }
+    if (request.getNewPassword().length() <= 6 ){
+      return new ResponseEntity<Map>(res.notAccepted("password must have 6 characters or more"), HttpStatus.NOT_ACCEPTABLE);
+    }
 
     try {
-
-      if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
-        return new ResponseEntity<>(res.notAccepted("Wrong Password."), HttpStatus.NOT_ACCEPTABLE);
-      }
-
-      if (!request.getNewPassword().equals(request.getConfirmPassword())) {
-        return new ResponseEntity<>(res.notAccepted("Password Confirmation Mismatched."), HttpStatus.NOT_ACCEPTABLE);
-      }
-      if (request.getNewPassword().length() <= 6 ){
-        return new ResponseEntity<Map>(res.notAccepted("password must have 6 characters or more"), HttpStatus.NOT_ACCEPTABLE);
-      }
-
-
       userAuthService.updatePassword(user.getId(), request.getNewPassword());
       notificationService.saveNotification("Change Password", "Change Password Successfully", user.getId());
       return new ResponseEntity<>(res.templateSukses("Password Changed Successfully."), HttpStatus.OK);
-
-    } catch (NullPointerException e){
+    } catch (Exception e){
      return new ResponseEntity<>(res.templateEror(e), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }

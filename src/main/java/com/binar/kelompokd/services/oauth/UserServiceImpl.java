@@ -11,13 +11,9 @@ import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.RoleRepository;
 import com.binar.kelompokd.repos.oauth.UserRepository;
 import com.binar.kelompokd.utils.response.Response;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.oauth2.Oauth2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 
@@ -25,9 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,7 +52,7 @@ public class UserServiceImpl implements IUserAuthService {
     try {
       Map<String, Object> map = new HashMap<>();
 
-      Users checkUser = userRepository.findOneByUsername(loginModel.getUsername());
+      Users checkUser = userRepository.findByUsername(loginModel.getUsername());
 
       if ((checkUser != null) && (encoder.matches(loginModel.getPassword(), checkUser.getPassword()))) {
         if (!checkUser.isEnabled()) {

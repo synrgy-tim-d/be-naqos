@@ -1,10 +1,10 @@
 package com.binar.kelompokd.models.request.user;
 
-import lombok.Data;
+import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
 public class ChangePasswordRequest {
   @NotBlank
   String oldPassword;
