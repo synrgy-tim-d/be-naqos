@@ -101,7 +101,7 @@ public class AuthController {
     if (!objModel.getPhoneNumber().matches(phoneNumberRegex)){
       return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your phone number correctly (start with '8' and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
     }
-    String fullNameRegex = "^[a-zA-Z]+ [a-zA-Z]+$";
+    String fullNameRegex = "^[a-zA-Z]+([ ]+[a-zA-Z]+)*$";
     if (!objModel.getFullname().matches(fullNameRegex)){
       return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your full name correctly without any number or special character"), HttpStatus.BAD_REQUEST);
 
