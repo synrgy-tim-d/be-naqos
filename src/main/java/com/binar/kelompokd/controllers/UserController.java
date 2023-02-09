@@ -55,7 +55,15 @@ public class UserController {
                                            @Valid UpdateUserRequest request) {
     try {
       Users user = userAuthService.findByUsername(authentication.getName());
+      String phoneNumberRegex = "^8\\d{8,11}$";
+      if (!request.getPhoneNumber().matches(phoneNumberRegex)){
+        return new ResponseEntity<Map>(res.badRequest("Please input your phone number correctly (start with '8' and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
+      }
+      String fullNameRegex = "^[a-zA-Z]+ [a-zA-Z]+$";
+      if (!request.getFullname().matches(fullNameRegex)){
+        return new ResponseEntity<Map>(res.badRequest("Please input your full name correctly without any number or special character"), HttpStatus.BAD_REQUEST);
 
+      }
       userAuthService.updateUser(user.getId(), request.getFullname(), request.getPhoneNumber());
       notificationService.saveNotification("Update User", "Update User Success", user.getId());
       MessageResponse response = new MessageResponse("User " + user.getUsername() + " Updated!");
