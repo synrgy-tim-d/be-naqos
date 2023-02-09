@@ -53,6 +53,7 @@ public class UserController {
 
   @Operation(summary = "Update Data User with fullname and phoneNumber", tags = {"User Management"})
   @PutMapping(value = "/update_data")
+  @PreAuthorize("hasRole('ROLE_USER')")
   public ResponseEntity<?> updateUsersAuth(@Valid UpdateUserRequest request) {
     try {
       Users user = userAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
