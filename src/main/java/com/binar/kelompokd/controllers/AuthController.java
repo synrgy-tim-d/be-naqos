@@ -97,6 +97,15 @@ public class AuthController {
     if (objModel.getPassword().length() <= 6 ){
       return new ResponseEntity<Map>(templateCRUD.badRequest("password must have 6 characters or more"), HttpStatus.BAD_REQUEST);
     }
+    String phoneNumberRegex = "^8\\d{8,11}$";
+    if (!objModel.getPhoneNumber().matches(phoneNumberRegex)){
+      return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your phone number correctly (start with '8' and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
+    }
+    String fullNameRegex = "^[a-zA-Z]+ [a-zA-Z]+$";
+    if (!objModel.getFullname().matches(fullNameRegex)){
+      return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your full name correctly without any number or special character"), HttpStatus.BAD_REQUEST);
+
+    }
     String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
     if(objModel.getUsername().matches(emailRegex)) {
