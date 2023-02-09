@@ -58,7 +58,7 @@ public class UserController {
     Users user = userAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
     String phoneNumberRegex = "^8\\d{8,11}$";
     if (!request.getPhoneNumber().matches(phoneNumberRegex)){
-      return new ResponseEntity<Map>(res.badRequest("Please input your phone number correctly (start with '8' and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<Map>(res.badRequest("Please input your phone number correctly start with 8 and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
     }
     String fullNameRegex = "^[a-zA-Z]+([ ]+[a-zA-Z]+)*$";
     if (!request.getFullname().matches(fullNameRegex)){
