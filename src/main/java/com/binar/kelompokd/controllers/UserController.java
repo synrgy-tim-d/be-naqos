@@ -70,6 +70,7 @@ public class UserController {
       MessageResponse response = new MessageResponse("User " + user.getUsername() + " Updated!");
       return new ResponseEntity<>(res.templateSukses(response), HttpStatus.OK);
     }catch (Exception e){
+      notificationService.saveNotification("Failed Update User", "Update User Failed please try again", user.getId());
       return new ResponseEntity<>(res.badRequest("Update User failed"), HttpStatus.BAD_REQUEST);
     }
   }
@@ -107,19 +108,19 @@ public class UserController {
   @PutMapping(value = "/avatar")
   public ResponseEntity<?> updateUsersAuth(Authentication authentication,
                                            @RequestParam("imageFile") MultipartFile imageFile) {
-    try {
-      if (imageFile.getSize() > 1048576) {
-        return new ResponseEntity<>(res.badRequest("File size should be less than 1MB"), HttpStatus.BAD_REQUEST);
-      }
+    Users user = userAuthService.findByUsername(authentication.getName());
+    if (imageFile.getSize() > 1048576) {
+      return new ResponseEntity<>(res.badRequest("File size should be less than 1MB"), HttpStatus.BAD_REQUEST);
+    }
 
-      Users user = userAuthService.findByUsername(authentication.getName());
+    try {
       String url = imageService.uploadFileAvatar(imageFile);
       userAuthService.uploadAvatarUser(user.getId(), url);
       notificationService.saveNotification("Upload Avatar User", "Upload Avatar User Success", user.getId());
       MessageResponse response = new MessageResponse("Avatar " + user.getUsername() + " Updated!");
-
       return new ResponseEntity<>(res.templateSukses(response), HttpStatus.OK);
     } catch (Exception e) {
+      notificationService.saveNotification("Failed Upload Avatar User", "Upload Avatar User Failed, Please try again", user.getId());
       return new ResponseEntity<>(res.badRequest("File upload failed"), HttpStatus.BAD_REQUEST);
     }
   }

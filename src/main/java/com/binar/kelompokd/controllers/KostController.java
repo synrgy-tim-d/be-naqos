@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +46,7 @@ public class KostController {
 
   @Autowired
   FacilityService facilityService;
+  private INotificationService notificationService;
 
   @Operation(summary = "Add Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Add Kost", tags = {"Kost Management"})
   @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -94,10 +97,12 @@ public class KostController {
         }
       }
       NewKostResponse kostResponse = new NewKostResponse(currentKost, currentKost.getOwnerId());
+      notificationService.saveNotification("Added New Kost", "Successfully added Kost", user.getId());
       logger.info("add kost", kostResponse);
       return new ResponseEntity<>(Response.templateSukses(kostResponse), HttpStatus.CREATED);
     } catch (IllegalStateException e){
       logger.error("Gagal Add Kost",e);
+      notificationService.saveNotification("Failed added New Kost", "Failed added Kost", user.getId());
       return new ResponseEntity<>(Response.badRequest("Add Kost Failed"), HttpStatus.BAD_REQUEST);
     }
   }
@@ -128,20 +133,21 @@ public class KostController {
                                       @RequestParam("district") @Schema(example = "Rawalumbu") String district,
                                       @RequestParam("postalCode") @Schema(example = "18116") String postalCode,
                                       @RequestParam("cityId") Integer cityId){
+    Users user = iUserAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    Kost currentKost = kostService.getKostById(id);
+    Kost updatedKost = kostService.getKostById(id);
     try {
-        Kost currentKost = kostService.getKostById(id);
         if (currentKost == null) {
           return new ResponseEntity<>(Response.notFound("Kost Not Found"), HttpStatus.NOT_FOUND);
         }
         kostService.updateKost(id,name,description,kostType,isAvailable,latitude,longitude,address,subdistrict,district,postalCode,cityId);
-
-      Kost updatedKost = kostService.getKostById(id);
-      NewKostResponse updateKostRes = new NewKostResponse(updatedKost, updatedKost.getOwnerId());
-
-      return new ResponseEntity<>(Response.templateSukses(updateKostRes), HttpStatus.OK);
+        NewKostResponse updateKostRes = new NewKostResponse(updatedKost, updatedKost.getOwnerId());
+        notificationService.saveNotification("Updated Kost ", "Successfully added Kost "+updatedKost.getName(), user.getId());
+        return new ResponseEntity<>(Response.templateSukses(updateKostRes), HttpStatus.OK);
     }
     catch (NoSuchElementException noSuchElementException){
       logger.error("Gagal update kost",noSuchElementException);
+      notificationService.saveNotification("Failed Updated Kost", "Failed added Kost "+updatedKost.getName()+ " Please Try Again", user.getId());
       return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
@@ -149,12 +155,15 @@ public class KostController {
   @Operation(summary = "Hard Delete Kost by Id", tags = {"Kost Management"})
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
+    Users user = iUserAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
     try {
       kostService.deleteKostById(id);
+      notificationService.saveNotification("Deleted Kost","Successfully deleted Kost", user.getId());
       return new ResponseEntity<>(Response.accepted("Kost deleted"), HttpStatus.ACCEPTED);
     }
     catch (EmptyResultDataAccessException emptyResultDataAccessException){
       logger.error(String.valueOf(emptyResultDataAccessException));
+      notificationService.saveNotification("Failed Deleted Kost","Failed deleted Kost Please Try Again", user.getId());
       return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
@@ -162,12 +171,14 @@ public class KostController {
   @Operation(summary = "Soft Delete Kost by Id", tags = {"Kost Management"})
   @DeleteMapping("/soft-delete/{id}")
   public ResponseEntity<?> softDeleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
-
+    Users user = iUserAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
     try {
+      notificationService.saveNotification("Deleted Kost","Successfully deleted Kost", user.getId());
       return new ResponseEntity<>(kostService.softDeleteKost(id), HttpStatus.NO_CONTENT);
     }
     catch (EmptyResultDataAccessException emptyResultDataAccessException){
       logger.error(String.valueOf(emptyResultDataAccessException));
+      notificationService.saveNotification("Failed Deleted Kost","Failed deleted Kost Please Try Again", user.getId());
       return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
