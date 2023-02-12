@@ -4,7 +4,6 @@ import com.binar.kelompokd.config.Config;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.models.dto.user.LoginDTO;
 import com.binar.kelompokd.models.dto.user.RegisterDTO;
-import com.binar.kelompokd.models.dto.user.RegisterGoogleDTO;
 import com.binar.kelompokd.models.dto.user.SendOTPDTO;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.UserRepository;
@@ -21,18 +20,16 @@ import com.google.api.services.oauth2.model.Userinfoplus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 
 import javax.validation.ConstraintViolationException;
@@ -44,7 +41,6 @@ import java.util.*;
 @Tag(name = "User Management", description = "APIs for Managing User")
 @RequestMapping("/auth")
 public class AuthController {
-  private final static Logger logger = LoggerFactory.getLogger(AuthController.class);
   @Autowired
   private UserRepository userRepository;
   Config config = new Config();
@@ -55,13 +51,14 @@ public class AuthController {
   @Autowired
   public EmailSender emailSender;
   @Autowired
-  private PasswordEncoder passwordEncoder;
-  @Autowired
-  private RestTemplateBuilder restTemplateBuilder;
-  @Autowired
   public Response templateCRUD;
-  @Value("${BASEURL:}")//FILE_SHOW_RUL
-  private String BASEURL;
+  private final TemplateEngine templateEngine;
+  @Value("${expired.token.password.minute}")
+  int expiredToken;
+
+  public AuthController(TemplateEngine templateEngine) {
+    this.templateEngine = templateEngine;
+  }
 
   public boolean checkEmpty(Object req){
     return req == null || req.toString().isEmpty();
@@ -99,7 +96,7 @@ public class AuthController {
     }
     String phoneNumberRegex = "^8\\d{8,11}$";
     if (!objModel.getPhoneNumber().matches(phoneNumberRegex)){
-      return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your phone number correctly (start with '8' and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your phone number correctly start with '8' and 9 to 12 digits range"), HttpStatus.BAD_REQUEST);
     }
     String fullNameRegex = "^[a-zA-Z]+([ ]+[a-zA-Z]+)*$";
     if (!objModel.getFullname().matches(fullNameRegex)){
@@ -107,7 +104,6 @@ public class AuthController {
 
     }
     String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-
     if(objModel.getUsername().matches(emailRegex)) {
       // Email is valid
       String result = serviceReq.registerManual(objModel);
@@ -123,7 +119,7 @@ public class AuthController {
   @Operation(summary = "Register Google Testing", tags = {"User Management"})
   @PostMapping("/register-google")
   @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<Map> saveRegisterManualGoogle(@Valid @RequestBody RegisterGoogleDTO objModel) throws RuntimeException {
+  public ResponseEntity<Map> saveRegisterManualGoogle(@Valid @RequestBody RegisterDTO objModel) throws RuntimeException {
 
     Users user = userRepository.checkExistingEmail(objModel.getUsername());
     if (null != user) {
@@ -132,9 +128,6 @@ public class AuthController {
     String result = serviceReq.registerGoogle(objModel);
     return new ResponseEntity<Map>(templateCRUD.templateSukses(result), HttpStatus.OK);
   }
-
-  @Value("${expired.token.password.minute}")
-  int expiredToken;
 
   @Operation(summary = "Send Email OTP to User", tags = {"User Management"})
   @PostMapping("/send-otp")
@@ -147,7 +140,6 @@ public class AuthController {
       return templateCRUD.badRequest("Username is required."); //throw new BadRequest("Email not found");
     }
     if (found == null) return templateCRUD.notFound("Email not found"); //throw new BadRequest("Email not found");
-
 
     String template = emailTemplate.getRegisterTemplate();
     if (StringUtils.isEmpty(found.getOtp())) {
@@ -178,7 +170,8 @@ public class AuthController {
 
   @Operation(summary = "Input OTP from Email", tags = {"User Management"})
   @GetMapping("/register-confirm-otp/{token}")
-  public ResponseEntity<Map> saveRegisterManual(@PathVariable(value = "token") String tokenOtp) throws RuntimeException {
+  public ResponseEntity<?> saveRegisterManual(@PathVariable(value = "token") String tokenOtp, Model model) throws RuntimeException {
+    Context context = new Context();
     Users user = userRepository.findOneByOTP(tokenOtp);
     if (null == user) {
       return new ResponseEntity<Map>(templateCRUD.notFound("OTP not found"), HttpStatus.NOT_FOUND);
@@ -196,13 +189,16 @@ public class AuthController {
     //update user
     user.setEnabled(true);
     userRepository.save(user);
-    return new ResponseEntity<Map>(templateCRUD.templateSukses("Verification success. Please login!"), HttpStatus.OK);
+    context.setVariable("redirectUrl","https://naqos.vercel.app/auth/login");
+    context.setVariable("redirectDelay",2500);
+    String html=templateEngine.process("verification",context);
+//    return new ResponseEntity<Map>(templateCRUD.templateSukses("Verification success. Please login!"), HttpStatus.OK);
+    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html);
   }
   @PostMapping("/google")
   @Operation(summary = "Login - Register Google Account roleUser must = 'PEMILIK' or 'PENYEWA' ", tags = {"User Management"})
   @ResponseBody
   public ResponseEntity<Map> repairGoogleSigninAction(@NotNull @RequestParam String token,@NotNull @RequestParam String roleUser ) throws Exception {
-    Map<String, Object> map123 = new HashMap<>();
     LoginDTO loginDTO = new LoginDTO();
     GoogleCredential credential = new GoogleCredential().setAccessToken(token);
     System.out.println("access_token user=" + token);
@@ -210,51 +206,28 @@ public class AuthController {
     Userinfoplus profile= null;
     try {
       profile = oauth2.userinfo().get().execute();
-    }catch (GoogleJsonResponseException e)
-    {
+    }catch (GoogleJsonResponseException e) {
       return new ResponseEntity<Map>(templateCRUD.badRequest(e.getDetails()), HttpStatus.BAD_GATEWAY);
     }
     profile.toPrettyString();
     Users user = userRepository.findOneByUsername(profile.getEmail());
+
     if (user != null) {
       if(!user.isEnabled()){
         user.setEnabled(true); // matikan user
       }
-
       loginDTO.setUsername(profile.getEmail());
       loginDTO.setPassword(profile.getId());
       ResponseEntity<Map> mapLogin = login(loginDTO);
-
-      String url = BASEURL + "/api/oauth/token?username=" + loginDTO.getUsername() +
-              "&password=" + loginDTO.getPassword() +
-              "&grant_type=password" +
-              "&client_id=my-client-web" +
-              "&client_secret=password";
-      ResponseEntity<Map> response123 = restTemplateBuilder.build().exchange(url, HttpMethod.POST, null, new ParameterizedTypeReference<Map>() {});
-
-      if (response123.getStatusCode() == HttpStatus.OK) {
-        map123.put("access_token", response123.getBody().get("access_token"));
-        map123.put("token_type", response123.getBody().get("token_type"));
-        map123.put("refresh_token", response123.getBody().get("refresh_token"));
-        map123.put("expires_in", response123.getBody().get("expires_in"));
-        map123.put("scope", response123.getBody().get("scope"));
-        map123.put("jti", response123.getBody().get("jti"));
-        map123.put("user_id", user.getId());
-        if (user.getRoles().size() >2){
-          map123.put("role", user.getRoles().get(2).getName()) ;
-        }
-        map123.put("status", response123.getStatusCode());
-        map123.put("code", response123.getStatusCodeValue());
-        userRepository.save(user);
-        return new ResponseEntity<Map>(templateCRUD.templateSukses(mapLogin.getBody().get("data")), HttpStatus.OK);
-      }
+      userRepository.save(user);
+      return new ResponseEntity<Map>(templateCRUD.templateSukses(mapLogin.getBody().get("data")), HttpStatus.OK);
     } else {
-      RegisterGoogleDTO registerModel = new RegisterGoogleDTO();
+      RegisterDTO registerModel = new RegisterDTO();
       registerModel.setUsername(profile.getEmail());
       registerModel.setFullname(profile.getName());
       registerModel.setPassword(profile.getId());
       registerModel.setRole(roleUser);
-      registerModel.setImageUrl(profile.getPicture());
+      registerModel.setImgUrl(profile.getPicture());
       saveRegisterManualGoogle(registerModel);
 
       loginDTO.setUsername(profile.getEmail());
@@ -263,6 +236,6 @@ public class AuthController {
 
       return new ResponseEntity<Map>(templateCRUD.templateSukses(mapLogin.getBody().get("data")), HttpStatus.OK);
     }
-    return new ResponseEntity<Map>(map123, HttpStatus.OK);
+//    return new ResponseEntity<Map>(mapLogin, HttpStatus.OK);
   }
 }

@@ -11,10 +11,6 @@ import com.binar.kelompokd.utils.EmailTemplate;
 import com.binar.kelompokd.utils.response.Response;
 import com.binar.kelompokd.utils.SimpleStringUtils;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,10 +56,6 @@ public class ForgetPasswordController {
 
   // Step 1 : Send OTP
   @Operation(summary = "Send Email OTP Forget Password", tags = {"User Management"})
-  @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "OTP Send!",
-                  content = {@Content(schema = @Schema(example = "OTP Send!"))})
-  })
   @PostMapping("/forgot-password")//send OTP
   public ResponseEntity<?> sendEmailPassword(@RequestBody SendOTPDTO user) {
     String message = "Thanks, please check your email";
@@ -105,10 +97,6 @@ public class ForgetPasswordController {
 
   //Step 2 : CHek TOKEN OTP EMAIL
   @Operation(summary = "Check Token OTP Email", tags = {"User Management"})
-  @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Check OTP!",
-                  content = {@Content(schema = @Schema(example = "Check OTP!"))})
-  })
   @GetMapping("/forgot-password-check-token/{token}")
   public ResponseEntity<?> validateToken(@PathVariable(value = "token") String tokenOtp) {
     if (tokenOtp.isEmpty())
@@ -123,10 +111,6 @@ public class ForgetPasswordController {
 
   // Step 3 : lakukan reset password baru
   @Operation(summary = "Reset Password Login Naqos", tags = {"User Management"})
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Reset Password Login Naqos!",
-          content = {@Content(schema = @Schema(example = "Reset Password Login Naqos!"))})
-  })
   public boolean checkEmpty(Object req){
     return req == null || req.toString().isEmpty();
   }
@@ -151,8 +135,6 @@ public class ForgetPasswordController {
       if (user == null) return new ResponseEntity<>(templateCRUD.notFound("Token not valid"), HttpStatus.NOT_FOUND);
 
       user.setPassword(passwordEncoder.encode(model.getNewPassword().replaceAll("\\s+", "")));
-      user.setOtpExpiredDate(null);
-      user.setOtp(null);
 
       try {
         userRepository.save(user);
@@ -165,8 +147,5 @@ public class ForgetPasswordController {
     }else {
       return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your email address correctly"), HttpStatus.BAD_REQUEST);
     }
-
-
-
   }
 }

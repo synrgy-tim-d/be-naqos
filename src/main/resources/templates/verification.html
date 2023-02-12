@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+      .message {
+        text-align: center;
+        font-size: 36px;
+        margin-top: 50px;
+      }
+    </style>
+</head>
+<body>
+<div class="message">Verification Success
+    <br/><br/>
+    <div>Copyright 2022</div>
+</div>
+<script th:inline="javascript">
+      setTimeout(function() {
+        window.location.href = [[${redirectUrl}]];
+      }, [[${redirectDelay}]]);
+    </script>
+</body>
+</html>

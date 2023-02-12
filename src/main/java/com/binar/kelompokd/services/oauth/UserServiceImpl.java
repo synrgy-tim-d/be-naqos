@@ -1,11 +1,10 @@
 package com.binar.kelompokd.services.oauth;
 
 
-import com.binar.kelompokd.interfaces.ICloudinaryService;
+import com.binar.kelompokd.enums.EProviders;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.models.dto.user.LoginDTO;
 import com.binar.kelompokd.models.dto.user.RegisterDTO;
-import com.binar.kelompokd.models.dto.user.RegisterGoogleDTO;
 import com.binar.kelompokd.models.entity.oauth.Roles;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.repos.oauth.RoleRepository;
@@ -22,10 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.List;
@@ -45,14 +41,94 @@ public class UserServiceImpl implements IUserAuthService {
   private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
   @Autowired
   public Response templateResponse;
-  private ICloudinaryService iCloudinaryService;
+
+  private List<Roles> checkRoles(RegisterDTO dto){
+    List<Roles> r;
+    if (dto.getRole() != null){
+      if (dto.getRole().equals("PENYEWA")){
+        String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ", "ROLE_PENYEWA"}; // penyewa
+        r = repoRole.findByNameIn(roleNames);
+      }else if (dto.getRole().equals("PEMILIK")){
+        String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ", "ROLE_PEMILIK"}; // pemilik
+        r = repoRole.findByNameIn(roleNames);
+      }else {
+        String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ"}; // default
+        r = repoRole.findByNameIn(roleNames);
+      }
+    }else{
+      String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ"}; // default
+      r = repoRole.findByNameIn(roleNames);
+    }
+    return r;
+  }
+  private ResponseEntity<Map> buildJwt(LoginDTO dto){
+    String url = baseUrl +"/api"+ "/oauth/token?username=" + dto.getUsername() +
+        "&password=" + dto.getPassword() +
+        "&grant_type=password" +
+        "&client_id=my-client-web" +
+        "&client_secret=password";
+    ResponseEntity<Map> response = restTemplateBuilder.build().exchange(url, HttpMethod.POST, null, new ParameterizedTypeReference<Map>() {});
+    return response;
+  }
+  private Map<String, Object> payloadJwt(LoginDTO dto, Users checkUser){
+    Map<String, Object> map = new HashMap<>();
+    ResponseEntity<Map> response = buildJwt(dto);
+
+    if (response.getStatusCode() == HttpStatus.OK) {
+      Users user = userRepository.findOneByUsername(dto.getUsername());
+      List<String> roles = new ArrayList<>();
+
+      for (Roles role : user.getRoles()) {
+        roles.add(role.getName());
+      }
+
+      map.put("access_token", response.getBody().get("access_token"));
+      map.put("token_type", response.getBody().get("token_type"));
+      map.put("refresh_token", response.getBody().get("refresh_token"));
+      map.put("expires_in", response.getBody().get("expires_in"));
+      map.put("scope", response.getBody().get("scope"));
+      map.put("jti", response.getBody().get("jti"));
+      map.put("user_id", checkUser.getId());
+      if (checkUser.getRoles().size() >2){
+        map.put("role", checkUser.getRoles().get(2).getName()) ;
+      }
+      map.put("status",response.getStatusCode());
+      map.put("code",response.getStatusCodeValue());
+      return map;
+    }
+    else {
+      return templateResponse.notFound("user not found");
+    }
+  }
+  private Map loginGoogle(LoginDTO loginModel, Users checkUser){
+    try {
+      Map<String, Object> map = payloadJwt(loginModel,checkUser);
+      return templateResponse.templateSukses(map);
+
+    } catch (HttpStatusCodeException e) {
+      e.printStackTrace();
+      if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+        return templateResponse.templateEror("invalid login");
+      }
+      return templateResponse.templateEror(e);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return templateResponse.templateEror(e);
+    }
+  }
 
   @Override
   public Map login(LoginDTO loginModel) {
     try {
-      Map<String, Object> map = new HashMap<>();
-
       Users checkUser = userRepository.findByUsername(loginModel.getUsername());
+      Map<String, Object> map = new HashMap<>();
+      if (checkUser == null) {
+        return templateResponse.notFound("User not found");
+      }
+
+      if (checkUser.getProviders()== EProviders.GOOGLE){
+        loginGoogle(loginModel, checkUser);
+      }
 
       if ((checkUser != null) && (encoder.matches(loginModel.getPassword(), checkUser.getPassword()))) {
         if (!checkUser.isEnabled()) {
@@ -60,45 +136,13 @@ public class UserServiceImpl implements IUserAuthService {
           return templateResponse.unauthorized(map);
         }
       }
-      if (checkUser == null) {
-        return templateResponse.notFound("User not found");
-      }
+      
       if (!(encoder.matches(loginModel.getPassword(), checkUser.getPassword()))) {
         return templateResponse.unauthorized("Your password is not correct");
       }
-      String url = baseUrl +"/api"+ "/oauth/token?username=" + loginModel.getUsername() +
-              "&password=" + loginModel.getPassword() +
-              "&grant_type=password" +
-              "&client_id=my-client-web" +
-              "&client_secret=password";
-      ResponseEntity<Map> response = restTemplateBuilder.build().exchange(url, HttpMethod.POST, null, new
-              ParameterizedTypeReference<Map>() {
-              });
 
-      if (response.getStatusCode() == HttpStatus.OK) {
-        Users user = userRepository.findOneByUsername(loginModel.getUsername());
-        List<String> roles = new ArrayList<>();
-
-        for (Roles role : user.getRoles()) {
-          roles.add(role.getName());
-        }
-
-        map.put("access_token", response.getBody().get("access_token"));
-        map.put("token_type", response.getBody().get("token_type"));
-        map.put("refresh_token", response.getBody().get("refresh_token"));
-        map.put("expires_in", response.getBody().get("expires_in"));
-        map.put("scope", response.getBody().get("scope"));
-        map.put("jti", response.getBody().get("jti"));
-        map.put("user_id", checkUser.getId());
-        if (checkUser.getRoles().size() >2){
-          map.put("role", checkUser.getRoles().get(2).getName()) ;
-        }
-        map.put("status",response.getStatusCode());
-        map.put("code",response.getStatusCodeValue());
-        return templateResponse.templateSukses(map);
-      } else {
-        return templateResponse.notFound("user not found");
-      }
+      map = payloadJwt(loginModel,checkUser);
+      return templateResponse.templateSukses(map);
     } catch (HttpStatusCodeException e) {
       e.printStackTrace();
       if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
@@ -128,7 +172,7 @@ public class UserServiceImpl implements IUserAuthService {
 
   @Override
   public void updatePassword(Long id, String password) {
-    userRepository.updatePassword(id, encoder.encode(password));
+    userRepository.updatePassword(id, encoder.encode(password.replaceAll("\\s+", "")));
   }
 
   @Override
@@ -140,22 +184,6 @@ public class UserServiceImpl implements IUserAuthService {
   public String registerManual(RegisterDTO registerModel) {
     Map map = new HashMap();
     try {
-      List<Roles> r;
-      if (registerModel.getRole() != null){
-        if (registerModel.getRole().equals("PENYEWA")){
-          String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ", "ROLE_PENYEWA"}; // penyewa
-          r = repoRole.findByNameIn(roleNames);
-        }else if (registerModel.getRole().equals("PEMILIK")){
-          String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ", "ROLE_PEMILIK"}; // pemilik
-          r = repoRole.findByNameIn(roleNames);
-        }else {
-          String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ"}; // default
-          r = repoRole.findByNameIn(roleNames);
-        }
-      }else{
-        String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ"}; // default
-        r = repoRole.findByNameIn(roleNames);
-      }
       Users user = new Users();
       user.setUsername(registerModel.getUsername().toLowerCase());
       user.setFullname(registerModel.getFullname());
@@ -163,8 +191,9 @@ public class UserServiceImpl implements IUserAuthService {
       //step 1 :
       user.setEnabled(false); // matikan user
       String password = encoder.encode(registerModel.getPassword().replaceAll("\\s+", ""));
-      user.setRoles(r);
+      user.setRoles(checkRoles(registerModel));
       user.setPassword(password);
+      user.setProviders(EProviders.LOCAL);
       Users obj = userRepository.save(user);
       return "Register User Success";
     } catch (Exception e) {
@@ -174,45 +203,25 @@ public class UserServiceImpl implements IUserAuthService {
   }
 
   @Override
-  public String registerGoogle(RegisterGoogleDTO registerModel) {
+  public String registerGoogle(RegisterDTO registerModel) {
     Map map = new HashMap();
     try {
-      List<Roles> r;
-      if (registerModel.getRole() != null){
-        if (registerModel.getRole().equals("PENYEWA")){
-          String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ", "ROLE_PENYEWA"}; // penyewa
-          r = repoRole.findByNameIn(roleNames);
-        }else if (registerModel.getRole().equals("PEMILIK")){
-          String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ", "ROLE_PEMILIK"}; // pemilik
-          r = repoRole.findByNameIn(roleNames);
-        }else {
-          String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ"}; // default
-          r = repoRole.findByNameIn(roleNames);
-        }
-      }else{
-        String[] roleNames = new String[]{"ROLE_USER", "ROLE_READ"}; // default
-        r = repoRole.findByNameIn(roleNames);
-      }
       Users user = new Users();
       user.setUsername(registerModel.getUsername().toLowerCase());
       user.setFullname(registerModel.getFullname());
       user.setPhoneNumber(registerModel.getPhoneNumber());
-      user.setImgUrl(registerModel.getImageUrl());
+      user.setImgUrl(registerModel.getImgUrl());
       //step 1 :
       user.setEnabled(true); // enable user
       String password = encoder.encode(registerModel.getPassword().replaceAll("\\s+", ""));
-      user.setRoles(r);
+      user.setRoles(checkRoles(registerModel));
       user.setPassword(password);
+      user.setProviders(EProviders.GOOGLE);
       Users obj = userRepository.save(user);
       return "Register User Success";
     } catch (Exception e) {
       logger.error("Eror registerManual=", e);
       return ("eror:"+e);
     }
-  }
-  @PostMapping("/avatar")
-  public ResponseEntity<?> uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
-    String url = iCloudinaryService.uploadFile(imageFile);
-    return new ResponseEntity<>(templateResponse.templateSukses(url), HttpStatus.CREATED);
   }
 }

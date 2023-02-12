@@ -37,7 +37,6 @@ public class UserController {
   private PasswordEncoder passwordEncoder;
   private ImageService imageService;
   private INotificationService notificationService;
-
   @Autowired
   Response res;
 
@@ -74,10 +73,6 @@ public class UserController {
       return new ResponseEntity<>(res.badRequest("Update User failed"), HttpStatus.BAD_REQUEST);
     }
   }
-  public boolean checkEmpty(Object req){
-    return req == null || req.toString().isEmpty();
-  }
-
 
   @Operation(summary = "Change Password User", tags = {"User Management"})
   @PutMapping("/password")

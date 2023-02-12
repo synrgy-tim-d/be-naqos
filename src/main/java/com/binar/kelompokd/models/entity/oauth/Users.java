@@ -1,5 +1,6 @@
 package com.binar.kelompokd.models.entity.oauth;
 
+import com.binar.kelompokd.enums.EProviders;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,6 +48,10 @@ public class Users implements UserDetails, Serializable {
 
     @Column(name = "img_url")
     private String imgUrl= "https://xsgames.co/randomusers/avatar.php?g=pixel";
+
+    @Column(length = 6)
+    @Enumerated(EnumType.STRING)
+    private EProviders providers;
 
     @JsonIgnore
     private Date otpExpiredDate;
