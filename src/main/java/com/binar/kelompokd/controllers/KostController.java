@@ -166,6 +166,9 @@ public class KostController {
       notificationService.saveNotification("Failed Deleted Kost","Failed deleted Kost Please Try Again", user.getId());
       return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
     }
+    catch (Exception e){
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Operation(summary = "Soft Delete Kost by Id", tags = {"Kost Management"})
