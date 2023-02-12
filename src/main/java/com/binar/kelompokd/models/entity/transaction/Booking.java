@@ -80,6 +80,5 @@ public class Booking extends DateModel implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "kost_id", referencedColumnName = "id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Kost kostId;
 }
