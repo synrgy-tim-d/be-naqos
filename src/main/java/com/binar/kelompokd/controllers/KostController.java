@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @AllArgsConstructor
@@ -65,6 +66,10 @@ public class KostController {
                                       @RequestParam(value = "fAnswer2", required = false) @Schema(example = "Iya", nullable = true) String fAnswer2,
                                       @RequestParam(value = "fQuestion3", required = false) @Schema(example = "Apakah Kost ini bersih?", nullable = true) String fQuestion3,
                                       @RequestParam(value = "fAnswer3", required = false) @Schema(example = "Iya", nullable = true) String fAnswer3,
+                                      @RequestParam(value = "pricePerDaily", required = false) @Schema(example = "Iya", nullable = true) BigDecimal pricePerDaily,
+                                      @RequestParam(value = "pricePerWeekly", required = false) @Schema(example = "Iya", nullable = true) BigDecimal pricePerWeekly,
+                                      @RequestParam(value = "pricePerMonthly", required = false) @Schema(example = "Iya", nullable = true) BigDecimal pricePerMonthly,
+                                      @RequestParam(value = "rules", required = false) @Schema(example = "Iya", nullable = true) String rules,
                                       Authentication authentication){
     List<String> urls = new ArrayList<>();
     UUID uuid = UUID.randomUUID();
@@ -78,14 +83,15 @@ public class KostController {
 
     try {
       Arrays.stream(imageFiles)
-          .forEach(imageFile -> {
-            urls.add(imageService.uploadFileKost(imageFile));
-          });
+              .forEach(imageFile -> {
+                urls.add(imageService.uploadFileKost(imageFile));
+              });
 
-      kostService.saveKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode,
-              fQuestion1, fAnswer1, fQuestion2, fAnswer2, fQuestion3, fAnswer3, user.getId(), cityKost.getId());
+      kostService.saveKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address,
+              fQuestion1, fAnswer1, fQuestion2, fAnswer2, fQuestion3, fAnswer3, pricePerDaily,
+              pricePerWeekly, pricePerMonthly, rules, subdistrict, district, postalCode, user.getId(), cityKost.getId());
       Kost currentKost = kostService.getKostById(uuid);
-      if (currentKost == null){
+      if (currentKost == null) {
         logger.error("Kost tidak ada");
         return new ResponseEntity<>(Response.notFound("Kost Not Found"), HttpStatus.NOT_FOUND);
       } else {
@@ -127,13 +133,26 @@ public class KostController {
                                       @RequestParam("subdistrict") @Schema(example = "Pengasinan") String subdistrict,
                                       @RequestParam("district") @Schema(example = "Rawalumbu") String district,
                                       @RequestParam("postalCode") @Schema(example = "18116") String postalCode,
-                                      @RequestParam("cityId") Integer cityId){
+                                      @RequestParam("cityId") Integer cityId,
+                                      @RequestParam(value = "fQuestion1", required = false) @Schema(example = "Apakah Kost ini bersih?", nullable = true) String fQuestion1,
+                                      @RequestParam(value = "fAnswer1", required = false) @Schema(example = "Iya", nullable = true) String fAnswer1,
+                                      @RequestParam(value = "fQuestion2", required = false) @Schema(example = "Apakah Kost ini bersih?", nullable = true) String fQuestion2,
+                                      @RequestParam(value = "fAnswer2", required = false) @Schema(example = "Iya", nullable = true) String fAnswer2,
+                                      @RequestParam(value = "fQuestion3", required = false) @Schema(example = "Apakah Kost ini bersih?", nullable = true) String fQuestion3,
+                                      @RequestParam(value = "fAnswer3", required = false) @Schema(example = "Iya", nullable = true) String fAnswer3,
+                                      @RequestParam(value = "pricePerDaily", required = false) @Schema(example = "Iya", nullable = true) BigDecimal pricePerDaily,
+                                      @RequestParam(value = "pricePerWeekly", required = false) @Schema(example = "Iya", nullable = true) BigDecimal pricePerWeekly,
+                                      @RequestParam(value = "pricePerMonthly", required = false) @Schema(example = "Iya", nullable = true) BigDecimal pricePerMonthly,
+                                      @RequestParam(value = "rules", required = false) @Schema(example = "Iya", nullable = true) String rules
+  ) {
     try {
-        Kost currentKost = kostService.getKostById(id);
-        if (currentKost == null) {
-          return new ResponseEntity<>(Response.notFound("Kost Not Found"), HttpStatus.NOT_FOUND);
-        }
-        kostService.updateKost(id,name,description,kostType,isAvailable,latitude,longitude,address,subdistrict,district,postalCode,cityId);
+      Kost currentKost = kostService.getKostById(id);
+      if (currentKost == null) {
+        return new ResponseEntity<>(Response.notFound("Kost Not Found"), HttpStatus.NOT_FOUND);
+      }
+      kostService.updateKost(id, name, description, kostType, isAvailable, latitude, longitude, address,
+              fQuestion1, fAnswer1, fQuestion2, fAnswer2, fQuestion3, fAnswer3, pricePerDaily, pricePerWeekly, pricePerMonthly,
+              rules, subdistrict, district, postalCode, cityId);
 
       Kost updatedKost = kostService.getKostById(id);
       NewKostResponse updateKostRes = new NewKostResponse(updatedKost, updatedKost.getOwnerId());

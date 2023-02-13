@@ -14,6 +14,7 @@ import com.binar.kelompokd.models.specifications.KostsSpecificationBuilder;
 import com.binar.kelompokd.repos.ImageRepository;
 import com.binar.kelompokd.repos.kost.KostRepository;
 import com.binar.kelompokd.repos.location.CityRepository;
+import com.binar.kelompokd.utils.exception.ResourceNotFoundException;
 import com.binar.kelompokd.utils.response.PageResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -87,9 +89,10 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
-    public void saveKost(UUID uuid, String name, String description,String kostType,Boolean isAvailable,Double latitude,Double longitude,
-                         String address, String subdistrict, String district, String postalCode,
-                         String fQuestion1, String fAnswer1, String fQuestion2, String fAnswer2, String fQuestion3, String fAnswer3, Long ownerId, Integer city) {
+    public void saveKost(UUID uuid, String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address,
+                         String fQuestion1, String fAnswer1, String fQuestion2, String fAnswer2, String fQuestion3, String fAnswer3,
+                         BigDecimal pricePerDaily, BigDecimal pricePerWeekly, BigDecimal pricePerMonthly, String rules,
+                         String subdistrict, String district, String postalCode, Long ownerId, Integer city) {
         Kost kost = new Kost();
         kost.setId(uuid);
         kost.setName(name);
@@ -108,6 +111,10 @@ public class KostServiceImpl implements KostService {
         kost.setAnswer2(fAnswer2);
         kost.setQuestion3(fQuestion3);
         kost.setAnswer3(fAnswer3);
+        kost.setPricePerDaily(pricePerDaily);
+        kost.setPricePerWeekly(pricePerWeekly);
+        kost.setPricePerMonthly(pricePerMonthly);
+        kost.setRules(rules);
         City cityKost = cityService.getCityById(city);
         kost.setCity(cityKost);
         Users user = userAuthService.findUsersById(ownerId);
@@ -160,8 +167,33 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
-    public void updateKost(UUID uuid, String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address, String subdistrict, String district, String postalCode, Integer city) {
-        kostRepository.updateKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode, city);
+    public void updateKost(UUID uuid, String name, String description, String kostType, Boolean isAvailable, Double latitude, Double longitude, String address,
+                           String fQuestion1, String fAnswer1, String fQuestion2, String fAnswer2, String fQuestion3, String fAnswer3,
+                           BigDecimal pricePerDaily, BigDecimal pricePerWeekly, BigDecimal pricePerMonthly, String rules,
+                           String subdistrict, String district, String postalCode, Integer city) {
+        Kost existing = kostRepository.findById(uuid).orElseThrow(() -> new ResourceNotFoundException("Kost not found with id " + uuid));
+        existing.setName(name);
+        existing.setDescription(description);
+        existing.setKostType(KostType.valueOf(kostType));
+        existing.setIsAvailable(isAvailable);
+        existing.setLatitude(latitude);
+        existing.setLongitude(longitude);
+        existing.setAddress(address);
+        existing.setDistrict(district);
+        existing.setSubdistrict(subdistrict);
+        existing.setPostalCode(postalCode);
+        existing.setQuestion1(fQuestion1);
+        existing.setAnswer1(fAnswer1);
+        existing.setQuestion2(fQuestion2);
+        existing.setAnswer2(fAnswer2);
+        existing.setQuestion3(fQuestion3);
+        existing.setAnswer3(fAnswer3);
+        existing.setPricePerDaily(pricePerDaily);
+        existing.setPricePerWeekly(pricePerWeekly);
+        existing.setPricePerMonthly(pricePerMonthly);
+        existing.setRules(rules);
+        kostRepository.save(existing);
+//        kostRepository.updateKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode, city);
     }
 
     @Override
