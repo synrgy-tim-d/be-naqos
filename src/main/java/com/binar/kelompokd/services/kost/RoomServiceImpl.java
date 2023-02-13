@@ -46,10 +46,10 @@ public class RoomServiceImpl implements RoomService {
 
         Room room = Room.builder()
                 .roomType(roomRequest.getRoom_type())
-                .rules(roomRequest.getRules())
-                .pricePerDaily(pricePerDaily)
-                .pricePerWeekly(pricePerWeekly)
-                .pricePerMonthly(roomRequest.getPrice_per_monthly())
+//                .rules(roomRequest.getRules())
+//                .pricePerDaily(pricePerDaily)
+//                .pricePerWeekly(pricePerWeekly)
+//                .pricePerMonthly(roomRequest.getPrice_per_monthly())
                 .isAvailable(roomRequest.getIs_available())
                 .kost(kost)
                 .build();
@@ -79,13 +79,13 @@ public class RoomServiceImpl implements RoomService {
         Set<Facility> facilities = new HashSet<>();
 
         room.setRoomType(roomRequest.getRoom_type());
-        room.setRules(roomRequest.getRules());
-        room.setPricePerDaily(pricePerDaily);
-        room.setPricePerWeekly(pricePerWeekly);
-        room.setPricePerMonthly(roomRequest.getPrice_per_monthly());
+//        room.setRules(roomRequest.getRules());
+//        room.setPricePerDaily(pricePerDaily);
+//        room.setPricePerWeekly(pricePerWeekly);
+//        room.setPricePerMonthly(roomRequest.getPrice_per_monthly());
         room.setIsAvailable(roomRequest.getIs_available());
         room.setKost(kost);
-        room.setFacilities(facilities);
+//        room.setFacilities(facilities);
         room.setUpdatedAt(new Date());
 
         return roomRepository.save(room);

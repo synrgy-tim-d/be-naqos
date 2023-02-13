@@ -12,8 +12,8 @@ public interface FacilityService {
     List<Facility> getAllFacilities();
     Facility editFacility(UUID id, FacilityRequest facilityRequest);
     void deleteFacility(UUID id);
-    Facility addFacilityToRoom(UUID roomId, Facility facility);
-    String deleteFacilityFromRoom(UUID facilityId, UUID roomId);
+//    Facility addFacilityToRoom(UUID roomId, Facility facility);
+//    String deleteFacilityFromRoom(UUID facilityId, UUID roomId);
 
     Object addFacilityToKost(UUID kostId, Facility facility);
 

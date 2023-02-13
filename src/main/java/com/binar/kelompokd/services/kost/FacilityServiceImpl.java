@@ -71,39 +71,39 @@ public class FacilityServiceImpl implements FacilityService {
         facilityRepository.deleteById(id);
     }
 
-    @Override
-    public Facility addFacilityToRoom(UUID roomId, Facility facilityRequest) {
-        Facility facility = roomRepository.findById(roomId).map(room -> {
-            UUID facilityId = facilityRequest.getId();
+//    @Override
+//    public Facility addFacilityToRoom(UUID roomId, Facility facilityRequest) {
+//        Facility facility = roomRepository.findById(roomId).map(room -> {
+//            UUID facilityId = facilityRequest.getId();
+//
+//            // facility exist
+//            if(facilityId!=null){
+//                Optional<Facility> facility2 = facilityRepository.findById(facilityId);
+//                if(facility2.isPresent()){
+//                    room.addFacility(facility2.get());
+//                    roomRepository.save(room);
+//                    return facility2.get();
+//                }
+//            }
+//
+//            // add and create new facility
+//            room.addFacility(facilityRequest);
+//            return facilityRepository.save(facilityRequest);
+//        }).orElseThrow(()->new ResourceNotFoundException("room with ID: " + roomId + " is not found"));
+//
+//        return facility;
+//    }
 
-            // facility exist
-            if(facilityId!=null){
-                Optional<Facility> facility2 = facilityRepository.findById(facilityId);
-                if(facility2.isPresent()){
-                    room.addFacility(facility2.get());
-                    roomRepository.save(room);
-                    return facility2.get();
-                }
-            }
-
-            // add and create new facility
-            room.addFacility(facilityRequest);
-            return facilityRepository.save(facilityRequest);
-        }).orElseThrow(()->new ResourceNotFoundException("room with ID: " + roomId + " is not found"));
-
-        return facility;
-    }
-
-    @Override
-    public String deleteFacilityFromRoom(UUID facilityId, UUID roomId) {
-
-        Room room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new ResourceNotFoundException("Not found Room with id = " + roomId));
-
-        room.removeFacility(facilityId);
-        roomRepository.save(room);
-        return "success";
-    }
+//    @Override
+//    public String deleteFacilityFromRoom(UUID facilityId, UUID roomId) {
+//
+//        Room room = roomRepository.findById(roomId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Not found Room with id = " + roomId));
+//
+//        room.removeFacility(facilityId);
+//        roomRepository.save(room);
+//        return "success";
+//    }
 
     @Override
     public Object addFacilityToKost(UUID kostId, Facility facilityRequest) {
