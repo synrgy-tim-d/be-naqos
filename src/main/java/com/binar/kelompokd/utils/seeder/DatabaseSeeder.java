@@ -2,16 +2,10 @@ package com.binar.kelompokd.utils.seeder;
 
 import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.location.Province;
-import com.binar.kelompokd.models.entity.oauth.Client;
-import com.binar.kelompokd.models.entity.oauth.Roles;
-import com.binar.kelompokd.models.entity.oauth.RolePath;
-import com.binar.kelompokd.models.entity.oauth.Users;
+import com.binar.kelompokd.models.entity.oauth.*;
 import com.binar.kelompokd.repos.location.CityRepository;
 import com.binar.kelompokd.repos.location.ProvinceRepository;
-import com.binar.kelompokd.repos.oauth.ClientRepository;
-import com.binar.kelompokd.repos.oauth.RolePathRepository;
-import com.binar.kelompokd.repos.oauth.RoleRepository;
-import com.binar.kelompokd.repos.oauth.UserRepository;
+import com.binar.kelompokd.repos.oauth.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +48,9 @@ public class DatabaseSeeder implements ApplicationRunner {
   @Autowired
   private CityRepository cityRepository;
 
+  @Autowired
+  private BankRepository bankRepository;
+
   private final String defaultPassword = "password";
 
   private final String[] users = new String[]{
@@ -88,6 +85,14 @@ public class DatabaseSeeder implements ApplicationRunner {
       "Kabupaten Bangkalan:6", "Kabupaten Banyuwangi:6", "Kabupaten Blitar:6", "Kabupaten Bojonegoro:6", "Kabupaten Bondowoso:6", "Kabupaten Gresik:6", "Kabupaten Jember:6", "Kabupaten Jombang:6", "Kabupaten Kediri:6", "Kabupaten Lamongan:6", "Kabupaten Lumajang:6", "Kabupaten Madiun:6", "Kabupaten Magetan:6", "Kabupaten Malang:6", "Kabupaten Mojokerto:6", "Kabupaten Nganjuk:6", "Kabupaten Ngawi:6", "Kabupaten Pacitan:6", "Kabupaten Pamekasan:6", "Kabupaten Pasuruan:6", "Kabupaten Ponorogo:6", "Kabupaten Probolinggo:6", "Kabupaten Sampang:6", "Kabupaten Sidoarjo:6", "Kabupaten Situbondo:6", "Kabupaten Sumenep:6", "Kabupaten Trenggalek:6", "Kabupaten Tuban:6", "Kabupaten Tulungagung:6", "Kota Batu:6", "Kota Blitar:6", "Kota Kediri:6", "Kota Madiun:6", "Kota Malang:6", "Kota Mojokerto:6", "Kota Pasuruan:6", "Kota Probolinggo:6", "Kota Surabaya:6"
   };
 
+  private final String[] banks = new String[] {
+          "Bank BCA;https://cdn.freebiesupply.com/logos/thumbs/2x/bca-bank-central-asia-logo.png",
+          "Bank Mandiri;https://logos-download.com/wp-content/uploads/2016/06/Mandiri_logo.png",
+          "Bank BNI;https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/1280px-BNI_logo.svg.png",
+          "Bank BRI;https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/BANK_BRI_logo.svg/2560px-BANK_BRI_logo.svg.png",
+          "Bank BTN;https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Bank_BTN_logo.svg/2560px-Bank_BTN_logo.svg.png",
+  };
+
   @Override
   @Transactional
   public void run(ApplicationArguments applicationArguments) {
@@ -98,6 +103,7 @@ public class DatabaseSeeder implements ApplicationRunner {
     this.insertUser(password);
     this.insertProvince();
     this.insertCity();
+    this.insertBank();
   }
 
   @Transactional
@@ -207,6 +213,23 @@ public class DatabaseSeeder implements ApplicationRunner {
         oldCities.setProvince(setProv);
       }
       cityRepository.save(oldCities);
+    }
+  }
+
+  @Transactional
+  public void insertBank() {
+    for (String bank : banks){
+      String[] str = bank.split(";");
+      String bankName = str[0];
+      String logoUrl = str[1];
+      Bank isExist = bankRepository.findByName(bankName);
+      if (isExist == null){
+        isExist = new Bank();
+        isExist.setName(bankName);
+        isExist.setLogoUrl(logoUrl);
+
+      }
+      bankRepository.save(isExist);
     }
   }
 }

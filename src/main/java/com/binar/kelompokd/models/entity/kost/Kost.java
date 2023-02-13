@@ -15,6 +15,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
@@ -69,8 +70,24 @@ public class Kost extends DateModel implements Serializable {
   @Column(nullable = false, length = 10, name = "postal_code")
   private String postalCode;
 
+  @Schema(example = "150000")
+  @Column(name = "price_per_daily")
+  private BigDecimal pricePerDaily;   // saya tidak tau gmn caranya buat tipe data decimal di postgres. tapi berdasarkan riset kita bisa menggunakan bigdecimal untuk tipe data decimal
+
+  @Schema(example = "650000")
+  @Column(name = "price_per_weekly")
+  private BigDecimal pricePerWeekly;
+
+  @Schema(example = "2000000")
+  @Column(nullable = false, name = "price_per_monthly")
+  private BigDecimal pricePerMonthly;
+
   @Column(name = "kost_rating", length = 2, precision = 2)
-  private double kostRating=0;
+  private double kostRating = 0;
+
+  @Schema(example = "Jangan berisik di atas jam 10 malam")
+  @Column(columnDefinition = "TEXT")
+  private String rules;
 
   @Column(name = "f_question_1")
   private String question1;
@@ -146,7 +163,7 @@ public class Kost extends DateModel implements Serializable {
     Facility facility = this.facilities.stream().filter(f -> f.getId().toString().equals(facilityId.toString())).findFirst().orElse(null);
     if (facility != null) {
       this.facilities.remove(facility);
-      facility.getRooms().remove(this);
+      facility.getKosts().remove(this);
     }
   }
 

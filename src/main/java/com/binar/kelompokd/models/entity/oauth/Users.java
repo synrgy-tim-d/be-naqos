@@ -45,8 +45,12 @@ public class Users implements UserDetails, Serializable {
     @Column(length = 100, nullable = true)
     private String otp;
 
-    @Column(name = "img_url")
-    private String imgUrl= "https://xsgames.co/randomusers/avatar.php?g=pixel";
+    @Column(name = "img_url", columnDefinition = "TEXT default 'https://xsgames.co/randomusers/avatar.php?g=pixel'")
+    private String imgUrl;
+
+    @OneToOne
+    @JoinColumn(name = "bank_account_id", referencedColumnName = "id")
+    private Bank bankAccount;
 
     @JsonIgnore
     private Date otpExpiredDate;

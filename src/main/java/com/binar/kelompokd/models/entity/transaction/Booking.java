@@ -27,41 +27,41 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="t_bookings")
+@Table(name="t_booking")
 public class Booking extends DateModel implements Serializable {
     @Id
     @Cascade(CascadeType.ALL)
     private UUID id;
 
 
-    @Schema(example = "150000")
-    private BigDecimal grandTotal;
-
-    @Schema(example = "false")
-    @Column(nullable = false)
-    private Boolean isAvailable;
-
-    @Schema(example = "false")
-    @Column(nullable = false)
-    private Boolean isPaid;
-
-    @Schema(example = "bayar ntar nunggu gajian")
-    @Column(nullable = false)
-    private String note;
-
-    @Schema(example = "PENDING")
-    private BookingOption bookingOption;
-
-    @Schema(example = "")
-    private String[] amount;
-
-    @Schema(example = "yyyy-MM-dd")
-    @Column(nullable = false)
-    private LocalDate start_date;
+//    @Schema(example = "150000")
+//    private BigDecimal grandTotal;
+//
+//    @Schema(example = "false")
+//    @Column(nullable = false)
+//    private Boolean isAvailable;
+//
+//    @Schema(example = "false")
+//    @Column(nullable = false)
+//    private Boolean isPaid;
+//
+//    @Schema(example = "bayar ntar nunggu gajian")
+//    @Column(nullable = false)
+//    private String note;
+//
+//    @Schema(example = "PENDING")
+//    private BookingOption bookingOption;
+//
+//    @Schema(example = "")
+//    private String[] amount;
 
     @Schema(example = "yyyy-MM-dd")
     @Column(nullable = false)
-    private LocalDate end_Date;
+    private LocalDate booking_date_start;
+
+    @Schema(example = "yyyy-MM-dd")
+    @Column(nullable = false)
+    private LocalDate booking_date_end;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -69,10 +69,10 @@ public class Booking extends DateModel implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Users ownerId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "occupant_id", referencedColumnName = "id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Users occupantId;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "occupant_id", referencedColumnName = "id")
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private Users occupantId;
 
     @OneToOne(targetEntity = Room.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id", nullable = false)

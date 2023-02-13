@@ -78,7 +78,6 @@ public class QueryParams implements Serializable {
     }
 
     private List<org.springframework.data.domain.Sort.Order> generateMultipleOrders(ArrayList<Sort> sorts) {
-        System.out.println(sorts.toString());
         List<org.springframework.data.domain.Sort.Order> listSort = new ArrayList<>();
         for (int i = 0; i < sorts.size(); i++) {
             String field = sorts.get(i).getField().replace("__", "Relations.");
