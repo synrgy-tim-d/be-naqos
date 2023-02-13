@@ -38,9 +38,9 @@ public class BookingDetail extends DateModel implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Booking bookingId;
 
-    @Schema(example = "false")
-    @Column(nullable = false)
-    private Boolean isAvailable;
+//    @Schema(example = "false")
+//    @Column(nullable = false)
+//    private Boolean isAvailable;
 
     @Schema(example = "false")
     @Column(nullable = false)
@@ -67,4 +67,7 @@ public class BookingDetail extends DateModel implements Serializable {
 
     @Schema(example = "")
     private BigInteger rentPrice;
+
+    @Column(name = "payment_image_url", columnDefinition = "TEXT default 'https://xsgames.co/randomusers/avatar.php?g=pixel'")
+    private String paymentImg;
 }
