@@ -131,7 +131,8 @@ public class Kost extends DateModel implements Serializable {
   private List<Image> imageKosts = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "kostId")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "kostId",  cascade = javax.persistence.CascadeType.ALL,
+          orphanRemoval = true)
   private List<KostWishlist> wishlists;
 
   @ManyToMany(fetch = FetchType.LAZY,

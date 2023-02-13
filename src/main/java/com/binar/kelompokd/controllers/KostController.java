@@ -187,7 +187,8 @@ public class KostController {
       return new ResponseEntity<>(Response.notFound("Kos doesn't exist"), HttpStatus.NOT_FOUND);
     }
     catch (Exception e){
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+      e.printStackTrace();
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
   }
 
