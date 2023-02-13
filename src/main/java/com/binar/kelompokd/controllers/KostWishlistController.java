@@ -1,6 +1,7 @@
 package com.binar.kelompokd.controllers;
 
 import com.binar.kelompokd.interfaces.IKostWishlistService;
+import com.binar.kelompokd.interfaces.INotificationService;
 import com.binar.kelompokd.interfaces.IUserAuthService;
 import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.models.entity.kost.KostWishlist;
@@ -34,6 +35,7 @@ public class KostWishlistController {
   private IKostWishlistService kostWishlistService;
   private IUserAuthService iUserAuthService;
   private KostService kostService;
+  private INotificationService notificationService;
 
   @Autowired
   private Response response;
@@ -79,6 +81,7 @@ public class KostWishlistController {
     KostWishlist wishlist = new KostWishlist(users, kosts);
     kostWishlistService.createWishList(wishlist);
     WishlistResponse wishlistResponse = new WishlistResponse(request.getKostId(), userId, "Add '" + kosts.getName() + "' to " + users.getUsername() + "'s Wishlist.");
+    notificationService.saveNotification("Kost Wishlist Added","Added "+kosts.getName()+" to your Wishlist", userId);
     return new ResponseEntity<>(response.created(wishlistResponse), HttpStatus.CREATED);
   }
 
@@ -92,6 +95,7 @@ public class KostWishlistController {
     try {
       kostWishlistService.deleteWishlistByKostIdAndUserId(UUID.fromString(kostId), userId);
       WishlistResponse wishlistResponse = new WishlistResponse(kostId, userId, "Deleted '" + kosts.getName() + "' from " + user.getUsername() + "'s Wishlist.");
+      notificationService.saveNotification("Kost Wishlist deleted","deleted "+kosts.getName()+" from your Wishlist", userId);
       return new ResponseEntity<>(response.created(wishlistResponse), HttpStatus.ACCEPTED);
     } catch (Exception e) {
       return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);

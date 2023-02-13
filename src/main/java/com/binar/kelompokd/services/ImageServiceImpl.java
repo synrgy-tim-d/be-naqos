@@ -20,9 +20,7 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class ImageServiceImpl implements ImageService {
-
     private Cloudinary cloudinary;
-
     @Autowired
     ImageRepository imageRepository;
 
@@ -121,7 +119,6 @@ public class ImageServiceImpl implements ImageService {
         imageKost.setKosts(currentKost);
         currentKost.add(imageKost);
         imageRepository.save(imageKost);
-
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.binar.kelompokd.models.entity.oauth;
 
+import com.binar.kelompokd.enums.EProviders;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -51,6 +52,10 @@ public class Users implements UserDetails, Serializable {
     @OneToOne
     @JoinColumn(name = "bank_account_id", referencedColumnName = "id")
     private Bank bankAccount;
+
+    @Column(length = 6)
+    @Enumerated(EnumType.STRING)
+    private EProviders providers;
 
     @JsonIgnore
     private Date otpExpiredDate;

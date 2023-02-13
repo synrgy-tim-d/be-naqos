@@ -89,6 +89,12 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <!-- SWAGGER -->
     <dependency>
       <groupId>org.springdoc</groupId>
@@ -115,30 +121,11 @@
 			<version>2.0.1.Final</version>
 		</dependency>
 
-
-
 		<!-- EMAIL -->
     <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-
-    <!-- PGW Midtrans -->
-<!--    		<dependency>-->
-<!--    			<groupId>com.midtrans</groupId>-->
-<!--    			<artifactId>java-library</artifactId>-->
-<!--    			<version>3.1.4</version>-->
-<!--    		</dependency>-->
-
-<!--    <dependency>-->
-<!--      <groupId>nz.net.ultraq.thymeleaf</groupId>-->
-<!--      <artifactId>thymeleaf-layout-dialect</artifactId>-->
-<!--      <version>2.3.0</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework.boot</groupId>-->
-<!--      <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
-<!--    </dependency>-->
 
     <!-- Image Cloud -->
     <dependency>
@@ -151,7 +138,8 @@
       <artifactId>cloudinary-taglib</artifactId>
       <version>1.4.4</version>
     </dependency>
-    <!--       google-->
+
+    <!-- GOOGLE-->
     <dependency>
         <groupId>com.google.apis</groupId>
         <artifactId>google-api-services-oauth2</artifactId>
@@ -172,13 +160,11 @@
         <artifactId>google-oauth-client-jetty</artifactId>
         <version>1.34.1</version>
     </dependency>
-    <!--      tymleaf-->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
-
-    </dependencies>
+  </dependencies>
 
   <build>
     <plugins>
