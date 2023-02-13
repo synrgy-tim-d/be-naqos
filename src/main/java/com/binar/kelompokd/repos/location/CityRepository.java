@@ -14,6 +14,8 @@ import java.util.List;
 public interface CityRepository extends JpaRepository<City, Integer> {
   City findByCity(String city);
   City getCityById(Integer id);
+
+  List<City> findAllByProvinceId(Integer provinceId);
   @Query(
           nativeQuery = true,
           value = "delete from t_setup_city where id = :id"

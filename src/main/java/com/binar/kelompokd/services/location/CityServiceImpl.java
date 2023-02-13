@@ -9,6 +9,7 @@ import com.binar.kelompokd.repos.location.ProvinceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.plaf.LabelUI;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -37,6 +38,11 @@ public class CityServiceImpl implements CityService {
     @Override
     public City getCityById(Integer id) {
         return cityRepository.findById(id).get();
+    }
+
+    @Override
+    public List<City> getCityByProvince(Integer id) {
+        return cityRepository.findAllByProvinceId(id);
     }
 
     @Override

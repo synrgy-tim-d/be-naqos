@@ -33,6 +33,12 @@ public class CityController {
         return new ResponseEntity<>(response.templateSukses(cityService.getCityById(id)), HttpStatus.OK);
     }
 
+    @Operation(summary = "Get City by Province", tags = {"City Management"})
+    @GetMapping("/province/{id}")
+    public ResponseEntity<?> getCityByProvince(@PathVariable("id") @Schema(example = "1") Integer id){
+        return new ResponseEntity<>(response.templateSukses(cityService.getCityByProvince(id)), HttpStatus.OK);
+    }
+
     @Operation(summary = "Add City", tags = {"City Management"})
     @PostMapping()
     public ResponseEntity<?> saveCity(@RequestBody CityRequest cityRequest){
