@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Naqos - Register Verification</title>
+    <style>
+      .message {
+        text-align: center;
+        font-size: 24px;
+        margin-top: 25px;
+      }
+    </style>
+</head>
+<body>
+<div class="message">Verification Success</div>
+<script th:inline="javascript">
+      setTimeout(function() {
+        window.location.href = [[${redirectUrl}]];
+      }, [[${redirectDelay}]]);
+    </script>
+</body>
+</html>
