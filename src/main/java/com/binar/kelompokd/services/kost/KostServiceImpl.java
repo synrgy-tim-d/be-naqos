@@ -192,6 +192,8 @@ public class KostServiceImpl implements KostService {
         existing.setPricePerWeekly(pricePerWeekly);
         existing.setPricePerMonthly(pricePerMonthly);
         existing.setRules(rules);
+        City cityKost = cityService.getCityById(city);
+        existing.setCity(cityKost);
         kostRepository.save(existing);
 //        kostRepository.updateKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode, city);
     }
