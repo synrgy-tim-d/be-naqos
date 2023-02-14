@@ -398,7 +398,7 @@ public class EmailTemplate {
         "                </tr>\n" +
         "                <tr>\n" +
         "                  <td class=\"content-block powered-by\">\n" +
-        "                    Powered by <a href=\"https://fsw-frontend.vercel.app/\">Naqos Indonesia</a>.\n" +
+        "                    Powered by <a href=\"https://naqos.vercel.app/\">Naqos Indonesia</a>.\n" +
         "                  </td>\n" +
         "                </tr>\n" +
         "              </table>\n" +
@@ -799,7 +799,7 @@ public class EmailTemplate {
         "                </tr>\n" +
         "                <tr>\n" +
         "                  <td class=\"content-block powered-by\">\n" +
-        "                    Powered by <a href=\"https://fsw-frontend.vercel.app/\">Naqos Indonesia</a>.\n" +
+        "                    Powered by <a href=\"https://naqos.vercel.app/\">Naqos Indonesia</a>.\n" +
         "                  </td>\n" +
         "                </tr>\n" +
         "              </table>\n" +
