@@ -145,7 +145,7 @@ public class Kost extends DateModel implements Serializable {
           inverseJoinColumns = { @JoinColumn(name = "facility_id") })
   private Set<Facility> facilities = new HashSet<>();
 
-  public void add(Image imageKost) {
+  public void addImageKost(Image imageKost) {
     imageKosts.add(imageKost);
     imageKost.setKosts(this);
   }

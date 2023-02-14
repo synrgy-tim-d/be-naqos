@@ -49,7 +49,7 @@ public class KostController {
   FacilityService facilityService;
   private INotificationService notificationService;
 
-  @Operation(summary = "Add Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Add Kost", tags = {"Kost Management"})
+  @Operation(summary = "Add Kost", description = "Add Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", tags = {"Kost Management"})
   @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<?> createKost(@RequestPart("imageFiles") MultipartFile[] imageFiles,
                                       @RequestParam("name") @Schema(example = "Kost Binar Academy") String name,
@@ -125,7 +125,7 @@ public class KostController {
     return new ResponseEntity<>(facilityService.deleteFacilityFromKost(kostId, facilityId), HttpStatus.NO_CONTENT);
   }
 
-  @Operation(summary = "Update Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", description = "Update Kost", tags = {"Kost Management"})
+  @Operation(summary = "Update Kost", description = "Update Kost with kostType must ('KOS_PUTRA' or 'KOS_PUTRI' or 'KOS_CAMPURAN')", tags = {"Kost Management"})
   @PatchMapping("/{id}")
   public ResponseEntity<?> updateKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id,
                                       @RequestParam("name") @Schema(example = "Kost Binar Academy") String name,

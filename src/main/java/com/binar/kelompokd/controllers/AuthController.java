@@ -71,7 +71,7 @@ public class AuthController {
     return new ResponseEntity<Map>(map, (HttpStatus) map.get("message"));
   }
 
-  @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is not required yet", tags = {"User Management"})
+  @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is required. and imgUrl is not required", tags = {"User Management"})
   @PostMapping("/register")
   public ResponseEntity<Map> saveRegisterManual(@Valid @RequestBody RegisterDTO objModel) throws RuntimeException {
     Users user = userRepository.checkExistingEmail(objModel.getUsername());
@@ -116,7 +116,7 @@ public class AuthController {
       return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your email address correctly"), HttpStatus.BAD_REQUEST);
     }
   }
-  @Operation(summary = "Register Google Testing", tags = {"User Management"})
+  @Operation(summary = "Register Google", tags = {"User Management"})
   @PostMapping("/register-google")
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Map> saveRegisterManualGoogle(@Valid @RequestBody RegisterDTO objModel) throws RuntimeException {
@@ -198,7 +198,7 @@ public class AuthController {
   @PostMapping("/google")
   @Operation(summary = "Login - Register Google Account roleUser must = 'PEMILIK' or 'PENYEWA' ", tags = {"User Management"})
   @ResponseBody
-  public ResponseEntity<Map> repairGoogleSigninAction(@NotNull @RequestParam String token,@NotNull @RequestParam String roleUser ) throws Exception {
+  public ResponseEntity<Map> registerLoginOauth2Google(@NotNull @RequestParam String token,@NotNull @RequestParam String roleUser ) throws Exception {
     LoginDTO loginDTO = new LoginDTO();
     GoogleCredential credential = new GoogleCredential().setAccessToken(token);
     System.out.println("access_token user=" + token);

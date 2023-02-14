@@ -117,7 +117,7 @@ public class ImageServiceImpl implements ImageService {
         Image imageKost = new Image();
         imageKost.setUrl(url);
         imageKost.setKosts(currentKost);
-        currentKost.add(imageKost);
+        currentKost.addImageKost(imageKost);
         imageRepository.save(imageKost);
     }
 
