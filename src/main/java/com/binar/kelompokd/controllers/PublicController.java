@@ -42,12 +42,12 @@ public class PublicController {
   @Autowired
   Response Response;
 
-  @Operation(summary = "Get All List Kosts", description = "Get All kost search, filter, and fields ",tags = {"Public Management"})
+  @Operation(summary = "Get All List Kosts", description = "Get All kost by search, filter, and fields",tags = {"Public Management"})
   @GetMapping("/kost")
   public ResponseEntity<?> getKost(QueryParams params) throws Exception {
     return new ResponseEntity<>(kostService.getKost(params), HttpStatus.OK);
   }
-  @Operation(summary = "Get Review Kost By Kost Id", tags = {"Public Management"})
+  @Operation(summary = "Get Review Kost", description = "Get Kost Review By Kost Id", tags = {"Public Management"})
   @GetMapping("/kost_review/{id}")
   public ResponseEntity<?> getKostReviewByKostId(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
     try {

@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -172,7 +171,7 @@ public class KostController {
     }
   }
 
-  @Operation(summary = "Hard Delete Kost by Id", tags = {"Kost Management"})
+  @Operation(summary = "Hard Delete Kost", description = "Delete kost permanently by Kost Id", tags = {"Kost Management"})
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
     Users user = iUserAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -192,7 +191,7 @@ public class KostController {
     }
   }
 
-  @Operation(summary = "Soft Delete Kost by Id", tags = {"Kost Management"})
+  @Operation(summary = "Soft Delete Kost", description = "Delete kost temporary by Kost Id", tags = {"Kost Management"})
   @DeleteMapping("/soft-delete/{id}")
   public ResponseEntity<?> softDeleteKost(@PathVariable("id") @Schema(example = "123e4567-e89b-12d3-a456-426614174000") UUID id){
     Users user = iUserAuthService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
