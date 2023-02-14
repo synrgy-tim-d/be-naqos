@@ -26,7 +26,7 @@ class NotificationServiceImplTest {
 
   @Test
   @DisplayName("Assert get Notification return list Notification for user")
-  void getNotification() {
+  void getNotificationTest() {
     Long userId = 1L;
     List<Notification> notifications = new ArrayList<>();
     when(repository.findNotifications(userId)).thenReturn(notifications);

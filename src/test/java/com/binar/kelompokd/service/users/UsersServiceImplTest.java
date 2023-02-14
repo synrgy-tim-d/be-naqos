@@ -23,7 +23,7 @@ class UsersServiceImplTest {
 
   @Test
   @DisplayName("Assert find User by Id return User")
-  void findUsersById(){
+  void findUsersByIdTest(){
     Users user = new Users();
     user.setId(1L);
     user.setUsername("test@email.com");
@@ -36,7 +36,7 @@ class UsersServiceImplTest {
 
   @Test
   @DisplayName("Assert find User by username/email return User")
-  void findByUsername(){
+  void findByUsernameTest(){
     String email = "test@email.com";
     Users users1 = new Users();
     users1.setId(1L);
@@ -51,7 +51,6 @@ class UsersServiceImplTest {
     assertEquals("Mochito", mocked.getFullname());
     assertEquals("test@email.com", mocked.getUsername());
     assertEquals("password1234", mocked.getPassword());
-
   }
 
 }
