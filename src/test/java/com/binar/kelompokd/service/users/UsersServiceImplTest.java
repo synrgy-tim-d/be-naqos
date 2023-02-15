@@ -45,7 +45,7 @@ class UsersServiceImplTest {
     users1.setPhoneNumber("081212");
     users1.setPassword("password1234");
 
-    Mockito.when(usersRepository.findByUsername(email)).thenReturn(users1);
+    Mockito.when(usersRepository.findOneByUsername(email)).thenReturn(users1);
     Users mocked = usersService.findByUsername(email);
 
     assertEquals("Mochito", mocked.getFullname());
