@@ -7,7 +7,6 @@ import com.binar.kelompokd.models.entity.location.City;
 import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.models.response.kost.NewKostResponse;
 import com.binar.kelompokd.utils.response.Response;
-import com.binar.kelompokd.utils.SimpleStringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,8 +34,6 @@ public class KostController {
   private final static Logger logger = LoggerFactory.getLogger(KostController.class);
   @Autowired
   KostService kostService;
-  @Autowired
-  SimpleStringUtils simpleStringUtils;
   private IUserAuthService iUserAuthService;
   private ImageService imageService;
   private CityService cityService;

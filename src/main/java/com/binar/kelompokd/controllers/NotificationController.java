@@ -75,7 +75,6 @@ public class NotificationController {
             })
             .collect(Collectors.toList());
 
-    // buat create pageable
     int notifSize = notificationResponses.size();
     Pageable paging = PageRequest.of(page, size);
     int start = Math.min((int) paging.getOffset(), notifSize);

@@ -21,8 +21,6 @@ public interface UserRepository extends PagingAndSortingRepository<Users, Long> 
 
   Users findUsersById(Long id);
 
-  Users findByUsername(String email);
-
   @Modifying
   @Query(value = "update oauth_user set fullname=?2, phone_number=?3 where id=?1", nativeQuery = true)
   Integer updateUser(Long id, String fullname, String phoneNumber);

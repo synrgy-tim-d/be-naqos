@@ -1,6 +1,5 @@
 package com.binar.kelompokd.controllers;
 
-import com.binar.kelompokd.interfaces.CityService;
 import com.binar.kelompokd.models.entity.location.Province;
 import com.binar.kelompokd.interfaces.ProvinceService;
 import com.binar.kelompokd.models.response.location.ProvinceResponse;
@@ -24,9 +23,6 @@ public class ProvinceController {
     private final static Logger logger = LoggerFactory.getLogger(ProvinceController.class);
     @Autowired
     ProvinceService provinceService;
-
-    @Autowired
-    CityService cityService;
 
     @Autowired
     public Response templateCRUD;

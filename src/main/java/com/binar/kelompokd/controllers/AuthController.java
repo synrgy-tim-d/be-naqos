@@ -192,7 +192,6 @@ public class AuthController {
     context.setVariable("redirectUrl","https://naqos.vercel.app/auth/login");
     context.setVariable("redirectDelay",2500);
     String html=templateEngine.process("verification",context);
-//    return new ResponseEntity<Map>(templateCRUD.templateSukses("Verification success. Please login!"), HttpStatus.OK);
     return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html);
   }
 
@@ -237,6 +236,5 @@ public class AuthController {
 
       return new ResponseEntity<Map>(templateCRUD.templateSukses(mapLogin.getBody().get("data")), HttpStatus.OK);
     }
-//    return new ResponseEntity<Map>(mapLogin, HttpStatus.OK);
   }
 }
