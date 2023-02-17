@@ -3,6 +3,8 @@ package com.binar.kelompokd.controllers;
 import com.binar.kelompokd.interfaces.IKostReviewService;
 import com.binar.kelompokd.interfaces.KostService;
 import com.binar.kelompokd.models.QueryParams;
+import com.binar.kelompokd.models.entity.kost.Kost;
+import com.binar.kelompokd.models.entity.oauth.Users;
 import com.binar.kelompokd.utils.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
@@ -44,6 +47,16 @@ public class PublicController {
     }
     catch (NoSuchElementException noSuchElementException){
       logger.error(noSuchElementException.toString());
+      return new ResponseEntity<>(Response.notFound("Review doesn't exist"), HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Operation(summary = "List Kost Review", description = "List Kost Review by User.", tags = {"Public Management"})
+  @GetMapping("/kost_review")
+  public ResponseEntity<?> getAllKostReview() {
+    try {
+      return new ResponseEntity<>(Response.templateSukses(kostReviewService.getAllKostReview()), HttpStatus.OK);
+    } catch (Exception e){
       return new ResponseEntity<>(Response.notFound("Review doesn't exist"), HttpStatus.NOT_FOUND);
     }
   }
