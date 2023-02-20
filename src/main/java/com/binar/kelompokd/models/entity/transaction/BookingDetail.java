@@ -1,10 +1,6 @@
 package com.binar.kelompokd.models.entity.transaction;
 
-import com.binar.kelompokd.enums.BookingOption;
 import com.binar.kelompokd.models.DateModel;
-import com.binar.kelompokd.models.entity.kost.Kost;
-import com.binar.kelompokd.models.entity.kost.Room;
-import com.binar.kelompokd.models.entity.oauth.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,9 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -37,10 +31,6 @@ public class BookingDetail extends DateModel implements Serializable {
     @JoinColumn(name = "booking_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Booking bookingId;
-
-//    @Schema(example = "false")
-//    @Column(nullable = false)
-//    private Boolean isAvailable;
 
     @Schema(example = "false")
     @Column(nullable = false)

@@ -36,10 +36,7 @@ public class ForgetPasswordController {
 
   Config config = new Config();
 
-  @Autowired
-  public IUserAuthService serviceReq;
-
-  @Value("${expired.token.password.minute:}")//FILE_SHOW_RUL
+  @Value("${expired.token.password.minute:}")
   private int expiredToken;
 
   @Autowired

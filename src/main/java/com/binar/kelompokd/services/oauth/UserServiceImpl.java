@@ -120,7 +120,7 @@ public class UserServiceImpl implements IUserAuthService {
   @Override
   public Map login(LoginDTO loginModel) {
     try {
-      Users checkUser = userRepository.findByUsername(loginModel.getUsername());
+      Users checkUser = userRepository.findOneByUsername(loginModel.getUsername());
       Map<String, Object> map = new HashMap<>();
       if (checkUser == null) {
         return templateResponse.notFound("User not found");
@@ -162,7 +162,7 @@ public class UserServiceImpl implements IUserAuthService {
 
   @Override
   public Users findByUsername(String email) {
-    return userRepository.findByUsername(email);
+    return userRepository.findOneByUsername(email);
   }
 
   @Override

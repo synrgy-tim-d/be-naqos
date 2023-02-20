@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>8</java.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<oauth2.version>2.0.14.RELEASE</oauth2.version>
+		<oauth2.version>2.3.5.RELEASE</oauth2.version>
 		<jwt.version>1.0.9.RELEASE</jwt.version>
 
 	</properties>

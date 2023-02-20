@@ -42,11 +42,7 @@ public class Oauth2AuthorizationServerConfiguration extends AuthorizationServerC
    */
   @Override
   public void configure(AuthorizationServerSecurityConfigurer server) throws Exception {
-    server.allowFormAuthenticationForClients()
-//                .tokenKeyAccess("permitAll()")
-//                .checkTokenAccess("isAuthenticated()")
-        .passwordEncoder(passwordEncoder)
-    ;
+    server.allowFormAuthenticationForClients().passwordEncoder(passwordEncoder);
   }
 
   /**

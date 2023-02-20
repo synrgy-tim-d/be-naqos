@@ -52,15 +52,6 @@ public class Facility {
     @Column(nullable = false)
     private Boolean isActive = false;
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE
-//            },
-//            mappedBy = "facilities")
-//    @JsonIgnore
-//    private Set<Room> rooms = new HashSet<>();
-
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,

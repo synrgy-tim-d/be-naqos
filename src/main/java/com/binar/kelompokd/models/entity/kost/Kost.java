@@ -47,22 +47,22 @@ public class Kost extends DateModel implements Serializable {
   private Boolean isAvailable;
 
   @Schema(example = "-6")
-  @Column(precision = 10)// untuk set example di swagger
+  @Column(precision = 10)
   private Double latitude;
 
-  @Schema(example = "106")  // untuk set example di swagger
+  @Schema(example = "106")
   @Column(precision = 10)
   private Double longitude;
 
-  @Schema(example = "Jl. Kabupaten, Nusupan, Trihanggo, Gamping, Sleman Regency")  // untuk set example di swagger
+  @Schema(example = "Jl. Kabupaten, Nusupan, Trihanggo, Gamping, Sleman Regency")
   @Column(nullable = false, length = 100)
   private String address;
 
-  @Schema(example = "Disctrict A")  // untuk set example di swagger
+  @Schema(example = "Disctrict A")
   @Column(nullable = false, length = 50)
   private String district;
 
-  @Schema(example = "Subdistrict B")  // untuk set example di swagger
+  @Schema(example = "Subdistrict B")
   @Column(nullable = false, length = 50)
   private String subdistrict;
 
@@ -72,7 +72,7 @@ public class Kost extends DateModel implements Serializable {
 
   @Schema(example = "150000")
   @Column(name = "price_per_daily")
-  private BigDecimal pricePerDaily;   // saya tidak tau gmn caranya buat tipe data decimal di postgres. tapi berdasarkan riset kita bisa menggunakan bigdecimal untuk tipe data decimal
+  private BigDecimal pricePerDaily;
 
   @Schema(example = "650000")
   @Column(name = "price_per_weekly")

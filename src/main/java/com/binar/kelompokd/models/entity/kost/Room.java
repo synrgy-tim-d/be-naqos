@@ -43,8 +43,6 @@ public class Room extends DateModel implements Serializable {
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
 
-    // rules text
-
     @Schema(example = "true")
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean isAvailable;
@@ -55,54 +53,18 @@ public class Room extends DateModel implements Serializable {
     @JsonBackReference
     private Kost kost;
 
-//    @ManyToMany
-//    @Cascade({org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.MERGE})
-//    Set<Facility> facility;
-
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE
-//            })
-//    @JoinTable(name = "t_kost_rooms_facility",
-//            joinColumns = { @JoinColumn(name = "room_id") },
-//            inverseJoinColumns = { @JoinColumn(name = "facility_id") })
-//    private Set<Facility> facilities = new HashSet<>();
-
     public Room(RoomType roomType,
-//                String rules, BigDecimal pricePerDaily, BigDecimal pricePerWeekly, BigDecimal pricePerMonthly,
                 Boolean isAvailable, Kost kost) {
         this.roomType = roomType;
-//        this.rules = rules;
-//        this.pricePerDaily = pricePerDaily;
-//        this.pricePerWeekly = pricePerWeekly;
-//        this.pricePerMonthly = pricePerMonthly;
         this.isAvailable = isAvailable;
         this.kost = kost;
     }
-
-//    public void addFacility(Facility facility) {
-//        this.facilities.add(facility);
-//        facility.getRooms().add(this);
-//    }
-
-//    public void removeFacility(UUID facilityId) {
-//        Facility facility = this.facilities.stream().filter(f -> f.getId().toString().equals(facilityId.toString())).findFirst().orElse(null);
-//        if (facility != null) {
-//            this.facilities.remove(facility);
-//            facility.getRooms().remove(this);
-//        }
-//    }
 
     @Override
     public String toString() {
         return "Room{" +
                 "id=" + id +
                 ", roomType=" + roomType +
-//                ", rules='" + rules + '\'' +
-//                ", pricePerDaily=" + pricePerDaily +
-//                ", pricePerWeekly=" + pricePerWeekly +
-//                ", pricePerMonthly=" + pricePerMonthly +
                 ", isAvailable=" + isAvailable +
                 ", kost=" + kost +
                 '}';

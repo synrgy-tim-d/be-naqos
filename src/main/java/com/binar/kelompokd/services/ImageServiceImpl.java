@@ -120,9 +120,4 @@ public class ImageServiceImpl implements ImageService {
         currentKost.addImageKost(imageKost);
         imageRepository.save(imageKost);
     }
-
-    @Override
-    public Image getImageById(Integer id) {
-        return null;
-    }
 }

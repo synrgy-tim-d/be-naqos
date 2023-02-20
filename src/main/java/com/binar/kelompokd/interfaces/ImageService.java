@@ -15,6 +15,5 @@ public interface ImageService {
     void deleteImageKost(Image imageKost, Kost currentKost);
     Image findImageKostByUrl(String fileLocation);
     void saveImageKostToDb(String url, Kost currentKost);
-    Image getImageById(Integer id);
     String uploadFileAvatar(MultipartFile image);
 }

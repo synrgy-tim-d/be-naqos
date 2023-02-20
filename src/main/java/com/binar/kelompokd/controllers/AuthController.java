@@ -64,14 +64,14 @@ public class AuthController {
     return req == null || req.toString().isEmpty();
   }
 
-  @Operation(summary = "User Login with username/email and password", tags = {"User Management"})
+  @Operation(summary = "Login User with username/email and password", tags = {"User Management"})
   @PostMapping("/login")
   public ResponseEntity<Map> login(@Valid @RequestBody LoginDTO objModel) {
     Map map = serviceReq.login(objModel);
     return new ResponseEntity<Map>(map, (HttpStatus) map.get("message"));
   }
 
-  @Operation(summary = "Register User with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is required. and imgUrl is not required", tags = {"User Management"})
+  @Operation(summary = "Register User by Local Website", description = "Registration with username, fullname, phoneNumber, password, and role ('PEMILIK' or 'PENYEWA'). Role is required. and imgUrl is not required", tags = {"User Management"})
   @PostMapping("/register")
   public ResponseEntity<Map> saveRegisterManual(@Valid @RequestBody RegisterDTO objModel) throws RuntimeException {
     Users user = userRepository.checkExistingEmail(objModel.getUsername());
@@ -116,7 +116,7 @@ public class AuthController {
       return new ResponseEntity<Map>(templateCRUD.badRequest("Please input your email address correctly"), HttpStatus.BAD_REQUEST);
     }
   }
-  @Operation(summary = "Register Google", tags = {"User Management"})
+  @Operation(summary = "Register User By Google Oauth2", tags = {"User Management"})
   @PostMapping("/register-google")
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Map> saveRegisterManualGoogle(@Valid @RequestBody RegisterDTO objModel) throws RuntimeException {
@@ -129,7 +129,7 @@ public class AuthController {
     return new ResponseEntity<Map>(templateCRUD.templateSukses(result), HttpStatus.OK);
   }
 
-  @Operation(summary = "Send Email OTP to User", tags = {"User Management"})
+  @Operation(summary = "Send Email OTP to User",description = "Naqos Website send OTP to user email", tags = {"User Management"})
   @PostMapping("/send-otp")
   public Map sendEmailRegister(@NonNull @RequestBody SendOTPDTO user) {
     String message = "Thanks, please check your email for activation.";
@@ -168,7 +168,7 @@ public class AuthController {
     return templateCRUD.templateSukses(message);
   }
 
-  @Operation(summary = "Input OTP from Email", tags = {"User Management"})
+  @Operation(summary = "Input OTP from Email", description = "User click OTP in email registration to verification email", tags = {"User Management"})
   @GetMapping("/register-confirm-otp/{token}")
   public ResponseEntity<?> saveRegisterManual(@PathVariable(value = "token") String tokenOtp, Model model) throws RuntimeException {
     Context context = new Context();
@@ -192,11 +192,11 @@ public class AuthController {
     context.setVariable("redirectUrl","https://naqos.vercel.app/auth/login");
     context.setVariable("redirectDelay",2500);
     String html=templateEngine.process("verification",context);
-//    return new ResponseEntity<Map>(templateCRUD.templateSukses("Verification success. Please login!"), HttpStatus.OK);
     return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html);
   }
+
   @PostMapping("/google")
-  @Operation(summary = "Login - Register Google Account roleUser must = 'PEMILIK' or 'PENYEWA' ", tags = {"User Management"})
+  @Operation(summary = "Login and Register Google Oauth2", description = "roleUser must = 'PEMILIK' or 'PENYEWA'", tags = {"User Management"})
   @ResponseBody
   public ResponseEntity<Map> registerLoginOauth2Google(@NotNull @RequestParam String token,@NotNull @RequestParam String roleUser ) throws Exception {
     LoginDTO loginDTO = new LoginDTO();
@@ -236,6 +236,5 @@ public class AuthController {
 
       return new ResponseEntity<Map>(templateCRUD.templateSukses(mapLogin.getBody().get("data")), HttpStatus.OK);
     }
-//    return new ResponseEntity<Map>(mapLogin, HttpStatus.OK);
   }
 }

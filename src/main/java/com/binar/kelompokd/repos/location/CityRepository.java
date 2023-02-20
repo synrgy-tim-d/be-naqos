@@ -12,9 +12,6 @@ import java.util.List;
 
 @Repository
 public interface CityRepository extends JpaRepository<City, Integer> {
-  City findByCity(String city);
-  City getCityById(Integer id);
-
   List<City> findAllByProvinceId(Integer provinceId);
   @Query(
           nativeQuery = true,
@@ -29,9 +26,4 @@ public interface CityRepository extends JpaRepository<City, Integer> {
   )
   City getCityByName(@Param("name") String name);
 
-  @Query(
-          nativeQuery = true,
-          value = "select * from t_setup_city where lower(city) like lower(concat('%', concat(:name, '%')))"
-  )
-  List<City> getCitiesByName(@Param("name") String name);
 }

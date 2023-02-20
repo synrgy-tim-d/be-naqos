@@ -42,9 +42,6 @@ public class KostServiceImpl implements KostService {
     KostRepository kostRepository;
 
     @Autowired
-    ImageRepository imageRepository;
-
-    @Autowired
     CityRepository cityRepository;
 
     private IUserAuthService userAuthService;
@@ -56,24 +53,9 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
-    public List<Kost> getAllKost() {
-        return kostRepository.getAllKostWhereIsAvailableTrue();
-    }
-
-    @Override
-    public Page<Kost> getAllKost(Pageable pageable) {
-        return kostRepository.getAllKostWhereIsAvailableTrue(pageable);
-    }
-
-    @Override
     @Transactional
     public void deleteKostById(UUID id) {
         kostRepository.deleteKostById(id);
-    }
-
-    @Override
-    public Page<Kost> getListData(Pageable pageable) {
-        return kostRepository.getAllKostWhereIsAvailableTrue(pageable);
     }
 
     @Override
@@ -135,35 +117,6 @@ public class KostServiceImpl implements KostService {
         } else {
             return new ResponseEntity(new MessageResponse("Data Empty"), HttpStatus.NO_CONTENT);
         }
-
-    }
-
-    @Override
-    public Page<Kost> getKostsByKostType(String kostType, Pageable pageable) {
-        return kostRepository.getKostsByKostType(kostType, pageable);
-    }
-
-    @Override
-    public Page<Kost> getKostsByCityId(Integer cityId, Pageable pageable) {
-        return kostRepository.getKostsByCityId(cityId, pageable);
-    }
-
-    @Override
-    public Page<Kost> getKostsByCity(String cityName, Pageable pageable) {
-        City city = cityRepository.getCityByName(cityName);
-        Integer cityId = city.getId();
-        return kostRepository.getKostsByCityId(cityId, pageable);
-    }
-
-    @Override
-    public Page<Kost> getKostsByCity2(String cityName, Pageable pageable) {
-        List<City> cities = cityRepository.getCitiesByName(cityName);
-        List<Kost> kosts = new ArrayList<>();
-        for(City c:cities){
-            Integer cityId = c.getId();
-            kosts.addAll(kostRepository.getKostsByCityId(cityId, pageable).getContent());
-        }
-        return new PageImpl<>(kosts);
     }
 
     @Override
@@ -195,7 +148,6 @@ public class KostServiceImpl implements KostService {
         City cityKost = cityService.getCityById(city);
         existing.setCity(cityKost);
         kostRepository.save(existing);
-//        kostRepository.updateKost(uuid, name, description, kostType, isAvailable, latitude, longitude, address, subdistrict, district, postalCode, city);
     }
 
     @Override
